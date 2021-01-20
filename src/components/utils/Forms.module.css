@@ -1,0 +1,7 @@
+.datePicker {
+    width: inherit;
+}
+
+.datePicker .react-datepicker__input-container {
+    width: inherit;
+}
