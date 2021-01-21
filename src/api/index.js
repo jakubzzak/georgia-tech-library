@@ -88,16 +88,19 @@ const create = (baseURL) => {
   //
   const removeDocumentUpload = (id) => api.delete(`documentUpload/remove/${id}`, null, getSecuredHeaders())
   const processFile = (action) => api.post(`documentUpload/processFile/${action.id}`, { ...action.data }, getSecuredHeaders())
-  const downloadFile = (id) => api.get(`file/download/${id}`, null, {
-    ...getSecuredHeaders(),
-    responseType: 'blob',
-  })
 
   const meFromToken = (tokenToValidate) => api.post('sessions/me', { token: tokenToValidate }, getUnsecuredHeaders())
 
   const createSession = (request) => api.post('sessions/create', request, getUnsecuredHeaders())
   const register = (request) => api.post('sessions/register', request, getUnsecuredHeaders())
   const checkLogin = (request) => api.post('sessions/checkLogin', request, getUnsecuredHeaders())
+
+  const uploadFile = (request) => api.post('', request, getSecuredHeaders())
+  const downloadFile = (id) => api.get(`file/download/${id}`, null, {
+    ...getSecuredHeaders(),
+    responseType: 'blob',
+  })
+  const removeFile = (id) => api.delete(`file/remove/${id}`, null, getSecuredHeaders())
 
   // ------
   // STEP 3
@@ -115,11 +118,13 @@ const create = (baseURL) => {
     // a list of the API functions from step 2
     removeDocumentUpload,
     processFile,
-    downloadFile,
     meFromToken,
     createSession,
     register,
     checkLogin,
+    downloadFile,
+    removeFile,
+    uploadFile
   }
 }
 

@@ -5,8 +5,9 @@ import Login from './Login/Login'
 import Dashboard from './Dashboard/Dashboard'
 import Preferences from './Preferences/Preferences'
 import useToken from './useToken'
-import ListImages from './ListImages/ListImages'
-import UploadImage from './UploadImage/UploadImage'
+import ListFiles from './ListFiles/ListFiles'
+import UploadFile from './UploadFile/UploadFile'
+import { Tab, Menu, Label, Icon } from 'semantic-ui-react'
 
 
 const App = () => {
@@ -17,25 +18,52 @@ const App = () => {
     return <Login setToken={setToken}/>
   }
 
+  const panes = [
+    {
+      menuItem: (
+        <Menu.Item key='me'>
+          <Icon name={'user'} />
+          Me
+        </Menu.Item>
+      ),
+      render: () =>  <Dashboard/>
+    },
+    {
+      menuItem: (
+        <Menu.Item key='list'>
+          <Icon name={'list'} />
+          List<Label>15</Label>
+        </Menu.Item>
+      ),
+      render: () => <ListFiles/>
+    },
+    {
+      menuItem: (
+        <Menu.Item key='upload'>
+          <Icon name={'upload'} />
+          Upload
+        </Menu.Item>
+      ),
+      render: () => <UploadFile token={token}/>
+    },
+    {
+      menuItem: (
+        <Menu.Item key='preferences'>
+          <Icon name={'settings'} />
+          Preferences
+        </Menu.Item>
+      ),
+      render: () => <Preferences/>
+    },
+  ]
+
+
   return (
     <div className="wrapper">
-      <h1>Application</h1>
-      <BrowserRouter>
-        <Switch>
-          <Route path="/">
-            <Dashboard/>
-          </Route>
-          <Route path="/listImages">
-            <ListImages/>
-          </Route>
-          <Route path="/uploadImage">
-            <UploadImage/>
-          </Route>
-          <Route path="/preferences">
-            <Preferences/>
-          </Route>
-        </Switch>
-      </BrowserRouter>
+      <h1>personalApi</h1>
+      <div className="paper-shadow">
+        <Tab menu={{ secondary: true, pointing: true }} panes={panes} />
+      </div>
     </div>
   )
 }
