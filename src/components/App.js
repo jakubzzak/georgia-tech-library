@@ -8,6 +8,7 @@ import useToken from './useToken'
 import ListFiles from './ListFiles/ListFiles'
 import UploadFile from './UploadFile/UploadFile'
 import { Tab, Menu, Label, Icon } from 'semantic-ui-react'
+import Flag from "react-flags";
 
 
 const App = () => {
@@ -64,6 +65,11 @@ const App = () => {
       <div className="paper-shadow">
         <Tab menu={{ secondary: true, pointing: true }} panes={panes} />
       </div>
+      <footer>
+        <img alt="Slovakia" src="http://purecatamphetamine.github.io/country-flag-icons/3x2/SK.svg" style={{ maxWidth: '16px' }}/>
+        {' Powered with <3 by personalApi '}
+        <img alt="Slovakia" src="http://purecatamphetamine.github.io/country-flag-icons/3x2/SK.svg" style={{ maxWidth: '16px' }}/>
+      </footer>
     </div>
   )
 }

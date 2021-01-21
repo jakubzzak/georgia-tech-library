@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import './Login.css'
-import api, { unsecuredAPI } from '../../api'
+import { unsecuredAPI } from '../../api'
 import PropTypes from 'prop-types'
 import { Button, Form, Grid, Label } from 'semantic-ui-react'
 import { InputHooks } from '../utils/inputs'

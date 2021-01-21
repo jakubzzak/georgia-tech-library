@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Form, Grid } from 'semantic-ui-react'
+import { Loader, Dimmer, Button, Form, Grid } from 'semantic-ui-react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { InputHooks } from '../utils/inputs'
 import DropzoneComponent from 'react-dropzone-component'
@@ -36,7 +36,6 @@ const UploadFile = ({ token }) => {
     success,
   }
 
-
   const useFormMethods = useForm()
   const { handleSubmit, formState } = useFormMethods
   const { isSubmitting, isValid } = formState
@@ -51,44 +50,34 @@ const UploadFile = ({ token }) => {
   }
 
   return (
-    <Grid>
-      <Grid.Row>
-        <Grid.Column width={16}>
-          <FormProvider {...useFormMethods}>
-            <Form onSubmit={handleSubmit(onSubmit)} loading={isSubmitting}>
-              <Grid stackable>
-                <Grid.Row textAlign={'left'}>
-                  <Grid.Column width={8}>
-                    <InputHooks name={'title'} placeholder={'Title'} label={'Title'}/>
-                  </Grid.Column>
-                </Grid.Row>
-                <Grid.Row textAlign={'left'}>
-                  <Grid.Column>
-                    <InputHooks name={'description'}
-                                placeholder={'Description'}
-                                label={'Description'}/>
-                  </Grid.Column>
-                </Grid.Row>
-                <Grid.Row>
-                  <Grid.Column>
-                    <DropzoneComponent config={componentConfig}
-                                       eventHandlers={eventHandlers}
-                                       djsConfig={djsConfig}/>
-                  </Grid.Column>
-                </Grid.Row>
-                <Grid.Row textAlign={'right'}>
-                  <Grid.Column>
-                    <Button primary type='submit'
-                            disabled={isSubmitting || uploadedFileId === null || !isValid}
-                            content={'Submit'} labelPosition='left' icon='upload'/>
-                  </Grid.Column>
-                </Grid.Row>
-              </Grid>
-            </Form>
-          </FormProvider>
-        </Grid.Column>
-      </Grid.Row>
-    </Grid>
+    <div style={{ padding: '50px' }}>
+      <FormProvider {...useFormMethods}>
+        <Dimmer active={isSubmitting} inverted>
+          <Loader>Loading</Loader>
+        </Dimmer>
+        <Form onSubmit={handleSubmit(onSubmit)} loading={isSubmitting}>
+          <Grid stackable>
+            <Grid.Row textAlign={'left'}>
+              <Grid.Column>
+                <InputHooks name={'title'} placeholder={'Title'} label={'Title'} rules={{ required: true }}/>
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
+              <Grid.Column>
+                <DropzoneComponent config={componentConfig} eventHandlers={eventHandlers} djsConfig={djsConfig}/>
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row textAlign={'right'}>
+              <Grid.Column>
+                <Button color={'orange'} type='submit'
+                        disabled={isSubmitting || !isValid} // || uploadedFileId === null -> add back when receiving id from BE
+                        content={'Submit'} labelPosition='left' icon='upload'/>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </Form>
+      </FormProvider>
+    </div>
   )
 }
 
