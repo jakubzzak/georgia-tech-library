@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import ReactTable from 'react-table-v6'
 import 'react-table-v6/react-table.css'
 import FileSaver from 'file-saver'
-import { Button, Icon, Popup } from 'semantic-ui-react'
+import { Button, Dimmer, Icon, Loader, Popup } from 'semantic-ui-react'
 import api from '../../api'
 
 
@@ -90,12 +90,14 @@ const ListFiles = ({ data }) => {
 
   return (
     <div style={{ padding: '50px' }}>
+      <Dimmer active={loading} inverted>
+        <Loader>Loading</Loader>
+      </Dimmer>
       <ReactTable className='-striped -highlight'
                   noDataText="Noting to show"
                   defaultPageSize={10} showPagination={showPagination}
                   data={dataTest}
                   columns={columns}
-                  loading={loading}
                   getTheadThProps={() => ({
                     style: {
                       outline: '0'

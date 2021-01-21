@@ -95,7 +95,7 @@ const create = (baseURL) => {
   const register = (request) => api.post('sessions/register', request, getUnsecuredHeaders())
   const checkLogin = (request) => api.post('sessions/checkLogin', request, getUnsecuredHeaders())
 
-  const uploadFile = (request) => api.post('', request, getSecuredHeaders())
+  const uploadFile = (request) => api.post('file/attacheUpload', request, getSecuredHeaders())
   const downloadFile = (id) => api.get(`file/download/${id}`, null, {
     ...getSecuredHeaders(),
     responseType: 'blob',
