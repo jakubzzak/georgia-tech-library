@@ -8,11 +8,7 @@ const create = (baseURL) => {
   // Create and configure an apisauce-based api object.
   //
 
-  // const serializedState = loadState()
-  let token = null
-  // if (serializedState && serializedState.auth) {
-  //   token = serializedState.auth.token
-  // }
+  let token = JSON.parse(sessionStorage.getItem('token'))
   let lang = 'sk'
 
   const api = apisauce.create({
@@ -66,8 +62,8 @@ const create = (baseURL) => {
     },
   })
 
-  const createRequestFromPageDetails = ({ sort, pageSize, itemsPage, search }) => ({
-    offset: itemsPage.currentPage * pageSize,
+  const createRequestFromPageDetails = ({ sort, pageSize, currentPage, search }) => ({
+    offset: currentPage * pageSize,
     limit: pageSize,
     sort: sort,
     search: search,
@@ -88,16 +84,25 @@ const create = (baseURL) => {
   //
   const removeDocumentUpload = (id) => api.delete(`documentUpload/remove/${id}`, null, getSecuredHeaders())
   const processFile = (action) => api.post(`documentUpload/processFile/${action.id}`, { ...action.data }, getSecuredHeaders())
-  const downloadFile = (id) => api.get(`file/download/${id}`, null, {
-    ...getSecuredHeaders(),
-    responseType: 'blob',
-  })
 
   const meFromToken = (tokenToValidate) => api.post('sessions/me', { token: tokenToValidate }, getUnsecuredHeaders())
 
   const createSession = (request) => api.post('sessions/create', request, getUnsecuredHeaders())
   const register = (request) => api.post('sessions/register', request, getUnsecuredHeaders())
   const checkLogin = (request) => api.post('sessions/checkLogin', request, getUnsecuredHeaders())
+
+  // const uploadFile = (request) => api.post('file/attache', request, getSecuredHeaders()) // sets file custom title -> with it to be retrieved
+  const uploadFileTitle = (request) => api.post('file/attacheTitle', request, getSecuredHeaders())
+  const fileExistsByUserAndTitle = (title) => api.get(`file/existsByUserAndTitle/${title}`, null, getSecuredHeaders())
+  const downloadFile = (id) => api.get(`file/download/${id}`, null, {
+    ...getSecuredHeaders(),
+    responseType: 'blob',
+  })
+  const listFiles = (pageDetails) => api.post(`file/tableData/byUser`, createRequestFromPageDetails(pageDetails), getSecuredHeaders())
+  const removeFile = (id) => api.delete(`file/remove/${id}`, null, getSecuredHeaders())
+
+  const generateApiKey = (id) =>
+    api.get('users/getApiKey/' + id, null, getSecuredHeaders())
 
   // ------
   // STEP 3
@@ -115,11 +120,16 @@ const create = (baseURL) => {
     // a list of the API functions from step 2
     removeDocumentUpload,
     processFile,
-    downloadFile,
     meFromToken,
     createSession,
     register,
     checkLogin,
+    downloadFile,
+    removeFile,
+    listFiles,
+    // uploadFile,
+    uploadFileTitle,
+    fileExistsByUserAndTitle
   }
 }
 
