@@ -16,7 +16,7 @@ const Login = ({ setToken }) => {
     if (logInResponse.ok) {
       const apiResponse = await unsecuredAPI.createSession({ ...logInResponse.data })
       if (apiResponse.ok) {
-        setToken(apiResponse.data)
+        setToken(apiResponse.data.token)
       } else {
         setErrorMessage("Api session failed to create!")
         setTimeout(() => {

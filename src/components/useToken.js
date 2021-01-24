@@ -12,19 +12,15 @@ const useToken = () => {
   }
 
   const [token, setToken] = useState(retrieveValueFromSession('token'))
-  const [userId, setUserId] = useState(retrieveValueFromSession('userId'))
 
-  const saveToken = ({ token, userId }) => {
+  const saveToken = (token) => {
     sessionStorage.setItem('token', JSON.stringify(token))
-    sessionStorage.setItem('userId', JSON.stringify(userId))
     setToken(token)
-    setUserId(userId)
   }
 
   return {
     setToken: saveToken,
-    token,
-    userId,
+    token
   }
 }
 

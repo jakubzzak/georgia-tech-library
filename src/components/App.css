@@ -2,13 +2,18 @@ body {
     background: #e0cbf3;
     margin: 0;
     padding: 0;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Helvetica Neue", monospace;
 }
 
-h1 {
+h3 {
+    font-size: 25px;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
     text-align: center;
+    padding: 3em;
 }
 
 footer {
+    z-index: 999;
     text-align: center;
     padding: .5em;
     background: #e0cbf3;

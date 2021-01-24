@@ -7,10 +7,20 @@ import 'react-dropzone-component/styles/filepicker.css'
 import 'dropzone/dist/min/dropzone.min.css'
 import api from '../../api'
 import PropTypes from 'prop-types'
+import { oneWord } from '../utils/validations'
+import useDebounce from '../useDebounce'
+
 
 const UploadFile = ({ token }) => {
 
   const [uploadedFileId, setUploadedFileId] = useState(null)
+
+  const isUniqueTitle = async (title) => {
+    const response = await api.fileExistsByUserAndTitle(title)
+    return response.ok
+  }
+
+  const { trigger, isValidOk } = useDebounce({ action: isUniqueTitle, delay: 300 });
 
   const djsConfig = {
     dictDefaultMessage: 'Add file',
@@ -36,16 +46,19 @@ const UploadFile = ({ token }) => {
     success,
   }
 
-  const useFormMethods = useForm()
-  const { handleSubmit, formState } = useFormMethods
+  const useFormMethods = useForm({ shouldFocusError: true, mode: 'onChange' })
+  const { handleSubmit, formState, reset } = useFormMethods
   const { isSubmitting, isValid } = formState
 
   const onSubmit = async (data) => {
-    const response = await api.uploadFile({ ...data, id: uploadedFileId })
+    const response = await api.uploadFileTitle({ title: data.title, fileId: uploadedFileId })
     if (response.ok) {
-
+      console.log('successful', response.data)
+      reset()
+      dropzone.destroy()
+      // TODO: success message
     } else {
-
+      // TODO: fail message
     }
   }
 
@@ -59,7 +72,8 @@ const UploadFile = ({ token }) => {
           <Grid stackable>
             <Grid.Row textAlign={'left'}>
               <Grid.Column>
-                <InputHooks name={'title'} placeholder={'Title'} label={'Title'} rules={{ required: true }}/>
+                <InputHooks name={'title'} placeholder={'Title'} label={'Title'}
+                            rules={{ required: true, minLength: 8, validate: { isOneWord: oneWord, isUnique: isUniqueTitle } }}/>
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
@@ -70,7 +84,7 @@ const UploadFile = ({ token }) => {
             <Grid.Row textAlign={'right'}>
               <Grid.Column>
                 <Button color={'orange'} type='submit'
-                        disabled={isSubmitting || !isValid} // || uploadedFileId === null -> add back when receiving id from BE
+                        disabled={isSubmitting || !isValid || uploadedFileId === null}
                         content={'Submit'} labelPosition='left' icon='upload'/>
               </Grid.Column>
             </Grid.Row>

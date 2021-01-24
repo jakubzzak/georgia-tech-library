@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^12.1.10",
     "apisauce": "^2.0.1",
     "file-saver": "^2.0.5",
+    "jwt-decode": "^3.1.2",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
     "prop-types": "^15.7.2",
@@ -22,6 +23,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
     "react-table-v6": "^6.8.6",
+    "seamless-immutable": "^7.1.4",
     "semantic-ui-react": "^2.0.2",
     "web-vitals": "^0.2.4"
   },
