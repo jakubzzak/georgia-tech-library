@@ -55,7 +55,6 @@ const UploadFile = ({ token }) => {
     if (response.ok) {
       console.log('successful', response.data)
       reset()
-      dropzone.destroy()
       // TODO: success message
     } else {
       // TODO: fail message

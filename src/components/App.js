@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import './App.css'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+// import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import Login from './Login/Login'
 import Dashboard from './Dashboard/Dashboard'
 import Preferences from './Preferences/Preferences'
@@ -18,7 +18,7 @@ const App = () => {
 
   useEffect(() => {
     if(token && !user) {
-      setUser(token)
+      setUser(token, setToken)
     }
   }, [token])
 
