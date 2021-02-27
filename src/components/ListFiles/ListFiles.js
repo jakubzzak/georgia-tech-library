@@ -8,6 +8,7 @@ import PropTypes from 'prop-types'
 import usePagination from '../usePagination'
 import moment from 'moment'
 import ControlledPopup from '../utils/ControlledPopup'
+import toast from 'react-hot-toast'
 
 
 const ListFiles = ({ initPageSize = 5 }) => {
@@ -18,23 +19,22 @@ const ListFiles = ({ initPageSize = 5 }) => {
     const response = await api.removeFile(id)
     if (response.ok) {
       removeItem(id)
+      toast.success("File removed")
     } else {
-      // TODO: removing failed
+      toast.error("Removing file failed and lets say its a long notification, maybe too long notification")
     }
   }
   const onDownload = async (file) => {
     if (file != null) {
-      console.log('downloading:', file)
       const response = await api.downloadFile(file.id)
       if (response.ok) {
         FileSaver.saveAs(response.data, file.name + '.' + file.extension)
+        toast.success("File downloaded")
       } else {
-        // TODO: failed to download, server trouble
-        const error = response.data ? response.data.error : response.problem
-        console.warn(error)
+        toast.error("Failed to download file")
       }
     } else {
-      // TODO: failed to download, no file present
+      toast.error("Failed to download file, no file provided")
     }
   }
 

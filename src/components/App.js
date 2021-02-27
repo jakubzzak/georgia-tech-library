@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import './App.css'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import Login from './Login/Login'
 import Dashboard from './Dashboard/Dashboard'
 import Preferences from './Preferences/Preferences'
@@ -8,7 +7,8 @@ import useToken from './useToken'
 import useUser from './useUser'
 import ListFiles from './ListFiles/ListFiles'
 import UploadFile from './UploadFile/UploadFile'
-import { Tab, Menu, Label, Icon, Dimmer, Loader } from 'semantic-ui-react'
+import { Tab, Menu, Label, Icon } from 'semantic-ui-react'
+import { Toaster } from 'react-hot-toast'
 
 
 const App = () => {
@@ -72,6 +72,26 @@ const App = () => {
 
   return (
     <div className="wrapper">
+      <Toaster
+        position="top-right"
+        reverseOrder={true}
+        toastOptions={{
+          duration: 5000,
+          style: {},
+
+          success: {
+            style: {
+              border: 'solid green 2px',
+            },
+          },
+          error: {
+            duration: 8000,
+            style: {
+              border: 'solid red 2px',
+            },
+          },
+        }}
+      />
       <h3>personalApi</h3>
       <div className="paper-shadow">
         <Tab menu={{ secondary: true, pointing: true }} panes={panes}/>
