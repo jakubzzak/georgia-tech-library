@@ -8,9 +8,10 @@ import PropTypes from 'prop-types'
 import usePagination from '../usePagination'
 import moment from 'moment'
 import ControlledPopup from '../utils/ControlledPopup'
+import toast from 'react-hot-toast'
 
 
-const ListFiles = ({ initPageSize = 5 }) => {
+const ListFiles = ({ initPageSize = 10 }) => {
 
   const { page, pageSize, onPageChange, onPageSizeChange, onSortChange, onSearchChange, removeItem } = usePagination({ initPageSize, initSort: [{ id: 'createdAt', desc: false}] })
 
@@ -18,12 +19,23 @@ const ListFiles = ({ initPageSize = 5 }) => {
     const response = await api.removeFile(id)
     if (response.ok) {
       removeItem(id)
+      toast.success("File removed")
     } else {
-
+      toast.error("Removing file failed and lets say its a long notification, maybe too long notification")
     }
   }
-  const onDownload = (id) => {
-    FileSaver.saveAs(id)
+  const onDownload = async (file) => {
+    if (file != null) {
+      const response = await api.downloadFile(file.id)
+      if (response.ok) {
+        FileSaver.saveAs(response.data, file.name + '.' + file.extension)
+        toast.success("File downloaded")
+      } else {
+        toast.error("Failed to download file")
+      }
+    } else {
+      toast.error("Failed to download file, no file provided")
+    }
   }
 
   const columns = [{
@@ -71,7 +83,7 @@ const ListFiles = ({ initPageSize = 5 }) => {
           content={ closePopup =>
             <Button color='green' content='Confirm' size={'tiny'} onClick={() => {
               closePopup()
-              onDownload(row.original.id)
+              onDownload(row.original)
             }}/>
           }
           on='click'

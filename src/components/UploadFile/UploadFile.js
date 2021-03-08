@@ -9,6 +9,7 @@ import api from '../../api'
 import PropTypes from 'prop-types'
 import { oneWord } from '../utils/validations'
 import useDebounce from '../useDebounce'
+import toast from 'react-hot-toast'
 
 
 const UploadFile = ({ token }) => {
@@ -38,6 +39,7 @@ const UploadFile = ({ token }) => {
     dropzone = dropzoneInitObj
   }
   const success = (item, response) => {
+    toast.success("File uploaded")
     setUploadedFileId(response[0].id)
   }
 
@@ -55,10 +57,10 @@ const UploadFile = ({ token }) => {
     if (response.ok) {
       console.log('successful', response.data)
       reset()
-      dropzone.destroy()
-      // TODO: success message
+      // dropzone.destroy()
+      toast.success("File attached, asssssss dsddddddddd dddddddddddd ddddddddddd")
     } else {
-      // TODO: fail message
+      toast.error("Attaching file failed")
     }
   }
 
