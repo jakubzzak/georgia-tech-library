@@ -11,7 +11,7 @@ import ControlledPopup from '../utils/ControlledPopup'
 import toast from 'react-hot-toast'
 
 
-const ListFiles = ({ initPageSize = 5 }) => {
+const ListFiles = ({ initPageSize = 10 }) => {
 
   const { page, pageSize, onPageChange, onPageSizeChange, onSortChange, onSearchChange, removeItem } = usePagination({ initPageSize, initSort: [{ id: 'createdAt', desc: false}] })
 

@@ -18,7 +18,7 @@ const App = () => {
 
   useEffect(() => {
     if(token && !user) {
-      setUser(token)
+      setUser(token, setToken)
     }
   }, [token])
 

@@ -7,26 +7,27 @@ const useUser = () => {
 
   const [user, setUser] = useState(null)
 
-  const saveUser = async (token) => {
-      console.log('me from token')
-      const meFromToken = await unsecuredAPI.meFromToken(token)
-      let user = null
-      if (meFromToken.ok) {
-        let decoded = jwtDecode(meFromToken.data.token)
-        user = {
-          id: decoded.id,
-          username: decoded.sub,
-          firstName: decoded.firstName,
-          lastName: decoded.lastName,
-          companyId: decoded.companyId,
-          version: decoded.version,
-          role: decoded.role,
-          profilePictureId: decoded.profilePictureId,
-        }
-      } else {
-        // TODO: handle error
+  const saveUser = async (token, setToken) => {
+    const meFromToken = await unsecuredAPI.meFromToken(token)
+    let user = null
+    if (meFromToken.ok) {
+      let decoded = jwtDecode(meFromToken.data.token)
+      user = {
+        id: decoded.id,
+        username: decoded.sub,
+        firstName: decoded.firstName,
+        lastName: decoded.lastName,
+        companyId: decoded.companyId,
+        version: decoded.version,
+        role: decoded.role,
+        profilePictureId: decoded.profilePictureId,
       }
-      setUser(user)
+    } else if (meFromToken.status === 401) {
+      setToken(null)
+    } else {
+      console.log('session error')
+    }
+    setUser(user)
   }
 
   return {
