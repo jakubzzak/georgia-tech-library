@@ -19,11 +19,23 @@ const ListFiles = ({ initPageSize = 10 }) => {
     if (response.ok) {
       removeItem(id)
     } else {
-
+      // TODO: removing failed
     }
   }
-  const onDownload = (id) => {
-    FileSaver.saveAs(id)
+  const onDownload = async (file) => {
+    if (file != null) {
+      console.log('downloading:', file)
+      const response = await api.downloadFile(file.id)
+      if (response.ok) {
+        FileSaver.saveAs(response.data, file.name + '.' + file.extension)
+      } else {
+        // TODO: failed to download, server trouble
+        const error = response.data ? response.data.error : response.problem
+        console.warn(error)
+      }
+    } else {
+      // TODO: failed to download, no file present
+    }
   }
 
   const columns = [{
@@ -71,7 +83,7 @@ const ListFiles = ({ initPageSize = 10 }) => {
           content={ closePopup =>
             <Button color='green' content='Confirm' size={'tiny'} onClick={() => {
               closePopup()
-              onDownload(row.original.id)
+              onDownload(row.original)
             }}/>
           }
           on='click'
