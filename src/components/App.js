@@ -9,6 +9,7 @@ import ListFiles from './ListFiles/ListFiles'
 import UploadFile from './UploadFile/UploadFile'
 import { Tab, Menu, Label, Icon } from 'semantic-ui-react'
 import { Toaster } from 'react-hot-toast'
+import FileUploader from './UploadFile/FileUploader'
 
 
 const App = () => {
@@ -56,7 +57,8 @@ const App = () => {
           Upload
         </Menu.Item>
       ),
-      render: () => <UploadFile token={token}/>,
+      render: () => <FileUploader onUploadComplete={() => console.log('uploaded')} acceptedFileTypes={['image/jpeg', 'image/gif']}  token={token} maxFileSize={5}/>
+      // render: () => <UploadFile token={token}/>,
     },
     {
       menuItem: (
