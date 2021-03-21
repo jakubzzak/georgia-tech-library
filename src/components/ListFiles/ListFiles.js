@@ -2,7 +2,7 @@ import React from 'react'
 import ReactTable from 'react-table-v6'
 import 'react-table-v6/react-table.css'
 import FileSaver from 'file-saver'
-import { Button, Dimmer, Loader } from 'semantic-ui-react'
+import { Button, Container, Dimmer, Form, FormField, Input, Loader, TextArea } from 'semantic-ui-react'
 import api from '../../api'
 import PropTypes from 'prop-types'
 import usePagination from '../usePagination'
@@ -37,6 +37,22 @@ const ListFiles = ({ initPageSize = 10 }) => {
       toast.error("Failed to download file, no file provided")
     }
   }
+  const onRename = async (file) => {
+    if (file != null) {
+      const response = await api.uploadFileTitle({fileId:file.id, title:rename_val})
+      if (response.ok) {
+        //FileSaver.saveAs(response.data, file.name + '.' + file.extension)
+        toast.success("File renamed")
+      } else {
+        toast.error(response.problem)
+        //toast.error("Failed to rename file")
+      }
+    } else {
+      toast.error("Failed to rename file, no file provided")
+    }
+  }
+
+  let rename_val = ''
 
   const columns = [{
     id: 'createdAt',
@@ -76,6 +92,23 @@ const ListFiles = ({ initPageSize = 10 }) => {
     width: 180,
     Cell: row => (
       <div>
+        <ControlledPopup
+          trigger={
+            <Button color={'blue'} content={'rename'} size={'tiny'} basic/>
+          }
+          content={ closePopup =>
+            <div>
+              <Input type={'text'} onChange={evt => rename_val = evt.target.value}/>
+              <Button color='blue' content='Confirm' size={'tiny'} onClick={() => {
+                closePopup()
+                onRename(row.original)
+              }}/>
+            </div>
+          }
+          on='click'
+          position='top center'
+        />
+
         <ControlledPopup
           trigger={
             <Button color={'green'} content={'download'} size={'tiny'} basic/>
