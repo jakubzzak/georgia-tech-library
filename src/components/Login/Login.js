@@ -6,10 +6,18 @@ import { Button, Form, Grid, Label } from 'semantic-ui-react'
 import { InputHooks } from '../utils/inputs'
 import { email } from '../utils/validations'
 import { FormProvider, useForm } from 'react-hook-form'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
 
 const Login = ({ setToken }) => {
 
   const [errorMessage, setErrorMessage] = useState(null)
+  const [passwordShown, setPasswordShown] = useState(false);
+  const eye = <FontAwesomeIcon icon={faEye} />;
+
+  const togglePasswordVisiblity = () => {
+    setPasswordShown(passwordShown ? false : true);
+  }
 
   const onSubmit = async (data) => {
     const logInResponse = await unsecuredAPI.checkLogin({ ...data })
@@ -48,7 +56,8 @@ const Login = ({ setToken }) => {
             </Grid.Row>
             <Grid.Row>
               <Grid.Column>
-                <InputHooks name={'password'} width={16} rules={{ required: true }} label={'Password'}/>
+                <InputHooks name={'password'} width={16} rules={{ required: true }} label={'Password'} type={passwordShown ? "text" : "password"}/>
+                <i onClick={togglePasswordVisiblity}>{eye}</i>
               </Grid.Column>
             </Grid.Row>
             {errorMessage &&
