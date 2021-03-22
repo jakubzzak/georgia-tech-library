@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Grid, Card, Image, Button, Divider, Loader, Dimmer } from 'semantic-ui-react'
+import React from 'react'
+import { Grid, Card, Button, Divider, Loader, Dimmer } from 'semantic-ui-react'
 import './Dashboard.css'
 import '../App.css'
 import Avatar from 'react-avatar'
@@ -23,7 +23,7 @@ const Dashboard = ({ user, signOut }) => {
       <Grid className='content' style={{ padding: '50px' }} textAlign={'center'}>
         <Grid.Row>
           <Grid.Column>
-            <Avatar round={10} size={150} name="Jakub Zak"
+            <Avatar round={'25px'} size={150} name="Jakub Zak"
                     color={Avatar.getRandomColor('sitebase', ['red', 'green', 'blue', 'black', 'orange', 'yellow', 'brown'])}/>
           </Grid.Column>
         </Grid.Row>

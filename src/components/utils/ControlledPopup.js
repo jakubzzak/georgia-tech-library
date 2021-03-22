@@ -9,9 +9,11 @@ const ControlledPopup = ({ trigger, content, timeoutLength, position }) => {
 
   const handleOpen = () => {
     setIsOpen(true)
-    setTimeOut(() => setTimeout(() => {
-      setIsOpen(false)
-    }, timeoutLength))
+    if (timeoutLength) {
+      setTimeOut(() => setTimeout(() => {
+        setIsOpen(false)
+      }, timeoutLength))
+    }
   }
 
   const handleClose = () => {
@@ -30,10 +32,6 @@ const ControlledPopup = ({ trigger, content, timeoutLength, position }) => {
       position={position}
     />
   )
-}
-
-ControlledPopup.defaultProps = {
-  timeoutLength: 2500,
 }
 
 ControlledPopup.propTypes = {

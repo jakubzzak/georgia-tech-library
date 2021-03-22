@@ -10,6 +10,11 @@ import { FormProvider, useForm } from 'react-hook-form'
 const Login = ({ setToken }) => {
 
   const [errorMessage, setErrorMessage] = useState(null)
+  const [passwordShown, setPasswordShown] = useState(false);
+
+  const togglePasswordVisiblity = () => {
+    setPasswordShown(!passwordShown)
+  }
 
   const onSubmit = async (data) => {
     const logInResponse = await unsecuredAPI.checkLogin({ ...data })
@@ -43,12 +48,14 @@ const Login = ({ setToken }) => {
           <Grid>
             <Grid.Row>
               <Grid.Column>
-                <InputHooks name={'username'} width={16} rules={{ required: true, email }} label={'Email'}/>
+                <InputHooks name={'username'} width={16} rules={{ required: true, email }} label={'Email'} placeholder={'username'}/>
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
               <Grid.Column>
-                <InputHooks name={'password'} width={16} rules={{ required: true }} label={'Password'}/>
+                <InputHooks name={'password'}  width={16} rules={{ required: true }} label={'Password'} type={passwordShown ? "text" : "password"}
+                            icon={{ name:passwordShown ? 'eye slash' : 'eye', link: true, onClick:  () => setPasswordShown(!passwordShown)}}
+                            placeholder='password'/>
               </Grid.Column>
             </Grid.Row>
             {errorMessage &&
