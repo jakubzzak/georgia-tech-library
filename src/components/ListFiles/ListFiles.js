@@ -2,7 +2,7 @@ import React from 'react'
 import ReactTable from 'react-table-v6'
 import 'react-table-v6/react-table.css'
 import FileSaver from 'file-saver'
-import { Button, Dimmer, Loader } from 'semantic-ui-react'
+import { Button, Container, Dimmer, Form, FormField, Input, Loader, Popup, TextArea } from 'semantic-ui-react'
 import api from '../../api'
 import PropTypes from 'prop-types'
 import usePagination from '../usePagination'
@@ -44,6 +44,22 @@ const ListFiles = ({ initPageSize = 10 }) => {
       toast.error("Failed to download file, no file provided")
     }
   }
+  const onRename = async (file) => {
+    if (file != null) {
+      const response = await api.uploadFileTitle({fileId:file.id, title:rename_val})
+      if (response.ok) {
+        //FileSaver.saveAs(response.data, file.name + '.' + file.extension)
+        toast.success("File renamed")
+      } else {
+        toast.error(response.problem)
+        //toast.error("Failed to rename file")
+      }
+    } else {
+      toast.error("Failed to rename file, no file provided")
+    }
+  }
+
+  let rename_val = ''
 
   const columns = [{
     id: 'createdAt',
@@ -55,8 +71,26 @@ const ListFiles = ({ initPageSize = 10 }) => {
     Header: 'File name',
     accessor: 'title',
     sortable: false,
-    Cell: props => <span>{props.value}</span>, // Custom cell components!
-  },{
+    Cell: props => <div>
+      <Popup
+        trigger={
+          <Button color={'blue'} content={'rename'} size={'tiny'} basic/>
+        }
+        content={ closePopup =>
+          <span>
+            <Input type={'text'} onChange={evt => rename_val = evt.target.value}/>
+            <Button color='blue' content='Confirm' size={'tiny'} onClick={() => {
+              //closePopup()
+              onRename(props.original)
+            }}/>
+          </span>
+        }
+        on='click'
+        position='top center'
+      />
+      <span>{props.value}</span>
+    </div>
+  }, {
     Header: props => <span>Extension</span>, // Custom header components!
     accessor: 'extension',
     width: 130,
