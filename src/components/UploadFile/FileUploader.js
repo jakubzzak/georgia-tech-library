@@ -1,27 +1,20 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import 'filepond/dist/filepond.min.css'
-import { FilePond, File, registerPlugin } from 'react-filepond'
+import { FilePond, registerPlugin } from 'react-filepond'
+import toast from 'react-hot-toast'
 
 import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size'
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
 import FilePondPluginFileRename from 'filepond-plugin-file-rename'
-import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
-import FilePondPluginImageTransform from 'filepond-plugin-image-transform'
-import FilePondPluginImageResize from 'filepond-plugin-image-resize'
-import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation'
 
 registerPlugin(
   FilePondPluginFileValidateSize,
   FilePondPluginFileValidateType,
   FilePondPluginFileRename,
-  FilePondPluginImagePreview,
-  FilePondPluginImageTransform,
-  FilePondPluginImageResize,
-  FilePondPluginImageExifOrientation
 )
 
-const FileUploader = ({ onUploadComplete, acceptedFileTypes, maxFileSize, token }) => {
+const ProductFileUploader = ({ acceptedFileTypes, maxFileSize, token }) => {
 
   const [files, setFiles] = useState([])
 
@@ -29,30 +22,35 @@ const FileUploader = ({ onUploadComplete, acceptedFileTypes, maxFileSize, token 
     <div className='wrapper'>
       <FilePond
         files={files}
-        onupdatefiles={setFiles}
+        onupdatefiles={(fileItems) => {
+          //Always called when adding or removing Files.
+          setFiles(fileItems)
+        }}
         allowMultiple
-        instantUpload={false}
         server={{
           process: {
-            url: '/api/file/uploadOne',
+            method: "POST",
+            url: `/api/file/upload`,
             headers: {
               Authorization: `Bearer ${token}`,
             },
-            withCredentials: true,
-            ondata: (formData) => {
-              formData.append('extraField', 'something nice')
-              return formData
-            },
+            // withCredentials: true,
+            // ondata: (formData) => {
+            //   formData.append('extraField', 'something nice')
+            //   return formData
+            // },
             onload: (response) => {
-              console.log('response:', response.substr(1, response.length - 2))
+              // console.log('response:', response)
+              setFiles([])
+              toast.success('File uploaded successfully')
             },
           },
-          revert: {
-            url: '/api/file/remove',
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
+          // revert: {
+          //   url: '/api/file/remove',
+          //   headers: {
+          //     Authorization: `Bearer ${token}`,
+          //   },
+          // },
         }}
         name='files'
         dropOnPage
@@ -67,15 +65,17 @@ const FileUploader = ({ onUploadComplete, acceptedFileTypes, maxFileSize, token 
         })}
         credits={false}
       />
+      <span style={{ fontSize: '12px', color: 'grey' }}>
+        <span style={{ fontSize: '10px', verticalAlign: 'super' }}>*</span>Note: If you upload a file with existing name, this file will be added postfix id
+      </span>
     </div>
   )
 }
 
-FileUploader.propTypes = {
-  onUploadComplete: PropTypes.func.isRequired,
-  acceptedFileTypes: PropTypes.array.isRequired,
+ProductFileUploader.propTypes = {
+  acceptedFileTypes: PropTypes.array,
   maxFileSize: PropTypes.number.isRequired,
   token: PropTypes.string.isRequired,
 }
 
-export default FileUploader
+export default ProductFileUploader
