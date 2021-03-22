@@ -16,23 +16,30 @@ const ListFiles = ({ initPageSize = 10 }) => {
   const { page, pageSize, onPageChange, onPageSizeChange, onSortChange, onSearchChange, removeItem } = usePagination({ initPageSize, initSort: [{ id: 'createdAt', desc: false}] })
 
   const onRemove = async (id) => {
-    const response = await api.removeFile(id)
-    if (response.ok) {
-      removeItem(id)
-      toast.success("File removed")
-    } else {
-      toast.error("Removing file failed and lets say its a long notification, maybe too long notification")
-    }
+    await api.removeFile(id)
+      .then(response => {
+        if (response.ok) {
+          removeItem(id)
+          toast.success("File removed")
+        } else {
+          toast.error("Removing file failed with status => " + response.status)
+        }
+      }).catch(error => {
+        toast.error("Files failed to load => ", error)
+      })
   }
   const onDownload = async (file) => {
     if (file != null) {
-      const response = await api.downloadFile(file.id)
-      if (response.ok) {
-        FileSaver.saveAs(response.data, file.name + '.' + file.extension)
-        toast.success("File downloaded")
-      } else {
-        toast.error("Failed to download file")
-      }
+      await api.downloadFile(file.id).then(response => {
+        if (response.ok) {
+          FileSaver.saveAs(response.data, file.name + '.' + file.extension)
+          toast.success("File downloaded")
+        } else {
+          toast.error("Failed to download file with status => " + response.status)
+        }
+      }).catch(error => {
+        toast.error("Failed to download file => " + error)
+      })
     } else {
       toast.error("Failed to download file, no file provided")
     }
@@ -43,31 +50,29 @@ const ListFiles = ({ initPageSize = 10 }) => {
     Header: 'Created at',
     accessor: (d) => moment(d.createdAt).format('YYYY-MM-DD'),
     width: 130,
+    style: {'textAlign': 'center'},
   }, {
-    Header: 'Title',
+    Header: 'File name',
     accessor: 'title',
     sortable: false,
-    Cell: props => <span>{props.value}</span>, // Custom cell components!
-  }, {
-    Header: 'Original name',
-    accessor: 'name',
-    sortable: false,
-    width: 200,
     Cell: props => <span>{props.value}</span>, // Custom cell components!
   },{
     Header: props => <span>Extension</span>, // Custom header components!
     accessor: 'extension',
     width: 130,
+    style: {'textAlign': 'center'},
   }, {
     id: 'size', // Required because our accessor is not a string
     Header: 'Size',
-    accessor: d => d.sizeInMb === 0 ? "unknown":d.sizeInMb + "MB", // Custom value accessors!
+    accessor: d => d.sizeInMb === 0 ? "< 1MB":d.sizeInMb + "MB", // Custom value accessors!
     width: 130,
+    style: {'textAlign': 'center'},
   },{
     id: 'status', // Required because our accessor is not a string
     Header: 'Status',
     accessor: d => d.status, // Custom value accessors!
     width: 130,
+    style: {'textAlign': 'center'},
   }, {
     Header: 'Actions',
     accessor: 'action', // String-based value accessors!

@@ -2,15 +2,22 @@ import React, { useEffect, useState } from 'react'
 import api from '../api'
 import Immutable from 'seamless-immutable'
 import PropTypes from 'prop-types'
+import toast from 'react-hot-toast'
 
 
 const fetchTableData = async ({ pageDetails, setPage }) => {
-  const response = await api.listFiles(pageDetails)
-  if (response.ok) {
-    setPage(response.data)
-  } else {
-    // TODO: handle on failed
-  }
+  await api.listFiles(pageDetails)
+    .then(response => {
+      if (response.ok) {
+        // console.log('resp', response.data)
+        setPage(response.data)
+      } else {
+        // console.log('resp failed', response.data)
+        toast.error("Files failed to load => ", response.status)
+      }
+    }).catch(error => {
+      toast.error("Files failed to load => ", error)
+    })
 }
 
 const usePagination = ({ initPageSize = 10, initCurrentPage = 0, initSort = [], initSearch = {} }) => {
@@ -68,9 +75,9 @@ const usePagination = ({ initPageSize = 10, initCurrentPage = 0, initSort = [], 
   }
 
   const removeItem = (id) => {
-    console.log('page before', page.data)
+    // console.log('page before', page.data)
     setPage({ ...page, data: page.data.filter(item => item.id !== id) })
-    console.log('page after', page.data)
+    // console.log('page after', page.data)
   }
 
   return {
