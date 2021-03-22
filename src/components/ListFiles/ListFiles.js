@@ -2,7 +2,7 @@ import React from 'react'
 import ReactTable from 'react-table-v6'
 import 'react-table-v6/react-table.css'
 import FileSaver from 'file-saver'
-import { Button, Container, Dimmer, Form, FormField, Input, Loader, TextArea } from 'semantic-ui-react'
+import { Button, Container, Dimmer, Form, FormField, Input, Loader, Popup, TextArea } from 'semantic-ui-react'
 import api from '../../api'
 import PropTypes from 'prop-types'
 import usePagination from '../usePagination'
@@ -63,7 +63,25 @@ const ListFiles = ({ initPageSize = 10 }) => {
     Header: 'Title',
     accessor: 'title',
     sortable: false,
-    Cell: props => <span>{props.value}</span>, // Custom cell components!
+    Cell: props => <div>
+      <Popup
+        trigger={
+          <Button color={'blue'} content={'rename'} size={'tiny'} basic/>
+        }
+        content={ closePopup =>
+          <span>
+            <Input type={'text'} onChange={evt => rename_val = evt.target.value}/>
+            <Button color='blue' content='Confirm' size={'tiny'} onClick={() => {
+              //closePopup()
+              onRename(props.original)
+            }}/>
+          </span>
+        }
+        on='click'
+        position='top center'
+      />
+      <span>{props.value}</span>
+    </div>
   }, {
     Header: 'Original name',
     accessor: 'name',
@@ -92,23 +110,6 @@ const ListFiles = ({ initPageSize = 10 }) => {
     width: 180,
     Cell: row => (
       <div>
-        <ControlledPopup
-          trigger={
-            <Button color={'blue'} content={'rename'} size={'tiny'} basic/>
-          }
-          content={ closePopup =>
-            <div>
-              <Input type={'text'} onChange={evt => rename_val = evt.target.value}/>
-              <Button color='blue' content='Confirm' size={'tiny'} onClick={() => {
-                closePopup()
-                onRename(row.original)
-              }}/>
-            </div>
-          }
-          on='click'
-          position='top center'
-        />
-
         <ControlledPopup
           trigger={
             <Button color={'green'} content={'download'} size={'tiny'} basic/>
