@@ -1,5 +1,7 @@
 import React from 'react'
 import { Card, Dimmer, Grid, Loader } from 'semantic-ui-react'
+import InformationModal from '../utils/InformationModal'
+import api from '../../api'
 
 
 const Preferences = ({ user }) => {
@@ -49,10 +51,22 @@ const Preferences = ({ user }) => {
               </Card>
               <Card>
                 <Card.Content>
-                  <Card.Header>more</Card.Header>
-                  <Card.Meta>STH</Card.Meta>
+                  <Card.Header>API key</Card.Header>
+                  <Card.Meta>Generate API key</Card.Meta>
                   <Card.Description>
-                    desc
+                    <p>
+                    Here you can access your api key and use it as you wish, however you should not share it with anyone
+                    if you do not wish others mess with your things on you behalf
+                    </p>
+                    <br/>
+                    <InformationModal
+                      openAction={() => api.generateApiKey().then((response) => response.data.value)}
+                      buttonIcon={'key'}
+                      buttonText='Generate API KEY'
+                      intro='Your API KEY is:'
+                      title='Generate API KEY'
+                      icon={'key'}
+                    />
                   </Card.Description>
                 </Card.Content>
               </Card>

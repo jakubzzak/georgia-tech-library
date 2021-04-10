@@ -101,8 +101,7 @@ const create = (baseURL) => {
   const listFiles = (pageDetails) => api.post(`file/tableData/byUser`, createRequestFromPageDetails(pageDetails), getSecuredHeaders())
   const removeFile = (id) => api.delete(`file/remove/${id}`, null, getSecuredHeaders())
 
-  const generateApiKey = (id) =>
-    api.get('users/getApiKey/' + id, null, getSecuredHeaders())
+  const generateApiKey = () => api.get(`users/getApiKey`, null, getSecuredHeaders())
 
   // ------
   // STEP 3
@@ -129,7 +128,8 @@ const create = (baseURL) => {
     listFiles,
     // uploadFile,
     uploadFileTitle,
-    fileExistsByUserAndTitle
+    fileExistsByUserAndTitle,
+    generateApiKey,
   }
 }
 
