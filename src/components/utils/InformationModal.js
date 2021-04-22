@@ -25,7 +25,7 @@ const InformationModal = ({ openAction, buttonIcon, buttonText, intro, title, ic
       open={isModalOpen}
       onClose={() => setModalOpen(false)}
       basic
-      size='small'
+      size="small"
     >
 
       {/*<Header icon={icon} content={title}/>*/}
@@ -34,8 +34,8 @@ const InformationModal = ({ openAction, buttonIcon, buttonText, intro, title, ic
         <span className={styles.informationModalContent}>{content}</span>
       </Modal.Content>
       <Modal.Actions>
-        <Button color='green' onClick={() => setModalOpen(false)} inverted floated={"right"}>
-          <Icon name='checkmark'/> OK
+        <Button color="green" onClick={() => setModalOpen(false)} inverted floated={'right'}>
+          <Icon name="checkmark"/> OK
         </Button>
       </Modal.Actions>
     </Modal>

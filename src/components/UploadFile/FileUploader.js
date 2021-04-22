@@ -19,7 +19,7 @@ const ProductFileUploader = ({ acceptedFileTypes, maxFileSize, token }) => {
   const [files, setFiles] = useState([])
 
   return (
-    <div className='wrapper'>
+    <div className="wrapper">
       <FilePond
         files={files}
         onupdatefiles={(fileItems) => {
@@ -29,7 +29,7 @@ const ProductFileUploader = ({ acceptedFileTypes, maxFileSize, token }) => {
         allowMultiple
         server={{
           process: {
-            method: "POST",
+            method: 'POST',
             url: `/api/file/upload`,
             headers: {
               Authorization: `Bearer ${token}`,
@@ -52,7 +52,7 @@ const ProductFileUploader = ({ acceptedFileTypes, maxFileSize, token }) => {
           //   },
           // },
         }}
-        name='files'
+        name="files"
         dropOnPage
         dropValidation
         maxFileSize={`${maxFileSize}MB`}

@@ -12,7 +12,7 @@ const Preferences = ({ user }) => {
         <Loader>Loading</Loader>
       </Dimmer>
       {user &&
-      <Grid className='content' style={{ padding: '50px' }} textAlign={'center'}>
+      <Grid className="content" style={{ padding: '50px' }} textAlign={'center'}>
         <Grid.Row textAlign={'center'}>
           <Grid.Column>
             <Card.Group centered>
@@ -40,7 +40,7 @@ const Preferences = ({ user }) => {
         <Grid.Row>
           <Grid.Column>
             <Card.Group centered>
-              <Card className='card'>
+              <Card className="card">
                 <Card.Content>
                   <Card.Header>Background</Card.Header>
                   <Card.Meta>STYLE</Card.Meta>
@@ -55,16 +55,17 @@ const Preferences = ({ user }) => {
                   <Card.Meta>Generate API key</Card.Meta>
                   <Card.Description>
                     <p>
-                    Here you can access your api key and use it as you wish, however you should not share it with anyone
-                    if you do not wish others mess with your things on you behalf
+                      Here you can access your api key and use it as you wish, however you should not share it with
+                      anyone
+                      if you do not wish others mess with your things on you behalf
                     </p>
                     <br/>
                     <InformationModal
                       openAction={() => api.generateApiKey().then((response) => response.data.value)}
                       buttonIcon={'key'}
-                      buttonText='Generate API KEY'
-                      intro='Your API KEY is:'
-                      title='Generate API KEY'
+                      buttonText="Generate API KEY"
+                      intro="Your API KEY is:"
+                      title="Generate API KEY"
                       icon={'key'}
                     />
                   </Card.Description>

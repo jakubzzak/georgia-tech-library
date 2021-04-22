@@ -10,7 +10,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 const Login = ({ setToken }) => {
 
   const [errorMessage, setErrorMessage] = useState(null)
-  const [passwordShown, setPasswordShown] = useState(false);
+  const [passwordShown, setPasswordShown] = useState(false)
 
   const togglePasswordVisiblity = () => {
     setPasswordShown(!passwordShown)
@@ -23,13 +23,13 @@ const Login = ({ setToken }) => {
       if (apiResponse.ok) {
         setToken(apiResponse.data.token)
       } else {
-        setErrorMessage("Api session failed to create!")
+        setErrorMessage('Api session failed to create!')
         setTimeout(() => {
           setErrorMessage(null)
         }, 5000)
       }
     } else {
-      setErrorMessage("Wrong email or password!")
+      setErrorMessage('Wrong email or password!')
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
@@ -48,20 +48,26 @@ const Login = ({ setToken }) => {
           <Grid>
             <Grid.Row>
               <Grid.Column>
-                <InputHooks name={'username'} width={16} rules={{ required: true, email }} label={'Email'} placeholder={'username'}/>
+                <InputHooks name={'username'} width={16} rules={{ required: true, email }} label={'Email'}
+                            placeholder={'username'}/>
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
               <Grid.Column>
-                <InputHooks name={'password'}  width={16} rules={{ required: true }} label={'Password'} type={passwordShown ? "text" : "password"}
-                            icon={{ name:passwordShown ? 'eye slash' : 'eye', link: true, onClick:  () => setPasswordShown(!passwordShown)}}
-                            placeholder='password'/>
+                <InputHooks name={'password'} width={16} rules={{ required: true }} label={'Password'}
+                            type={passwordShown ? 'text' : 'password'}
+                            icon={{
+                              name: passwordShown ? 'eye slash' : 'eye',
+                              link: true,
+                              onClick: () => setPasswordShown(!passwordShown),
+                            }}
+                            placeholder="password"/>
               </Grid.Column>
             </Grid.Row>
             {errorMessage &&
             <Grid.Row textAlign={'center'} style={{ paddingBottom: 0 }}>
               <Grid.Column>
-                <Label basic color='red' pointing='below'>
+                <Label basic color="red" pointing="below">
                   Wrong email or password
                 </Label>
               </Grid.Column>

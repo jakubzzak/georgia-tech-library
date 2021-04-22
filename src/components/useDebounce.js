@@ -10,15 +10,15 @@ const useDebounce = ({ action, delay }) => {
       clearTimeout(timeOut)
     }
     setTimeOut(() => setTimeout(async () => {
-       setIsValid(await action(data))
-      console.log('isValid', isValid)
+        setIsValid(await action(data))
+        console.log('isValid', isValid)
       }, delay),
     )
   }
 
   return {
     trigger,
-    isValidOk: isValid
+    isValidOk: isValid,
   }
 }
 

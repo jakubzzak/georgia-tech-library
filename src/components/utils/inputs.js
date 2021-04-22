@@ -22,8 +22,8 @@ export const renderInput = ({ meta: { touched, error }, label, inline, width, ..
     {label &&
     <label>{label}</label>
     }
-    <Input {...custom} error={error && touched} autoComplete='off'/>
-    {touched && error && <div className='ui basic red pointing prompt label transition visible'>{error}</div>}
+    <Input {...custom} error={error && touched} autoComplete="off"/>
+    {touched && error && <div className="ui basic red pointing prompt label transition visible">{error}</div>}
   </Form.Field>
 )
 
@@ -49,7 +49,7 @@ export const InputHooks = ({
         render={(props) => (
           <Input
             {...custom}
-            autoComplete='off'
+            autoComplete="off"
             value={props.value}
             onChange={(event) => {
               props.onChange(event)
@@ -63,7 +63,7 @@ export const InputHooks = ({
         defaultValue={defVal}
       />
       <ErrorMessage errors={errors} name={name} render={() => <div
-        className='ui basic red pointing prompt label transition visible'>{messages[getError().type]}</div>}/>
+        className="ui basic red pointing prompt label transition visible">{messages[getError().type]}</div>}/>
     </Form.Field>
   )
 }
@@ -81,8 +81,8 @@ export const renderRadio = ({ meta: { touched, error }, label, inline, width, ..
     {label &&
     <label>{label}</label>
     }
-    <Input {...custom} error={error && touched} autoComplete='off'/>
-    {touched && error && <div className='ui basic red pointing prompt label transition visible'>{error}</div>}
+    <Input {...custom} error={error && touched} autoComplete="off"/>
+    {touched && error && <div className="ui basic red pointing prompt label transition visible">{error}</div>}
   </Form.Field>
 )
 
@@ -127,7 +127,7 @@ export const RadioHooks = ({
         defaultValue={defVal}
       />
       <ErrorMessage errors={errors} name={name} render={() => <div
-        className='ui basic red pointing prompt label transition visible'>{messages[getError().type]}</div>}/>
+        className="ui basic red pointing prompt label transition visible">{messages[getError().type]}</div>}/>
     </Form.Field>
   )
 }
@@ -154,7 +154,7 @@ export const TextAreaHooks = ({ name, label, defaultValue, ...custom }) => {
 
       <Controller
         control={control}
-        render={(props) => <TextArea {...custom} autoComplete='off' value={props.value} onChange={(event) => {
+        render={(props) => <TextArea {...custom} autoComplete="off" value={props.value} onChange={(event) => {
           props.onChange(event)
           return event
         }}/>}
@@ -162,7 +162,7 @@ export const TextAreaHooks = ({ name, label, defaultValue, ...custom }) => {
         name={name}
       />
       <ErrorMessage errors={errors} name={name} render={() => <div
-        className='ui basic red pointing prompt label transition visible'>{messages[getError().type]}</div>}/>
+        className="ui basic red pointing prompt label transition visible">{messages[getError().type]}</div>}/>
     </Form.Field>
   )
 }
@@ -192,7 +192,7 @@ export const CheckboxHooks = ({
       <label>{label}</label>
       <Controller
         control={control}
-        render={(props) => <Checkbox toggle readOnly={readOnlyAttr} autoComplete='off' checked={props.value}
+        render={(props) => <Checkbox toggle readOnly={readOnlyAttr} autoComplete="off" checked={props.value}
                                      onChange={(event, data) => {
                                        props.onChange(data.checked)
                                        onChange(event, data)
@@ -203,7 +203,7 @@ export const CheckboxHooks = ({
       />
       <ErrorMessage errors={errors} name={name} render=
         {() => <div
-          className='ui basic red pointing prompt label transition visible'>{messages[getError().type]}</div>}
+          className="ui basic red pointing prompt label transition visible">{messages[getError().type]}</div>}
       />
     </Form.Field>
   )
@@ -217,7 +217,16 @@ renderCheckbox.propTypes = {
   input: PropTypes.object.isRequired,
 }
 
-export const renderDatePicker = ({ meta: { touched, error }, label, input, placeholder, minDate, maxDate, inline, ...rest }) => {
+export const renderDatePicker = ({
+                                   meta: { touched, error },
+                                   label,
+                                   input,
+                                   placeholder,
+                                   minDate,
+                                   maxDate,
+                                   inline,
+                                   ...rest
+                                 }) => {
   const momentValue = () => {
     let mmtVal = moment(input.value)
     return mmtVal.isValid() ? mmtVal : null
@@ -237,15 +246,25 @@ export const renderDatePicker = ({ meta: { touched, error }, label, input, place
       <DatePicker className={styles.datePicker} name={input.name} selected={momentValue()} placeholderText={placeholder}
                   minDate={minDate}
                   onChange={handleOnChange} onFocus={input.onFocus}
-                  maxDate={maxDate} {...rest} autoComplete='off'
+                  maxDate={maxDate} {...rest} autoComplete="off"
       />
 
-      {touched && error && <div className='ui basic red pointing prompt label transition visible'>{error}</div>}
+      {touched && error && <div className="ui basic red pointing prompt label transition visible">{error}</div>}
     </Form.Field>
   )
 }
 
-export const DatePickerHooks = ({ name, label, placeholder, minDate, maxDate, defaultValue, inline, rules, ...rest }) => {
+export const DatePickerHooks = ({
+                                  name,
+                                  label,
+                                  placeholder,
+                                  minDate,
+                                  maxDate,
+                                  defaultValue,
+                                  inline,
+                                  rules,
+                                  ...rest
+                                }) => {
 
   const { control, errors } = useFormContext()
   const getError = () => get(errors, name)
@@ -276,7 +295,7 @@ export const DatePickerHooks = ({ name, label, placeholder, minDate, maxDate, de
                                        }
                                        }
                                        maxDate={maxDate}
-                                       autoComplete='off'
+                                       autoComplete="off"
         />}
         rules={rules}
         name={name}
@@ -285,7 +304,7 @@ export const DatePickerHooks = ({ name, label, placeholder, minDate, maxDate, de
 
       <ErrorMessage errors={errors} name={name} render=
         {() => <div
-          className='ui basic red pointing prompt label transition visible'>{messages[getError().type]}</div>}
+          className="ui basic red pointing prompt label transition visible">{messages[getError().type]}</div>}
       />
     </Form.Field>
   )
@@ -321,13 +340,23 @@ export const renderDropdown = ({ meta: { touched, error }, label, input, options
               preventDefault: () => {
               },
             })}/>
-    {touched && error && <div className='ui basic red pointing prompt label transition visible'>{error}</div>}
+    {touched && error && <div className="ui basic red pointing prompt label transition visible">{error}</div>}
   </Form.Field>
 )
 
 export const DropdownHooks = ({
-                                clearable, label, name, options, multiple, width, rules, validateAll, defaultValue, onChange = () => {
-  }, ...rest
+                                clearable,
+                                label,
+                                name,
+                                options,
+                                multiple,
+                                width,
+                                rules,
+                                validateAll,
+                                defaultValue,
+                                onChange = () => {
+                                },
+                                ...rest
                               }) => {
 
   const { trigger, errors, control } = useFormContext()
@@ -362,7 +391,7 @@ export const DropdownHooks = ({
 
       <ErrorMessage errors={errors} name={name} render=
         {() => <div
-          className='ui basic red pointing prompt label transition visible'>{messages[getError().type]}</div>}
+          className="ui basic red pointing prompt label transition visible">{messages[getError().type]}</div>}
       />
     </Form.Field>
   )
@@ -383,7 +412,7 @@ export const renderTextArea = ({ meta: { touched, error }, label, input, ...cust
     <label>{label}</label>
     <TextArea name={input.name} value={input.value} {...custom} onChange={input.onChange} onBlur={input.onBlur}
               onFocus={input.onFocus}/>
-    {touched && error && <div className='ui basic red pointing prompt label transition visible'>{error}</div>}
+    {touched && error && <div className="ui basic red pointing prompt label transition visible">{error}</div>}
   </Form.Field>
 )
 
@@ -406,7 +435,7 @@ export const renderCurrencySelector = ({ meta: { touched, error }, label, input,
       preventDefault: () => {
       },
     })}/>
-    {touched && error && <div className='ui basic red pointing prompt label transition visible'>{error}</div>}
+    {touched && error && <div className="ui basic red pointing prompt label transition visible">{error}</div>}
   </Form.Field>
 )
 renderCurrencySelector.propTypes = {
@@ -417,13 +446,13 @@ renderCurrencySelector.propTypes = {
 
 export const renderInlineCheckbox = ({ meta: { touched, error }, label, input }) => (
   <Form.Field error={error && touched}>
-    <Checkbox name={input.name} className='input' toggle checked={input.checked} label={label}
+    <Checkbox name={input.name} className="input" toggle checked={input.checked} label={label}
               onChange={() => input.onChange({
                 target: { type: 'checkbox', checked: !input.checked }, stopPropagation: () => {
                 }, preventDefault: () => {
                 },
               })}/>
-    {touched && error && <div className='ui basic red pointing prompt label transition visible'>{error}</div>}
+    {touched && error && <div className="ui basic red pointing prompt label transition visible">{error}</div>}
   </Form.Field>
 )
 

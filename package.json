@@ -1,7 +1,22 @@
 {
-  "name": "file-uploader",
+  "name": "georgia-tech-library",
   "version": "0.0.1",
-  "private": true,
+  "private": false,
+  "description": "1st semester project at UCN with emphasis to DB and TESTS",
+  "maintainers": [
+    {
+      "name": "Jakub Zak",
+      "email": "zak.jakub67@gmail.com"
+    },
+    {
+      "name": "Patryk Swayze",
+      "email": ""
+    }
+  ],
+  "repository": {
+    "url": "https://github.com/jakubzzak/georgia-tech-library",
+    "type": "git"
+  },
   "dependencies": {
     "@craco/craco": "^6.0.0",
     "@hookform/error-message": "^0.0.5",

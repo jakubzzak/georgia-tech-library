@@ -109,8 +109,8 @@ const ListFiles = ({ initPageSize = 10 }) => {
           }
           content={closePopup =>
             <div>
-              <Input type={'text'} onChange={evt => rename_val = evt.target.value} placeholder='New file name'/>
-              <Button color='blue' style={{ marginTop: '.5em' }} content='Confirm' size={'tiny'} onClick={() => {
+              <Input type={'text'} onChange={evt => rename_val = evt.target.value} placeholder="New file name"/>
+              <Button color="blue" style={{ marginTop: '.5em' }} content="Confirm" size={'tiny'} onClick={() => {
                 onRename(row.original)
                   .finally(() => {
                     closePopup()
@@ -118,15 +118,15 @@ const ListFiles = ({ initPageSize = 10 }) => {
               }}/>
             </div>
           }
-          on='click'
-          position='top center'
+          on="click"
+          position="top center"
         />
         <ControlledPopup
           trigger={
             <Button color={'green'} content={'download'} size={'tiny'} basic/>
           }
           content={closePopup =>
-            <Button color='green' content='Confirm' size={'tiny'} onClick={() => {
+            <Button color="green" content="Confirm" size={'tiny'} onClick={() => {
               onDownload(row.original)
                 .finally(() => {
                   closePopup()
@@ -134,15 +134,15 @@ const ListFiles = ({ initPageSize = 10 }) => {
             }}/>
           }
           timeoutLength={2500}
-          on='click'
-          position='top center'
+          on="click"
+          position="top center"
         />
         <ControlledPopup
           trigger={
             <Button color={'red'} content={'remove'} size={'tiny'} basic/>
           }
           content={closePopup =>
-            <Button color='red' content='Confirm' size={'tiny'} onClick={() => {
+            <Button color="red" content="Confirm" size={'tiny'} onClick={() => {
               onRemove(row.original.id)
                 .finally(() => {
                   closePopup()
@@ -150,8 +150,8 @@ const ListFiles = ({ initPageSize = 10 }) => {
             }}/>
           }
           timeoutLength={2500}
-          on='click'
-          position='top center'
+          on="click"
+          position="top center"
         />
       </div>
     ),
@@ -162,7 +162,7 @@ const ListFiles = ({ initPageSize = 10 }) => {
       <Dimmer active={page === null} inverted>
         <Loader>Loading</Loader>
       </Dimmer>
-      <ReactTable className='-striped -highlight' noDataText="Noting to show" loading={page === null}
+      <ReactTable className="-striped -highlight" noDataText="Noting to show" loading={page === null}
                   defaultPageSize={initPageSize} page={page.currentPage} pages={page.totalPages}
                   data={page.data} sorting={page.sort} manual
                   onPageChange={(pageIndex) => onPageChange(pageIndex)}
