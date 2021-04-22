@@ -6,66 +6,43 @@ import Preferences from './Preferences/Preferences'
 import LandingPage from './LandingPage/LandingPage'
 import useToken from './useToken'
 import useUser from './useUser'
-import ListFiles from './ListFiles/ListFiles'
+import History from './ListFiles/History'
 import { Tab, Menu, Label, Icon, Image } from 'semantic-ui-react'
 import { Toaster } from 'react-hot-toast'
 import FileUploader from './UploadFile/FileUploader'
 import logo from '../assets/logo.png'
 import ModalWindow from './ModalWindow/ModalWindow'
+import Logout from './Logout/Logout'
+import Wishlist from './Wishlist/Wishlist'
+import BookCatalog from './BookCatalog/BookCatalog'
 
 
 const App = () => {
   const [isOpenModal, setOpenModal] = useState(false)
+  const [activeIndex, setActiveIndex] = useState(0)
 
-  const { token, setToken } = useToken()
-  const { user, setUser } = useUser()
+  // const { token, setToken } = useToken()
+  // const { user, setUser } = useUser()
+  let token = 'myNewToken'
+  let user = {
+    name: 'someone',
+    role: 'ADMIN',
+  }
+
 
   // const signOut = () => {
   //   setToken(null)
   // }
 
   const panes = [
-    {
-      menuItem: (
-        <Menu.Item key="me">
-          <Icon name={'user'}/>
-          Me
-        </Menu.Item>
-      ),
-      render: () => <Dashboard user={user} signOut={() => {
-      }}/>,
-    },
-    {
-      menuItem: (
-        <Menu.Item key="list">
-          <Icon name={'list'}/>
-          List<Label>15</Label>
-        </Menu.Item>
-      ),
-      render: () => <ListFiles initPageSize={5}/>,
-    },
-    {
-      menuItem: (
-        <Menu.Item key="upload">
-          <Icon name={'upload'}/>
-          Upload
-        </Menu.Item>
-      ),
-      render: () => <FileUploader
-        token={token}
-        maxFileSize={5}
-      />,
-    },
-    {
-      menuItem: (
-        <Menu.Item key="preferences">
-          <Icon name={'settings'}/>
-          Preferences
-        </Menu.Item>
-      ),
-      render: () => <Preferences user={user}/>,
-    },
+    { name: 'Me', icon: 'user', render: <Dashboard user={user}/> },
+    { name: 'Wishlist', icon: 'list', render: <Wishlist/> },
+    { name: 'Search', icon: 'search', render: <BookCatalog/> },
+    { name: 'History', icon: 'history', render: <History initPageSize={5}/> },
+    { name: 'Preferences', icon: 'settings', render: <Preferences user={user}/> },
   ]
+
+  console.log('token user', token, user)
 
   return (
     <div className="wrapper">
@@ -90,15 +67,51 @@ const App = () => {
         }}
       />
       <ModalWindow isOpen={isOpenModal} setOpen={setOpenModal}>
-        <Login setToken={() => {
-        }}/>
+        {token && user ? (
+          <Logout closeModal={() => setOpenModal(false)} setToken={() => {
+            token = null
+            user = null
+          }}/>
+        ) : (
+          <Login closeModal={() => setOpenModal(false)} setToken={() => {
+            token = 'myNewToken'
+            user = {
+              name: 'someone',
+              role: 'ADMIN',
+            }
+          }}/>
+        )}
       </ModalWindow>
       <Image src={logo} size={'small'} alt={'Georgia Tech Library'}/>
       <div className="paper-shadow">
-        {!token ? (
-          <LandingPage setOpenModal={setOpenModal}/>
+        {token && user ? (
+          <>
+            <Menu pointing secondary>
+              {panes.map((pane, index) => (
+                <Menu.Item key={pane.name}
+                           active={activeIndex === index}
+                           onClick={() => setActiveIndex(index)}
+                >
+                  <Icon name={pane.icon}/>
+                  {pane.name}
+                </Menu.Item>
+              ))}
+              <Menu.Menu position="right">
+                <Menu.Item name="Logout"
+                           active={activeIndex === -1}
+                           onClick={() => {
+                             setOpenModal(true)
+                           }}
+                >
+                  Log out
+                  <Icon style={{ marginLeft: '1em' }} name={'log out'}/>
+                </Menu.Item>
+              </Menu.Menu>
+            </Menu>
+            {panes[activeIndex].render}
+          </>
         ) : (
-          <Tab menu={{ secondary: true, pointing: true }} panes={panes}/>
+          <LandingPage setOpenModal={setOpenModal}/>
         )}
       </div>
       <footer>

@@ -1,11 +1,12 @@
 import React from 'react'
-import { Grid, Card, Button, Divider, Loader, Dimmer } from 'semantic-ui-react'
+import { Grid, Card, Divider } from 'semantic-ui-react'
 import './Dashboard.css'
 import '../App.css'
 import Avatar from 'react-avatar'
+import Layout from '../Layout/Layout'
 
 
-const Dashboard = ({ user, signOut }) => {
+const Dashboard = ({ user }) => {
 
   const getFullName = () => {
     if (user) {
@@ -15,15 +16,11 @@ const Dashboard = ({ user, signOut }) => {
   }
 
   return (
-    <div>
-      <Dimmer active={user === null} inverted>
-        <Loader>Loading</Loader>
-      </Dimmer>
-      {user &&
+    <Layout loading={user === null}>
       <Grid className="content" style={{ padding: '50px' }} textAlign={'center'}>
         <Grid.Row>
           <Grid.Column>
-            <Avatar round={'25px'} size={150} name="Jakub Zak"
+            <Avatar round={'25px'} size={150} name={getFullName()}
                     color={Avatar.getRandomColor('sitebase', ['red', 'green', 'blue', 'black', 'orange', 'yellow', 'brown'])}/>
           </Grid.Column>
         </Grid.Row>
@@ -86,14 +83,8 @@ const Dashboard = ({ user, signOut }) => {
             </Card.Group>
           </Grid.Column>
         </Grid.Row>
-        <Grid.Row>
-          <Grid.Column>
-            <Button color="blue" content="Sign out" size={'tiny'} onClick={signOut}/>
-          </Grid.Column>
-        </Grid.Row>
       </Grid>
-      }
-    </div>
+    </Layout>
   )
 }
 

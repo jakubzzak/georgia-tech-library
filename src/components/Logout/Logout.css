@@ -1,0 +1,11 @@
+.login-wrapper {
+    display: grid;
+    place-items: center;
+}
+
+h1 {
+    /* TODO: some nice font here */
+    font-family: "Courier New", sans-serif;
+    font-size: 50px;
+    padding: 2em;
+}

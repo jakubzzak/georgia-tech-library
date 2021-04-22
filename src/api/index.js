@@ -36,10 +36,10 @@ const create = (baseURL) => {
   const setToken = (currentAuthToken) => {
     token = currentAuthToken
   }
-
   const setLang = (currentLang) => {
     lang = currentLang
   }
+
 
   const getSecuredHeaders = (customHeaders = {}) => ({
     headers: {
@@ -98,10 +98,16 @@ const create = (baseURL) => {
     ...getSecuredHeaders(),
     responseType: 'blob',
   })
-  const listFiles = (pageDetails) => api.post(`file/tableData/byUser`, createRequestFromPageDetails(pageDetails), getSecuredHeaders())
-  const removeFile = (id) => api.delete(`file/remove/${id}`, null, getSecuredHeaders())
-
   const generateApiKey = () => api.get(`users/getApiKey`, null, getSecuredHeaders())
+
+
+
+  const searchInCatalog = ({ phrase }) => api.get(`search/${phrase}`, null, getUnsecuredHeaders())
+  const fetchHistory = (pageDetails) => api.post(`user/history/tableData`, createRequestFromPageDetails(pageDetails), getSecuredHeaders())
+  const getMyWishlist = () => api.get(`user/wishlist`, null, getSecuredHeaders())
+  const removeFromMyWishlist = ({ id }) => api.delete(`user/wishlist/remove/${id}`, null, getSecuredHeaders())
+  const addToMyWishlist = ({ id }) => api.put(`user/wishlist/add/${id}`, null, getSecuredHeaders())
+  const requestFromWishlist = ({ id }) => api.put(`user/wishlist/request/${id}`, null, getSecuredHeaders())
 
   // ------
   // STEP 3
@@ -124,12 +130,18 @@ const create = (baseURL) => {
     register,
     checkLogin,
     downloadFile,
-    removeFile,
-    listFiles,
-    // uploadFile,
+
     uploadFileTitle,
     fileExistsByUserAndTitle,
     generateApiKey,
+
+    // new
+    getMyWishlist,
+    searchInCatalog,
+    fetchHistory,
+    removeFromMyWishlist,
+    addToMyWishlist,
+    requestFromWishlist,
   }
 }
 

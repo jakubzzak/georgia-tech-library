@@ -2,7 +2,7 @@ import React from 'react'
 import { Grid, Card, Divider, Label } from 'semantic-ui-react'
 import './LandingPage.css'
 import '../App.css'
-import SearchBar from './SearchBar/SearchBar'
+import SearchBar from '../BookCatalog/SearchBar/SearchBar'
 
 
 const LandingPage = ({ setOpenModal }) => {

@@ -8,12 +8,15 @@ import { email } from '../utils/validations'
 import { FormProvider, useForm } from 'react-hook-form'
 import logo from '../../assets/logo.png'
 
-const Login = ({ setToken }) => {
+const Login = ({ setToken, closeModal }) => {
 
   const [errorMessage, setErrorMessage] = useState(null)
   const [passwordShown, setPasswordShown] = useState(false)
 
   const onSubmit = async (data) => {
+    await setToken()
+    closeModal()
+    return
     const logInResponse = await unsecuredAPI.checkLogin({ ...data })
     if (logInResponse.ok) {
       const apiResponse = await unsecuredAPI.createSession({ ...logInResponse.data })
@@ -38,27 +41,35 @@ const Login = ({ setToken }) => {
   const { isSubmitting, isValid } = formState
 
   return (
-    <div className='wrapper'>
+    <div className='wrapper' style={{ padding: '0 3em' }}>
       <Image src={logo} size={'small'} alt={'Georgia Tech Library'}/>
       <FormProvider {...useFormMethods}>
         <Form onSubmit={handleSubmit(onSubmit)} loading={isSubmitting}>
           <Grid>
             <Grid.Row>
               <Grid.Column>
-                <InputHooks name={'username'} width={16} rules={{ required: true, email }} label={'Email'}
-                            placeholder={'username'}/>
+                <InputHooks name={'username'}
+                            rules={{ required: true, email }}
+                            label={'Email'}
+                            placeholder={'Email'}
+                            error={errorMessage}
+                />
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
               <Grid.Column>
-                <InputHooks name={'password'} width={16} rules={{ required: true }} label={'Password'}
+                <InputHooks name={'password'}
+                            rules={{ required: true }}
+                            label={'Password'}
+                            placeholder="Password"
                             type={passwordShown ? 'text' : 'password'}
                             icon={{
                               name: passwordShown ? 'eye slash' : 'eye',
                               link: true,
                               onClick: () => setPasswordShown(!passwordShown),
                             }}
-                            placeholder="password"/>
+                            error={errorMessage}
+                />
               </Grid.Column>
             </Grid.Row>
             {errorMessage &&
@@ -84,6 +95,7 @@ const Login = ({ setToken }) => {
 
 Login.propTypes = {
   setToken: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
 }
 
 export default Login
