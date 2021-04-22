@@ -1,34 +1,28 @@
-import React, { useEffect } from 'react'
+import React, { useState } from 'react'
 import './App.css'
 import Login from './Login/Login'
 import Dashboard from './Dashboard/Dashboard'
 import Preferences from './Preferences/Preferences'
+import LandingPage from './LandingPage/LandingPage'
 import useToken from './useToken'
 import useUser from './useUser'
 import ListFiles from './ListFiles/ListFiles'
-import { Tab, Menu, Label, Icon } from 'semantic-ui-react'
+import { Tab, Menu, Label, Icon, Image } from 'semantic-ui-react'
 import { Toaster } from 'react-hot-toast'
 import FileUploader from './UploadFile/FileUploader'
+import logo from '../assets/logo.png'
+import ModalWindow from './ModalWindow/ModalWindow'
 
 
 const App = () => {
+  const [isOpenModal, setOpenModal] = useState(false)
 
   const { token, setToken } = useToken()
   const { user, setUser } = useUser()
 
-  useEffect(() => {
-    if (token && !user) {
-      setUser(token, setToken)
-    }
-  }, [token])
-
-  if (!token) {
-    return <Login setToken={setToken}/>
-  }
-
-  const signOut = () => {
-    setToken(null)
-  }
+  // const signOut = () => {
+  //   setToken(null)
+  // }
 
   const panes = [
     {
@@ -38,7 +32,8 @@ const App = () => {
           Me
         </Menu.Item>
       ),
-      render: () => <Dashboard user={user} signOut={signOut}/>,
+      render: () => <Dashboard user={user} signOut={() => {
+      }}/>,
     },
     {
       menuItem: (
@@ -72,7 +67,6 @@ const App = () => {
     },
   ]
 
-
   return (
     <div className="wrapper">
       <Toaster
@@ -95,16 +89,20 @@ const App = () => {
           },
         }}
       />
-      <h3>personalApi</h3>
+      <ModalWindow isOpen={isOpenModal} setOpen={setOpenModal}>
+        <Login setToken={() => {
+        }}/>
+      </ModalWindow>
+      <Image src={logo} size={'small'} alt={'Georgia Tech Library'}/>
       <div className="paper-shadow">
-        <Tab menu={{ secondary: true, pointing: true }} panes={panes}/>
+        {!token ? (
+          <LandingPage setOpenModal={setOpenModal}/>
+        ) : (
+          <Tab menu={{ secondary: true, pointing: true }} panes={panes}/>
+        )}
       </div>
       <footer>
-        <img alt="Slovakia" src="http://purecatamphetamine.github.io/country-flag-icons/3x2/SK.svg"
-             style={{ maxWidth: '16px' }}/>
-        {' Powered with <3 by personalApi '}
-        <img alt="Slovakia" src="http://purecatamphetamine.github.io/country-flag-icons/3x2/SK.svg"
-             style={{ maxWidth: '16px' }}/>
+        &copy; Powered by two eager students of computer science
       </footer>
     </div>
   )

@@ -1,8 +1,16 @@
 body {
-    background: #e0cbf3;
+    background: rgba(139, 151, 80, 1);
     margin: 0;
     padding: 0;
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Helvetica Neue", monospace;
+}
+
+.wrapper {
+    display: grid;
+    place-items: center;
+}
+.wrapper img {
+    margin-top: 3em;
 }
 
 h3 {
@@ -16,10 +24,10 @@ footer {
     z-index: 999;
     text-align: center;
     padding: .5em;
-    background: #e0cbf3;
+    background: rgba(139, 151, 80, 1);
     position: fixed;
     bottom: 0;
-    width: 100vw;
+    width: 100%;
 }
 
 .content {
@@ -35,8 +43,8 @@ footer {
 .paper-shadow {
     position: relative;
     background: #fff;
-    width: 90%;
-    margin: 10px auto;
+    width: 95%;
+    margin: 3em auto;
     padding: 30px;
     box-shadow: 0px 2px 38px rgba(0, 0, 0, 0.2);
 }
@@ -77,4 +85,8 @@ footer {
     -webkit-box-shadow: 20px 0px 25px 5px #295d92;
     -moz-box-shadow: 20px 0px 25px 5px #295d92;
     box-shadow: 22px 0px 35px 0px rgba(0, 0, 0, 0.5);
+}
+
+.padme {
+    padding: 1em;
 }

@@ -2,19 +2,16 @@ import React, { useState } from 'react'
 import './Login.css'
 import { unsecuredAPI } from '../../api'
 import PropTypes from 'prop-types'
-import { Button, Form, Grid, Label } from 'semantic-ui-react'
+import { Button, Form, Grid, Image, Label } from 'semantic-ui-react'
 import { InputHooks } from '../utils/inputs'
 import { email } from '../utils/validations'
 import { FormProvider, useForm } from 'react-hook-form'
+import logo from '../../assets/logo.png'
 
 const Login = ({ setToken }) => {
 
   const [errorMessage, setErrorMessage] = useState(null)
   const [passwordShown, setPasswordShown] = useState(false)
-
-  const togglePasswordVisiblity = () => {
-    setPasswordShown(!passwordShown)
-  }
 
   const onSubmit = async (data) => {
     const logInResponse = await unsecuredAPI.checkLogin({ ...data })
@@ -37,12 +34,12 @@ const Login = ({ setToken }) => {
   }
 
   const useFormMethods = useForm({ shouldFocusError: true, mode: 'onChange' })
-  const { handleSubmit, formState, control, setValue, getValues } = useFormMethods
+  const { handleSubmit, formState } = useFormMethods
   const { isSubmitting, isValid } = formState
 
   return (
-    <div className="login-wrapper">
-      <h1>personalApi</h1>
+    <div className='wrapper'>
+      <Image src={logo} size={'small'} alt={'Georgia Tech Library'}/>
       <FormProvider {...useFormMethods}>
         <Form onSubmit={handleSubmit(onSubmit)} loading={isSubmitting}>
           <Grid>
