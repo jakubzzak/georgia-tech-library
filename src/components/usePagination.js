@@ -13,10 +13,10 @@ const fetchTableData = async ({ pageDetails, setPage }) => {
         setPage(response.data)
       } else {
         // console.log('resp failed', response.data)
-        toast.error("Files failed to load => ", response.status)
+        toast.error('Files failed to load => ', response.status)
       }
     }).catch(error => {
-      toast.error("Files failed to load => ", error)
+      toast.error('Files failed to load => ', error)
     })
 }
 
@@ -58,13 +58,13 @@ const usePagination = ({ initPageSize = 10, initCurrentPage = 0, initSort = [], 
       } else {
         sortCopy = sortCopy.concat({
           id: column.id,
-          desc: false
+          desc: false,
         })
       }
     } else {
       sortCopy = sortCopy.concat({
         id: column.id,
-        desc: false
+        desc: false,
       })
     }
     setSort(sortCopy)
@@ -87,7 +87,7 @@ const usePagination = ({ initPageSize = 10, initCurrentPage = 0, initSort = [], 
     onPageSizeChange,
     onSearchChange,
     onSortChange,
-    removeItem
+    removeItem,
   }
 }
 

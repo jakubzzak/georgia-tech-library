@@ -17,7 +17,7 @@ const App = () => {
   const { user, setUser } = useUser()
 
   useEffect(() => {
-    if(token && !user) {
+    if (token && !user) {
       setUser(token, setToken)
     }
   }, [token])
@@ -33,7 +33,7 @@ const App = () => {
   const panes = [
     {
       menuItem: (
-        <Menu.Item key='me'>
+        <Menu.Item key="me">
           <Icon name={'user'}/>
           Me
         </Menu.Item>
@@ -42,7 +42,7 @@ const App = () => {
     },
     {
       menuItem: (
-        <Menu.Item key='list'>
+        <Menu.Item key="list">
           <Icon name={'list'}/>
           List<Label>15</Label>
         </Menu.Item>
@@ -51,19 +51,19 @@ const App = () => {
     },
     {
       menuItem: (
-        <Menu.Item key='upload'>
+        <Menu.Item key="upload">
           <Icon name={'upload'}/>
           Upload
         </Menu.Item>
       ),
       render: () => <FileUploader
-                                  token={token}
-                                  maxFileSize={5}
-      />
+        token={token}
+        maxFileSize={5}
+      />,
     },
     {
       menuItem: (
-        <Menu.Item key='preferences'>
+        <Menu.Item key="preferences">
           <Icon name={'settings'}/>
           Preferences
         </Menu.Item>

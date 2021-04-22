@@ -20,7 +20,7 @@ const Dashboard = ({ user, signOut }) => {
         <Loader>Loading</Loader>
       </Dimmer>
       {user &&
-      <Grid className='content' style={{ padding: '50px' }} textAlign={'center'}>
+      <Grid className="content" style={{ padding: '50px' }} textAlign={'center'}>
         <Grid.Row>
           <Grid.Column>
             <Avatar round={'25px'} size={150} name="Jakub Zak"
@@ -45,7 +45,7 @@ const Dashboard = ({ user, signOut }) => {
                   </Card.Description>
                 </Card.Content>
               </Card>
-              <Card className='card'>
+              <Card className="card">
                 <Card.Content>
                   <Card.Header>Role</Card.Header>
                   <Card.Meta>{user.role}</Card.Meta>
@@ -88,7 +88,7 @@ const Dashboard = ({ user, signOut }) => {
         </Grid.Row>
         <Grid.Row>
           <Grid.Column>
-            <Button color='blue' content='Sign out' size={'tiny'} onClick={signOut}/>
+            <Button color="blue" content="Sign out" size={'tiny'} onClick={signOut}/>
           </Grid.Column>
         </Grid.Row>
       </Grid>
