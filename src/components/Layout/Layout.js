@@ -5,7 +5,7 @@ import React from 'react'
 const Layout = ({ children, loading, useWrapper }) => {
 
   return (
-    <div className={useWrapper ? 'wrapper':''} style={{ margin: '3em 0' }}>
+    <div className={useWrapper ? 'wrapper':''} style={{ padding: '3em' }}>
       <Dimmer active={loading} inverted>
         <Loader>Loading</Loader>
       </Dimmer>

@@ -23,13 +23,14 @@ const reducer = (state, action) => {
   }
 }
 
-const SearchBar = () => {
+const SearchBar = ({ setPhrase }) => {
 
   const [state, dispatch] = useReducer(reducer, initialState)
   const { loading, results, value } = state
 
   const timeoutRef = useRef()
   const handleSearchChange = useCallback((e, data) => {
+    setPhrase(data.value) // TODO: debouncer move to useSearch
     clearTimeout(timeoutRef.current)
     dispatch({ type: 'START_SEARCH', query: data.value })
 
@@ -49,7 +50,6 @@ const SearchBar = () => {
   }, [])
 
   useEffect(() => {
-    console.log('creare timeout')
     return () => {
       clearTimeout(timeoutRef.current)
     }

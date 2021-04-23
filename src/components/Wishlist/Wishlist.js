@@ -1,9 +1,10 @@
 import Layout from '../Layout/Layout'
 import useWishlist from './useWishlist'
-import { Button, Grid, Image, List } from 'semantic-ui-react'
+import { Button, List } from 'semantic-ui-react'
 import Avatar from 'react-avatar'
 import React from 'react'
 import ControlledPopup from '../utils/ControlledPopup'
+import { getRandomColor } from '../utils/colors'
 
 
 const Wishlist = ({}) => {
@@ -52,7 +53,7 @@ const Wishlist = ({}) => {
                         size={32}
                         name={item.title}
                         style={{ marginRight: '2em' }}
-                        color={Avatar.getRandomColor('sitebase', ['red', 'green', 'blue', 'black', 'orange', 'yellow', 'brown'])}
+                        color={getRandomColor()}
                 />
                 {item.title}
               </List.Content>

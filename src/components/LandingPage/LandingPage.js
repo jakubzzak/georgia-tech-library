@@ -3,9 +3,12 @@ import { Grid, Card, Divider, Label } from 'semantic-ui-react'
 import './LandingPage.css'
 import '../App.css'
 import SearchBar from '../BookCatalog/SearchBar/SearchBar'
+import { getRandomColor } from '../utils/colors'
+import useSearch from '../BookCatalog/useSearch'
 
 
 const LandingPage = ({ setOpenModal }) => {
+  const { loading, results: items } = useSearch({})
 
   return (
     <div>
@@ -17,58 +20,81 @@ const LandingPage = ({ setOpenModal }) => {
           <SearchBar/>
         </Grid.Row>
         <Divider/>
-        <Grid.Row>
-          <Grid.Column>
-            <Card.Group centered>
-              <Card>
+        {items.length > 0 ? (
+          <React.Fragment>
+            <span className="note">Showing {items.length} results</span>
+            {items.map((item, index) => (
+              <Card key={index} fluid color={getRandomColor()}>
                 <Card.Content>
-                  <Card.Header>News</Card.Header>
-                  <Card.Meta>INFO</Card.Meta>
-                  <Divider/>
-                  <Card.Description style={{ margin: '1em' }} textAlign={'left'}>
-                    sth here
-                  </Card.Description>
+                  <Card.Header>{item.title}</Card.Header>
+                  <Card.Meta>{item.author}</Card.Meta>
+                  <Card.Description>{item.description}</Card.Description>
                 </Card.Content>
               </Card>
-              <Card className="card">
-                <Card.Content>
-                  <Card.Header>Hot</Card.Header>
-                  <Card.Meta>hot hot hot</Card.Meta>
-                  <Divider/>
-                  <Card.Description style={{ margin: '1em' }} textAlign={'left'}>
-                    Hot news here.
-                  </Card.Description>
-                </Card.Content>
-              </Card>
-            </Card.Group>
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column>
-            <Card.Group centered>
-              <Card>
-                <Card.Content>
-                  <Card.Header>About library</Card.Header>
-                  <Card.Meta>LIBRARY</Card.Meta>
-                  <Divider/>
-                  <Card.Description style={{ margin: '1em' }} textAlign={'left'}>
-                    desc of library
-                  </Card.Description>
-                </Card.Content>
-              </Card>
-              <Card>
-                <Card.Content>
-                  <Card.Header>More</Card.Header>
-                  <Card.Meta>STH</Card.Meta>
-                  <Divider/>
-                  <Card.Description style={{ margin: '1em' }} textAlign={'left'}>
-                    desc
-                  </Card.Description>
-                </Card.Content>
-              </Card>
-            </Card.Group>
-          </Grid.Column>
-        </Grid.Row>
+            ))}
+          </React.Fragment>
+        ) : (
+          <>
+            <Grid.Row>
+              <Grid.Column>
+                <Card.Group centered>
+                  <Card>
+                    <Card.Content>
+                      <Card.Header>News</Card.Header>
+                      <Card.Meta>INFO</Card.Meta>
+                      <Divider/>
+                      <Card.Description style={{ margin: '1em' }} textAlign={'left'}>
+                        Schools are open and so are libraries as of April 1st.
+                      </Card.Description>
+                    </Card.Content>
+                  </Card>
+                  <Card className="card">
+                    <Card.Content>
+                      <Card.Header>COVID19</Card.Header>
+                      <Card.Meta>RESTRICTIONS</Card.Meta>
+                      <Divider/>
+                      <Card.Description style={{ margin: '1em' }} textAlign={'left'}>
+                        To prevent the spread of the virus we took certain steps..
+                      </Card.Description>
+                    </Card.Content>
+                  </Card>
+                </Card.Group>
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
+              <Grid.Column>
+                <Card.Group centered>
+                  <Card>
+                    <Card.Content>
+                      <Card.Header>About library</Card.Header>
+                      <Card.Meta>LIBRARY</Card.Meta>
+                      <Divider/>
+                      <Card.Description style={{ margin: '1em' }} textAlign={'left'}>
+                        Georgia Tech Library was founded in 19..
+                      </Card.Description>
+                    </Card.Content>
+                  </Card>
+                  <Card>
+                    <Card.Content>
+                      <Card.Header>Contact</Card.Header>
+                      <Card.Meta>HOW TO REACH US</Card.Meta>
+                      <Divider/>
+                      <Card.Description style={{ margin: '1em' }} textAlign={'left'}>
+                        You can reach us every working day from 8:30 to 16:30 by phone.
+                        You can also expect to get an email response within 24 hours.
+                        <br/>
+                        <br/>
+                        email: gtl@ucn.dk
+                        <br/>
+                        phone: +45 00 00 00 00
+                      </Card.Description>
+                    </Card.Content>
+                  </Card>
+                </Card.Group>
+              </Grid.Column>
+            </Grid.Row>
+          </>
+        )}
       </Grid>
     </div>
   )

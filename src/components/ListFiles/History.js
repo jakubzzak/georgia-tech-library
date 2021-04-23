@@ -18,16 +18,17 @@ const History = ({ initPageSize = 10 }) => {
     {
       Header: 'Title',
       accessor: 'title',
-      width: 500,
       Cell: props => <span>{props.value}</span>,
     }, {
       id: 'dateOut',
       Header: 'Date out',
+      width: 130,
       accessor: (d) => moment(d.dateOut).format('YYYY-MM-DD'),
       style: { 'textAlign': 'center' },
     }, {
       id: 'dateIn',
       Header: 'Date in',
+      width: 130,
       accessor: (d) => moment(d.dateIn).format('YYYY-MM-DD'),
       style: { 'textAlign': 'center' },
     }, {

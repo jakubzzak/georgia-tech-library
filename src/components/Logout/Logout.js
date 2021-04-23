@@ -24,7 +24,7 @@ const Logout = ({ setToken, closeModal }) => {
             <Button content={'Log out'}
                     color={'orange'}
                     onClick={() => {
-                      setToken(null)
+                      setToken()
                       closeModal()
                     }}
             />

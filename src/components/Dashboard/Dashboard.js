@@ -4,6 +4,7 @@ import './Dashboard.css'
 import '../App.css'
 import Avatar from 'react-avatar'
 import Layout from '../Layout/Layout'
+import { getRandomColor } from '../utils/colors'
 
 
 const Dashboard = ({ user }) => {
@@ -21,7 +22,7 @@ const Dashboard = ({ user }) => {
         <Grid.Row>
           <Grid.Column>
             <Avatar round={'25px'} size={150} name={getFullName()}
-                    color={Avatar.getRandomColor('sitebase', ['red', 'green', 'blue', 'black', 'orange', 'yellow', 'brown'])}/>
+                    color={getRandomColor()}/>
           </Grid.Column>
         </Grid.Row>
         <Grid.Row>
@@ -38,7 +39,7 @@ const Dashboard = ({ user }) => {
                   <Card.Meta>INFO</Card.Meta>
                   <Divider/>
                   <Card.Description style={{ margin: '1em' }} textAlign={'left'}>
-                    email: {user.username}
+                    email: {user.email}
                   </Card.Description>
                 </Card.Content>
               </Card>

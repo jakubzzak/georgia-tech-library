@@ -8,13 +8,20 @@ import { email } from '../utils/validations'
 import { FormProvider, useForm } from 'react-hook-form'
 import logo from '../../assets/logo.png'
 
-const Login = ({ setToken, closeModal }) => {
+const Login = ({ setToken, setUser, closeModal }) => {
 
   const [errorMessage, setErrorMessage] = useState(null)
   const [passwordShown, setPasswordShown] = useState(false)
 
   const onSubmit = async (data) => {
-    await setToken()
+    await setToken('myNewToken')
+    await setUser({
+      id: '2134bhqwb4jhq3vb4h',
+      role: 'ADMIN',
+      firstName: 'Fake',
+      lastName: 'User',
+      email: data.email,
+    })
     closeModal()
     return
     const logInResponse = await unsecuredAPI.checkLogin({ ...data })
@@ -48,7 +55,7 @@ const Login = ({ setToken, closeModal }) => {
           <Grid>
             <Grid.Row>
               <Grid.Column>
-                <InputHooks name={'username'}
+                <InputHooks name={'email'}
                             rules={{ required: true, email }}
                             label={'Email'}
                             placeholder={'Email'}
