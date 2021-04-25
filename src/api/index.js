@@ -9,7 +9,6 @@ const create = (baseURL) => {
   //
 
   let token = JSON.parse(sessionStorage.getItem('token'))
-  let lang = 'sk'
 
   const api = apisauce.create({
     // base URL is read from the "constructor"
@@ -36,23 +35,20 @@ const create = (baseURL) => {
   const setToken = (currentAuthToken) => {
     token = currentAuthToken
   }
-  const setLang = (currentLang) => {
-    lang = currentLang
-  }
 
 
   const getSecuredHeaders = (customHeaders = {}) => ({
     headers: {
       ...customHeaders,
       'Content-Type': 'application/json',
-      'Accept-Language': lang,
+      'Accept-Language': 'en',
       'Authorization': `Bearer ${token}`,
     },
   })
   const getMultipartApiHeaders = () => ({
     headers: {
       'Content-Type': 'multipart/form-data',
-      'Accept-Language': lang,
+      'Accept-Language': 'en',
       'Authorization': `Bearer ${token}`,
     },
   })
@@ -102,7 +98,7 @@ const create = (baseURL) => {
 
 
 
-  const searchInCatalog = ({ phrase }) => api.get(`search/${phrase}`, null, getUnsecuredHeaders())
+  const searchInCatalog = ({ phrase, group }) => api.get(`search/${group}/${phrase}`, null, getUnsecuredHeaders())
   const fetchHistory = (pageDetails) => api.post(`user/history/tableData`, createRequestFromPageDetails(pageDetails), getSecuredHeaders())
   const getMyWishlist = () => api.get(`user/wishlist`, null, getSecuredHeaders())
   const removeFromMyWishlist = ({ id }) => api.delete(`user/wishlist/remove/${id}`, null, getSecuredHeaders())

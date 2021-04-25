@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { Button, Header, Icon, Modal } from 'semantic-ui-react'
+import { Button, Icon, Modal } from 'semantic-ui-react'
 import styles from './InformationModal.module.css'
 
 const InformationModal = ({ openAction, buttonIcon, buttonText, intro, title, icon }) => {
@@ -27,8 +27,6 @@ const InformationModal = ({ openAction, buttonIcon, buttonText, intro, title, ic
       basic
       size="small"
     >
-
-      {/*<Header icon={icon} content={title}/>*/}
       <Modal.Content>
         <h3>{intro}</h3>
         <span className={styles.informationModalContent}>{content}</span>

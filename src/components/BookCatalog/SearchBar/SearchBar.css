@@ -1,0 +1,8 @@
+.search-input {
+    width: 300px;
+
+}
+
+input [type=text] :focus {
+    width: 600px;
+}

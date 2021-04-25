@@ -1,24 +1,31 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Popup } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
 
 
 const ControlledPopup = ({ trigger, content, timeoutLength, position }) => {
+  let timeOut = useRef(null)
   const [isOpen, setIsOpen] = useState(false)
-  const [timeOut, setTimeOut] = useState(null)
 
   const handleOpen = () => {
     setIsOpen(true)
     if (timeoutLength) {
-      setTimeOut(() => setTimeout(() => {
-        setIsOpen(false)
-      }, timeoutLength))
+      timeOut.current = setTimeout(() => {
+        handleClose()
+      }, timeoutLength)
     }
   }
 
+  useEffect(() => {
+    return () => {
+      // don't forget to clean after yourself
+      clearTimeout(timeOut.current)
+    }
+  }, [])
+
   const handleClose = () => {
     setIsOpen(false)
-    clearTimeout(timeOut)
+    clearTimeout(timeOut.current)
   }
 
   return (

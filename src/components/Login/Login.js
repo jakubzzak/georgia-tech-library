@@ -21,9 +21,13 @@ const Login = ({ setToken, setUser, closeModal }) => {
       firstName: 'Fake',
       lastName: 'User',
       email: data.email,
+      card: {
+        issueDate: '2020-06-01',
+        dueDate: '2021-05-25'
+      }
     })
     closeModal()
-    return
+    return // TODO: remove
     const logInResponse = await unsecuredAPI.checkLogin({ ...data })
     if (logInResponse.ok) {
       const apiResponse = await unsecuredAPI.createSession({ ...logInResponse.data })

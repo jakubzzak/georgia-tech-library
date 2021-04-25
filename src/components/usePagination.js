@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { securedAPI } from '../api'
 import Immutable from 'seamless-immutable'
 import PropTypes from 'prop-types'
@@ -101,9 +101,7 @@ const usePagination = ({ initPageSize = 10, initCurrentPage = 0, initSort = [], 
   }
 
   const removeItem = (id) => {
-    // console.log('page before', page.data)
     setPage({ ...page, data: page.data.filter(item => item.id !== id) })
-    // console.log('page after', page.data)
   }
 
   return {

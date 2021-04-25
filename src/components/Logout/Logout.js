@@ -1,11 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import './Logout.css'
-import { unsecuredAPI } from '../../api'
 import PropTypes from 'prop-types'
-import { Button, Form, Grid, Image, Label } from 'semantic-ui-react'
-import { InputHooks } from '../utils/inputs'
-import { email } from '../utils/validations'
-import { FormProvider, useForm } from 'react-hook-form'
+import { Button, Grid, Image } from 'semantic-ui-react'
 import logo from '../../assets/logo.png'
 
 const Logout = ({ setToken, closeModal }) => {

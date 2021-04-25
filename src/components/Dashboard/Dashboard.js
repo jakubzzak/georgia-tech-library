@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Grid, Card, Divider } from 'semantic-ui-react'
 import './Dashboard.css'
+import PropTypes from 'prop-types'
+import moment from 'moment'
 import '../App.css'
 import Avatar from 'react-avatar'
 import Layout from '../Layout/Layout'
@@ -8,6 +10,7 @@ import { getRandomColor } from '../utils/colors'
 
 
 const Dashboard = ({ user }) => {
+  const [cardExpirationDaysLeft] = useState(moment(user.card.dueDate).diff(moment(), 'days'))
 
   const getFullName = () => {
     if (user) {
@@ -45,13 +48,22 @@ const Dashboard = ({ user }) => {
               </Card>
               <Card className="card">
                 <Card.Content>
-                  <Card.Header>Role</Card.Header>
-                  <Card.Meta>{user.role}</Card.Meta>
+                  <Card.Header>Card</Card.Header>
+                  <Card.Meta>MEMBERSHIP</Card.Meta>
                   <Divider/>
                   <Card.Description style={{ margin: '1em' }} textAlign={'left'}>
-                    With this role you have access to all data stored by personalApi. Beware! With such privileges comes
-                    a
-                    lot of responsibility too.
+                    <div>Issue date: {user.card.issueDate}</div>
+                    <div>Due date: {user.card.dueDate}</div>
+                    <br/>
+                    {cardExpirationDaysLeft > 0 && cardExpirationDaysLeft <= 30 ? (
+                      <div>
+                      Your card will expire in
+                      <span style={{ color: 'red' }}> {cardExpirationDaysLeft} </span>
+                      {cardExpirationDaysLeft === 1 ? 'day':'days'}
+                      </div>
+                    ) : cardExpirationDaysLeft <= 0 && (
+                      <span style={{ color: 'red' }}>Your card has expired. Please, renew it immediately!</span>
+                    )}
                   </Card.Description>
                 </Card.Content>
               </Card>
@@ -87,6 +99,10 @@ const Dashboard = ({ user }) => {
       </Grid>
     </Layout>
   )
+}
+
+Dashboard.propTypes = {
+  user: PropTypes.object.isRequired,
 }
 
 
