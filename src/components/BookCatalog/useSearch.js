@@ -23,9 +23,7 @@ const useSearch = ({ initPhrase, initGroup, initColumns }) => {
     return search && search.group && !_.isEmpty(search.phrase)
   }
 
-  const isStateChanged = () => {
-    return lastSearch.phrase !== search.phrase || lastSearch.group !== search.group
-  }
+  const isStateChanged = () => !_.isEqual(lastSearch, search)
 
   const changeSearch = (values) => {
     setSearch(s => ({ ...s, ...values }))

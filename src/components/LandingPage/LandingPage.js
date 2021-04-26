@@ -4,7 +4,7 @@ import './LandingPage.css'
 import '../App.css'
 import PropTypes from 'prop-types'
 import SearchBar from '../BookCatalog/SearchBar/SearchBar'
-import BookCard from '../BookCard/BookCard'
+import BookCard from '../BookCatalog/BookCard/BookCard'
 
 
 const LandingPage = ({ setOpenModal }) => {

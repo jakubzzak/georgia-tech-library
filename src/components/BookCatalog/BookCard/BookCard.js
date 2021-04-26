@@ -1,4 +1,4 @@
-import { getRandomColor } from '../utils/colors'
+import { getRandomColor } from '../../utils/colors'
 import { Card, Icon } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
 

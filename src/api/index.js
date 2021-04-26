@@ -98,12 +98,16 @@ const create = (baseURL) => {
 
 
 
-  const searchInCatalog = ({ phrase, group }) => api.get(`search/${group}/${phrase}`, null, getUnsecuredHeaders())
+  const searchInCatalog = (search) => api.post(`search`, search, getUnsecuredHeaders())
   const fetchHistory = (pageDetails) => api.post(`user/history/tableData`, createRequestFromPageDetails(pageDetails), getSecuredHeaders())
   const getMyWishlist = () => api.get(`user/wishlist`, null, getSecuredHeaders())
   const removeFromMyWishlist = ({ id }) => api.delete(`user/wishlist/remove/${id}`, null, getSecuredHeaders())
   const addToMyWishlist = ({ id }) => api.put(`user/wishlist/add/${id}`, null, getSecuredHeaders())
   const requestFromWishlist = ({ id }) => api.put(`user/wishlist/request/${id}`, null, getSecuredHeaders())
+  const createCustomer = (data) => api.put(`customer/create`, data, getSecuredHeaders())
+  const updateCustomer = ({ cardId }) => api.get(`customer/update/${cardId}`, null, getSecuredHeaders())
+  const findCustomer = ({ cardId }) => api.get(`customer/${cardId}`, null, getSecuredHeaders())
+  const extendCardValidity = ({ cardId }) => api.get(`customer/extend/${cardId}`, null, getSecuredHeaders())
 
   // ------
   // STEP 3
@@ -138,6 +142,10 @@ const create = (baseURL) => {
     removeFromMyWishlist,
     addToMyWishlist,
     requestFromWishlist,
+    createCustomer,
+    updateCustomer,
+    findCustomer,
+    extendCardValidity,
   }
 }
 

@@ -4,9 +4,12 @@ import { Icon, Menu } from 'semantic-ui-react'
 import BookCatalog from '../BookCatalog/BookCatalog'
 import Dashboard from '../Dashboard/Dashboard'
 import Wishlist from '../Wishlist/Wishlist'
-import History from '../ListFiles/History'
+import History from '../History/History'
 // import Preferences from '../Preferences/Preferences'
 import useWishlist from '../Wishlist/useWishlist'
+import LibraryWishlist from '../Wishlist/LibraryWishlist'
+import ManageUser from '../ManageUser/ManageUser'
+import ManageCatalog from '../ManageCatalog/ManageCatalog'
 
 const AccountPage = ({ user, isOpenModal, setOpenModal }) => {
   const [activeKey, setActiveKey] = useState('search')
@@ -47,17 +50,6 @@ const AccountPage = ({ user, isOpenModal, setOpenModal }) => {
       protected: ['USER'],
     },
     {
-      key: 'libraryWishlist',
-      name: 'Library wishlist',
-      icon: 'list alternate outline',
-      render: <Wishlist loading={loadingWishlist}
-                        items={wishlistItems}
-                        remove={removeWishlistItem}
-                        request={requestWishlistItem}
-      />,
-      protected: ['ADMIN', 'CHECKOUT'],
-    },
-    {
       key: 'history',
       name: 'History',
       icon: 'history',
@@ -65,17 +57,28 @@ const AccountPage = ({ user, isOpenModal, setOpenModal }) => {
       protected: ['USER'],
     },
     {
+      key: 'libraryWishlist',
+      name: 'Library wishlist',
+      icon: 'list alternate outline',
+      render: <LibraryWishlist loading={loadingWishlist}
+                               items={wishlistItems}
+                               remove={removeWishlistItem}
+                               request={requestWishlistItem}
+      />,
+      protected: ['ADMIN', 'CHECKOUT'],
+    },
+    {
       key: 'manageUser',
       name: 'Users',
       icon: 'users',
-      render: <History initPageSize={5}/>,
+      render: <ManageUser/>,
       protected: ['ADMIN', 'CHECKOUT'],
     },
     {
       key: 'manageCatalog',
       name: 'Catalog',
       icon: 'book',
-      render: <History initPageSize={5}/>,
+      render: <ManageCatalog/>,
       protected: ['ADMIN', 'CHECKOUT'],
     },
     // {

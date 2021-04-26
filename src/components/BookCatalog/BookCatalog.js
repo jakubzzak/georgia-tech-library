@@ -4,7 +4,7 @@ import './BookCatalog.css'
 import Layout from '../Layout/Layout'
 import SearchBar from './SearchBar/SearchBar'
 import { Divider, Grid } from 'semantic-ui-react'
-import BookCard from '../BookCard/BookCard'
+import BookCard from './BookCard/BookCard'
 
 
 const BookCatalog = ({ addToWishlist, removeFromWishlist, isInWishlist }) => {
