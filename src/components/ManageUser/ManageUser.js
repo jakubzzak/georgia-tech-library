@@ -32,9 +32,16 @@ const ManageUser = () => {
         </Grid.Row>
         <Grid.Row>
           {activeTab === 'find' ? (
-            <FindCustomer customer={customer} setCustomer={setCustomer}/>
+            <FindCustomer customer={customer}
+                          setCustomer={setCustomer}
+                          findCustomer={find}
+                          updateCustomer={update}
+                          extendCardValidity={extendCard}
+            />
           ) : (
-            <CreateCustomerForm createCustomer={create} setCustomer={setCustomer}/>
+            <CreateCustomerForm createCustomer={create}
+                                setCustomer={setCustomer}
+            />
           )}
         </Grid.Row>
       </Grid>
