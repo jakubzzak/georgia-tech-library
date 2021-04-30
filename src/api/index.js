@@ -106,9 +106,10 @@ const create = (baseURL) => {
   const requestFromWishlist = ({ id }) => api.put(`user/wishlist/request/${id}`, null, getSecuredHeaders())
   const createCustomer = (data) => api.put(`customer/create`, data, getSecuredHeaders())
   const updateCustomer = ({ cardId }) => api.get(`customer/update/${cardId}`, null, getSecuredHeaders())
+  const fetchCustomersActiveRentals = () => api.get(`customer/rentals/active`, null, getSecuredHeaders())
   const findCustomer = ({ cardId }) => api.get(`customer/${cardId}`, null, getSecuredHeaders())
   const extendCardValidity = ({ cardId }) => api.get(`customer/extend/${cardId}`, null, getSecuredHeaders())
-
+  const closeLoan = ({ loanId }) => api.get(`loan/close/${loanId}`, null, getSecuredHeaders())
   // ------
   // STEP 3
   // ------
@@ -146,6 +147,8 @@ const create = (baseURL) => {
     updateCustomer,
     findCustomer,
     extendCardValidity,
+    fetchCustomersActiveRentals,
+    closeLoan,
   }
 }
 

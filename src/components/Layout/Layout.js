@@ -1,5 +1,6 @@
-import { Dimmer, Loader } from 'semantic-ui-react'
 import React from 'react'
+import PropTypes from 'prop-types'
+import { Dimmer, Loader } from 'semantic-ui-react'
 
 
 const Layout = ({ children, loading, useWrapper }) => {
@@ -12,6 +13,11 @@ const Layout = ({ children, loading, useWrapper }) => {
       {children}
     </div>
   )
+}
+
+Layout.propTypes = {
+  loading: PropTypes.bool,
+  useWrapper: PropTypes.bool,
 }
 
 export default Layout

@@ -1,13 +1,13 @@
 import Layout from '../Layout/Layout'
 import { Button, Grid } from 'semantic-ui-react'
 import { useState } from 'react'
-import CreateCustomerForm from './CreateCustomerForm'
+import CreateCustomerForm from './Partials/CustomerForm/CreateCustomerForm'
 import FindCustomer from './FindCustomer'
 import useCustomer from './useCustomer'
 
 
-const ManageUser = () => {
-  const { customer, setCustomer, find, create, update, extendCard } = useCustomer()
+const ManageCustomer = () => {
+  const { customer, setCustomer, find, create, update, extendCard, fetchActiveRentals } = useCustomer()
   const [activeTab, setActiveTab] = useState('find')
 
   return (
@@ -37,6 +37,7 @@ const ManageUser = () => {
                           findCustomer={find}
                           updateCustomer={update}
                           extendCardValidity={extendCard}
+                          fetchActiveRentals={fetchActiveRentals}
             />
           ) : (
             <CreateCustomerForm createCustomer={create}
@@ -49,4 +50,4 @@ const ManageUser = () => {
   )
 }
 
-export default ManageUser
+export default ManageCustomer

@@ -1,14 +1,18 @@
+import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 import { Button, Card, Grid, Image, Segment } from 'semantic-ui-react'
 import './FindCustomer.css'
-import PropTypes from 'prop-types'
 import logo from '../../assets/logo.png'
 import RealtimeSearch from '../utils/RealtimeSearch'
 import ControlledPopup from '../utils/ControlledPopup'
-import React, { useState } from 'react'
+import EditCustomerForm from './Partials/CustomerForm/EditCustomerForm'
+import CheckIn from './Partials/CheckIn'
+import useBook from '../ManageCatalog/useBook'
 
 
-const FindCustomer = ({ customer, setCustomer, findCustomer, updateCustomer, extendCardValidity }) => {
+const FindCustomer = ({ customer, setCustomer, findCustomer, updateCustomer, extendCardValidity, fetchActiveRentals }) => {
   const [action, setAction] = useState(null)
+  const { returnBook } = useBook()
 
   return (
     <Segment color={'blue'} style={{ width: '100%' }}>
@@ -94,17 +98,18 @@ const FindCustomer = ({ customer, setCustomer, findCustomer, updateCustomer, ext
           <Grid.Row>
             <Grid.Column>
               {action === 'checkout' ? (
-                <segment>
-                  realtime search for a book
-                </segment>
+                <Segment>
+                  check out form
+                </Segment>
               ) : action === 'checkin' ? (
-                <segment>
-                  return book, close loan history (find open history bu customer, book isbn)
-                </segment>
+                <CheckIn fetchActiveRentals={fetchActiveRentals}
+                         returnBook={returnBook}
+                />
               ) : action === 'edit' && (
-                <segment>
-                  edit form
-                </segment>
+                <EditCustomerForm editCustomer={updateCustomer}
+                                  setCustomer={setCustomer}
+                                  defaultValues={customer}
+                />
               )}
             </Grid.Column>
           </Grid.Row>
@@ -121,6 +126,7 @@ FindCustomer.propTypes = {
   findCustomer: PropTypes.func.isRequired,
   updateCustomer: PropTypes.func.isRequired,
   extendCardValidity: PropTypes.func.isRequired,
+  fetchActiveRentals: PropTypes.func.isRequired,
 }
 
 export default FindCustomer

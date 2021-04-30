@@ -8,7 +8,7 @@ import History from '../History/History'
 // import Preferences from '../Preferences/Preferences'
 import useWishlist from '../Wishlist/useWishlist'
 import LibraryWishlist from '../Wishlist/LibraryWishlist'
-import ManageUser from '../ManageUser/ManageUser'
+import ManageCustomer from '../ManageUser/ManageCustomer'
 import ManageCatalog from '../ManageCatalog/ManageCatalog'
 
 const AccountPage = ({ user, isOpenModal, setOpenModal }) => {
@@ -71,7 +71,7 @@ const AccountPage = ({ user, isOpenModal, setOpenModal }) => {
       key: 'manageUser',
       name: 'Users',
       icon: 'users',
-      render: <ManageUser/>,
+      render: <ManageCustomer/>,
       protected: ['ADMIN', 'CHECKOUT'],
     },
     {
