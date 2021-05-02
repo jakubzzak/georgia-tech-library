@@ -1,25 +1,35 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { Button, Card, Grid, Image, Segment } from 'semantic-ui-react'
+import { Button, Card, Grid, Image, Label, Segment } from 'semantic-ui-react'
 import './FindCustomer.css'
 import logo from '../../assets/logo.png'
 import RealtimeSearch from '../utils/RealtimeSearch'
 import ControlledPopup from '../utils/ControlledPopup'
 import EditCustomerForm from './Partials/CustomerForm/EditCustomerForm'
 import CheckIn from './Partials/CheckIn'
-import useBook from '../ManageCatalog/useBook'
+import Checkout from './Partials/Checkout'
+import useLoan from '../ManageCatalog/useLoan'
 
 
 const FindCustomer = ({ customer, setCustomer, findCustomer, updateCustomer, extendCardValidity, fetchActiveRentals }) => {
   const [action, setAction] = useState(null)
-  const { returnBook } = useBook()
+  const { close: closeLoan } = useLoan()
 
   return (
     <Segment color={'blue'} style={{ width: '100%' }}>
       <Grid>
         <Grid.Row>
           <Grid.Column>
-            <RealtimeSearch setChosenValue={setCustomer} apiFetch={findCustomer}/>
+            <RealtimeSearch setChosenValue={setCustomer}
+                            apiFetch={findCustomer}
+                            customResultRenderer={({ cardid, firstname, lastname }) => (
+                              <Label key={cardid}
+                                     as="span"
+                                     content={`${cardid} (${firstname} ${lastname})`}
+                              />
+                            )}
+                            placeholder={'Enter card number'}
+            />
           </Grid.Column>
         </Grid.Row>
         {customer &&
@@ -29,7 +39,7 @@ const FindCustomer = ({ customer, setCustomer, findCustomer, updateCustomer, ext
               <Card style={{ margin: 'auto', width: '550px' }}>
                 <Card.Content style={{ padding: '2em' }}>
                   <Image src={logo}
-                         alt={'User photo'}
+                         alt={'GTL logo'}
                          size={'mini'}
                          floated={'right'}
                          style={{ margin: 0 }}
@@ -98,12 +108,10 @@ const FindCustomer = ({ customer, setCustomer, findCustomer, updateCustomer, ext
           <Grid.Row>
             <Grid.Column>
               {action === 'checkout' ? (
-                <Segment>
-                  check out form
-                </Segment>
+                <Checkout cardId={customer.cardid} />
               ) : action === 'checkin' ? (
-                <CheckIn fetchActiveRentals={fetchActiveRentals}
-                         returnBook={returnBook}
+                <CheckIn fetchActiveRentals={() => fetchActiveRentals({ cardId: customer.cardid })}
+                         closeLoan={closeLoan}
                 />
               ) : action === 'edit' && (
                 <EditCustomerForm editCustomer={updateCustomer}

@@ -4,10 +4,12 @@ import { useState } from 'react'
 import CreateCustomerForm from './Partials/CustomerForm/CreateCustomerForm'
 import FindCustomer from './FindCustomer'
 import useCustomer from './useCustomer'
+import useLoan from '../ManageCatalog/useLoan'
 
 
 const ManageCustomer = () => {
-  const { customer, setCustomer, find, create, update, extendCard, fetchActiveRentals } = useCustomer()
+  const { customer, setCustomer, find, create, update, extendCard } = useCustomer()
+  const { fetchActiveRentals } = useLoan()
   const [activeTab, setActiveTab] = useState('find')
 
   return (

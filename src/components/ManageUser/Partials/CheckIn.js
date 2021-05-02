@@ -7,7 +7,7 @@ import { getRandomColor } from '../../utils/colors'
 import Layout from '../../Layout/Layout'
 
 
-const CheckIn = ({ fetchActiveRentals, returnBook }) => {
+const CheckIn = ({ fetchActiveRentals, closeLoan }) => {
   const [items, setItems] = useState(null)
 
   useEffect(() => {
@@ -15,40 +15,47 @@ const CheckIn = ({ fetchActiveRentals, returnBook }) => {
       .then(results => setItems(results))
   }, [fetchActiveRentals])
 
+  console.log('valjues', items)
+
   return (
     <Segment>
-      <Layout loading={!items} useWrapper>
-        <List divided verticalAlign={'middle'}>
-          {items?.length > 0 && items.map((item, index) => (
-            <List.Item key={index}>
-              <List.Content style={{ margin: 0, padding: 0 }} floated="right">
-                <ControlledPopup
-                  trigger={<Button color={'red'} icon={'remove'}/>}
-                  content={closePopup =>
-                    <Button color="red" content="Confirm" size={'tiny'} onClick={() => {
-                      returnBook({ loanId: item.id })
-                        .finally(() => {
-                          closePopup()
-                        })
-                    }}/>
-                  }
-                  timeoutLength={2500}
-                  on="click"
-                  position="top center"
-                />
-              </List.Content>
-              <List.Content style={{ margin: 0, padding: 0 }}>
-                <Avatar round={'25px'}
-                        size={32}
-                        name={item.title}
-                        style={{ marginRight: '2em' }}
-                        color={getRandomColor()}
-                />
-                {item.title}
-              </List.Content>
-            </List.Item>
-          ))}
-        </List>
+      <Layout loading={!items} useWrapper={Array.isArray(items) && items.length === 0}>
+        {items?.length > 0 ? (
+          <List divided verticalAlign={'middle'}>
+            {items.map((item, index) => (
+              <List.Item key={index}>
+                <List.Content style={{ margin: 0, padding: 0 }} floated="right">
+                  {`Checked out at: ${item.dateStart} `}
+                  <ControlledPopup
+                    trigger={<Button color={'blue'} content={'Close'}/>}
+                    content={closePopup =>
+                      <Button color="blue" content="Confirm" size={'tiny'} onClick={() => {
+                        closeLoan(item)
+                          .finally(() => {
+                            closePopup()
+                          })
+                      }}/>
+                    }
+                    timeoutLength={2500}
+                    on="click"
+                    position="top center"
+                  />
+                </List.Content>
+                <List.Content style={{ margin: 0, padding: 0 }} floated={'left'}>
+                  <Avatar round={'25px'}
+                          size={32}
+                          name={item.title}
+                          style={{ marginRight: '2em' }}
+                          color={getRandomColor()}
+                  />
+                  {item.title}
+                </List.Content>
+              </List.Item>
+            ))}
+          </List>
+        ) : (
+         'There are no active loans for selected user.'
+        )}
       </Layout>
     </Segment>
   )
@@ -56,7 +63,7 @@ const CheckIn = ({ fetchActiveRentals, returnBook }) => {
 
 CheckIn.propTypes = {
   fetchActiveRentals: PropTypes.func.isRequired,
-  returnBook: PropTypes.func.isRequired,
+  closeLoan: PropTypes.func.isRequired,
 }
 
 export default CheckIn

@@ -71,19 +71,6 @@ const useCustomer = () => {
         toast.error(`Something went wrong when updating customer => ${error}`)
       })
   }
-  const onFetchActiveRentals = () => {
-    return securedAPI.fetchCustomersActiveRentals()
-      .then(response => {
-        if (response.ok) {
-          return response.data
-        } else {
-          toast.error(`[${response.status}] Failed to fetch customer's active rentals`)
-          return []
-        }
-      }).catch(error => {
-        toast.error(`Something went wrong when fetching customer's rentals => ${error}`)
-      })
-  }
 
   return {
     customer,
@@ -92,7 +79,6 @@ const useCustomer = () => {
     find: onFindByCardId,
     create: onCreate,
     update: onUpdate,
-    fetchActiveRentals: onFetchActiveRentals
   }
 }
 

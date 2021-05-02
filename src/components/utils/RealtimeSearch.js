@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useReducer, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { Search, Label, Grid } from 'semantic-ui-react'
+import placeholder from 'lodash/fp/placeholder'
 
 const initialState = {
   loading: false,
@@ -23,7 +24,7 @@ const exampleReducer = (state, action) => {
   }
 }
 
-const RealtimeSearch = ({ setChosenValue, apiFetch }) => {
+const RealtimeSearch = ({ setChosenValue, apiFetch, customResultRenderer, placeholder }) => {
   const [state, dispatch] = useReducer(exampleReducer, initialState)
   const { loading, results, value } = state
 
@@ -61,13 +62,8 @@ const RealtimeSearch = ({ setChosenValue, apiFetch }) => {
     <Grid centered style={{ padding: '2em' }}>
       <Search loading={loading}
               fluid
-              resultRenderer={({ cardid, firstname, lastname }) => (
-                <Label key={cardid}
-                       as="span"
-                       content={`${cardid} (${firstname} ${lastname})`}
-                />
-              )}
-              placeholder={'Enter card number'}
+              resultRenderer={customResultRenderer}
+              placeholder={placeholder}
               onResultSelect={(e, data) => {
                 setChosenValue(data.result)
                 dispatch({ type: 'UPDATE_SELECTION', selection: data.result.cardId })
@@ -83,6 +79,8 @@ const RealtimeSearch = ({ setChosenValue, apiFetch }) => {
 RealtimeSearch.propTypes = {
   setChosenValue: PropTypes.func.isRequired,
   apiFetch: PropTypes.func.isRequired,
+  customResultRenderer: PropTypes.func.isRequired,
+  placeholder: PropTypes.string,
 }
 
 export default RealtimeSearch

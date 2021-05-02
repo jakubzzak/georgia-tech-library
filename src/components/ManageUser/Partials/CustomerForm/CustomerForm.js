@@ -10,8 +10,6 @@ const CustomerForm = ({ onSubmit, defaultValues }) => {
   const { handleSubmit, formState } = useFormMethods
   const { isSubmitting, isValid } = formState
 
-  console.log('values', defaultValues)
-
   return (
     <FormProvider {...useFormMethods}>
       <Form form={'customerForm'} onSubmit={handleSubmit(onSubmit)}>

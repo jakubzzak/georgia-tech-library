@@ -78,8 +78,6 @@ const create = (baseURL) => {
   // Since we can't hide from that, we embrace it by getting out of the
   // way at this level.
   //
-  const removeDocumentUpload = (id) => api.delete(`documentUpload/remove/${id}`, null, getSecuredHeaders())
-  const processFile = (action) => api.post(`documentUpload/processFile/${action.id}`, { ...action.data }, getSecuredHeaders())
 
   const meFromToken = (tokenToValidate) => api.post('sessions/me', { token: tokenToValidate }, getUnsecuredHeaders())
 
@@ -87,29 +85,36 @@ const create = (baseURL) => {
   const register = (request) => api.post('sessions/register', request, getUnsecuredHeaders())
   const checkLogin = (request) => api.post('sessions/checkLogin', request, getUnsecuredHeaders())
 
-  // const uploadFile = (request) => api.post('file/attache', request, getSecuredHeaders()) // sets file custom title -> with it to be retrieved
-  const uploadFileTitle = (request) => api.post('file/attacheTitle', request, getSecuredHeaders())
-  const fileExistsByUserAndTitle = (title) => api.get(`file/existsByUserAndTitle/${title}`, null, getSecuredHeaders())
+  const uploadFile = (request) => api.post('file/attache', request, getSecuredHeaders())
   const downloadFile = (id) => api.get(`file/download/${id}`, null, {
     ...getSecuredHeaders(),
     responseType: 'blob',
   })
-  const generateApiKey = () => api.get(`users/getApiKey`, null, getSecuredHeaders())
-
 
 
   const searchInCatalog = (search) => api.post(`search`, search, getUnsecuredHeaders())
+  // user
+  const login = (credentials) => api.post(`login`, credentials, getUnsecuredHeaders())
+  const logout = () => api.get(`logout`, null, getSecuredHeaders())
   const fetchHistory = (pageDetails) => api.post(`user/history/tableData`, createRequestFromPageDetails(pageDetails), getSecuredHeaders())
   const getMyWishlist = () => api.get(`user/wishlist`, null, getSecuredHeaders())
-  const removeFromMyWishlist = ({ id }) => api.delete(`user/wishlist/remove/${id}`, null, getSecuredHeaders())
   const addToMyWishlist = ({ id }) => api.put(`user/wishlist/add/${id}`, null, getSecuredHeaders())
+  const removeFromMyWishlist = ({ id }) => api.delete(`user/wishlist/remove/${id}`, null, getSecuredHeaders())
   const requestFromWishlist = ({ id }) => api.put(`user/wishlist/request/${id}`, null, getSecuredHeaders())
-  const createCustomer = (data) => api.put(`customer/create`, data, getSecuredHeaders())
-  const updateCustomer = ({ cardId }) => api.get(`customer/update/${cardId}`, null, getSecuredHeaders())
-  const fetchCustomersActiveRentals = () => api.get(`customer/rentals/active`, null, getSecuredHeaders())
+  // customer - user from librarian point of view
   const findCustomer = ({ cardId }) => api.get(`customer/${cardId}`, null, getSecuredHeaders())
+  const createCustomer = (data) => api.put(`customer/create`, data, getSecuredHeaders())
+  const updateCustomer = ({ cardId, ...data }) => api.get(`customer/update/${cardId}`, data, getSecuredHeaders())
+  const fetchCustomersActiveRentals = ({ cardId }) => api.get(`customer/${cardId}/rentals/active`, null, getSecuredHeaders())
   const extendCardValidity = ({ cardId }) => api.get(`customer/extend/${cardId}`, null, getSecuredHeaders())
+  // loan
+  const startLoan = (data) => api.post(`loan/start`, data, getSecuredHeaders())
   const closeLoan = ({ loanId }) => api.get(`loan/close/${loanId}`, null, getSecuredHeaders())
+  // book
+  const findBook = ({ isbn }) => api.get(`book/${isbn}`, null, getSecuredHeaders())
+  const createBook = (data) => api.post(`book/create`, data, getSecuredHeaders())
+  const updateBook = ({ isbn, ...data }) => api.post(`book/update/${isbn}`, data, getSecuredHeaders())
+
   // ------
   // STEP 3
   // ------
@@ -124,31 +129,32 @@ const create = (baseURL) => {
   //
   return {
     // a list of the API functions from step 2
-    removeDocumentUpload,
-    processFile,
     meFromToken,
     createSession,
     register,
     checkLogin,
     downloadFile,
-
-    uploadFileTitle,
-    fileExistsByUserAndTitle,
-    generateApiKey,
-
-    // new
-    getMyWishlist,
+    // general
     searchInCatalog,
+    // user
     fetchHistory,
-    removeFromMyWishlist,
+    getMyWishlist,
     addToMyWishlist,
+    removeFromMyWishlist,
     requestFromWishlist,
+    // customer - user from librarian point of view
+    findCustomer,
     createCustomer,
     updateCustomer,
-    findCustomer,
     extendCardValidity,
     fetchCustomersActiveRentals,
+    // loan
+    startLoan,
     closeLoan,
+    // book
+    findBook,
+    createBook,
+    updateBook,
   }
 }
 
