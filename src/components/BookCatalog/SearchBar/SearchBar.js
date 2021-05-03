@@ -69,7 +69,7 @@ const SearchBar = ({ setResults }) => {
         </Input>
       </Grid.Row>
       <Grid.Row>
-        <Icon name={'filter outline'} style={{ marginRight: '2em' }} />
+        <Icon name={'filter'} style={{ marginRight: '2em' }} />
         {searchInOptions.map((item, index) =>
           <Checkbox key={item.key}
                     label={item.label}
