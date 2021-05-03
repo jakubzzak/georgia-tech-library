@@ -59,6 +59,31 @@ const useBook = () => {
         toast.error(`Something went wrong when updating a book => ${error}`)
       })
   }
+  const onChangeStock = (data) => {
+    return securedAPI.changeStock(data)
+      .then(response => {
+        if (response.ok) {
+          toast.success('Book stock updated successfully')
+        } else {
+          toast.error(`[${response.status}] Failed to update a book's stock`)
+        }
+        return response
+      }).catch(error => {
+        toast.error(`Something went wrong when updating a book's stock => ${error}`)
+      })
+  }
+  const onRemove = ({ isbn }) => {
+    return securedAPI.deleteBook({ isbn })
+      .then(response => {
+        if (response.ok) {
+          toast.success('Book deleted successfully')
+        } else {
+          toast.error(`[${response.status}] Failed to delete a book`)
+        }
+      }).catch(error => {
+        toast.error(`Something went wrong when deleting a book => ${error}`)
+      })
+  }
 
   return {
     book,
@@ -66,6 +91,8 @@ const useBook = () => {
     find: onFindByIsbn,
     create: onCreate,
     update: onUpdate,
+    stock: onChangeStock,
+    remove: onRemove,
   }
 }
 

@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { Button, Card, Grid, Image, Label, Segment } from 'semantic-ui-react'
+import { Button, Card, Grid, Label, Segment } from 'semantic-ui-react'
 import './FindCustomer.css'
-import logo from '../../assets/logo.png'
 import RealtimeSearch from '../utils/RealtimeSearch'
 import ControlledPopup from '../utils/ControlledPopup'
 import EditCustomerForm from './Partials/CustomerForm/EditCustomerForm'
 import CheckIn from './Partials/CheckIn'
 import Checkout from './Partials/Checkout'
 import useLoan from '../ManageCatalog/useLoan'
+import CustomerCardMainContent from './Partials/CustomerCardMainContent'
 
 
 const FindCustomer = ({ customer, setCustomer, findCustomer, updateCustomer, extendCardValidity, fetchActiveRentals }) => {
@@ -37,41 +37,11 @@ const FindCustomer = ({ customer, setCustomer, findCustomer, updateCustomer, ext
           <Grid.Row>
             <Grid.Column textAlign={'left'}>
               <Card style={{ margin: 'auto', width: '550px' }}>
-                <Card.Content style={{ padding: '2em' }}>
-                  <Image src={logo}
-                         alt={'GTL logo'}
-                         size={'mini'}
-                         floated={'right'}
-                         style={{ margin: 0 }}
-                  />
-                  <Grid>
-                    <Grid.Row>
-                      <Grid.Column width={4}>
-                        <Image src={'https://react.semantic-ui.com/images/avatar/large/steve.jpg'}
-                               alt={'User photo'}
-                               size={'tiny'}
-                               style={{ margin: 0 }}
-                        />
-                      </Grid.Column>
-                      <Grid.Column width={12}>
-                        <Card.Header>{`${customer.firstname} ${customer.lastname}`}</Card.Header>
-                        <Card.Meta>{customer.campus}</Card.Meta>
-                        <Card.Description>
-                          address/ssn/email/phone here ? maybe not necessary
-                        </Card.Description>
-                      </Grid.Column>
-                    </Grid.Row>
-                  </Grid>
-                  <Card.Description>
-                    <Grid>
-                      <Grid.Row>
-                        <Grid.Column>
-                          Card number: {customer.cardid}
-                        </Grid.Column>
-                      </Grid.Row>
-                    </Grid>
-                  </Card.Description>
-                </Card.Content>
+                <CustomerCardMainContent cardid={customer.cardid}
+                                         firstname={customer.firstname}
+                                         lastname={customer.lastname}
+                                         campus={customer.campus}
+                />
                 <Card.Content className="find-action" textAlign={'center'}>
                   <Button basic={action !== 'edit'}
                           color={'orange'}

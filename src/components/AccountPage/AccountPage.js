@@ -10,6 +10,7 @@ import useWishlist from '../Wishlist/useWishlist'
 import LibraryWishlist from '../Wishlist/LibraryWishlist'
 import ManageCustomer from '../ManageUser/ManageCustomer'
 import ManageCatalog from '../ManageCatalog/ManageCatalog'
+import Reservations from '../Reservations/Reservations'
 
 const AccountPage = ({ user, isOpenModal, setOpenModal }) => {
   const [activeKey, setActiveKey] = useState('search')
@@ -66,6 +67,13 @@ const AccountPage = ({ user, isOpenModal, setOpenModal }) => {
                                request={requestWishlistItem}
       />,
       protected: ['ADMIN', 'CHECKOUT'],
+    },
+    {
+      key: 'reservations',
+      name: 'Reservations',
+      icon: 'numbered list',
+      render: <Reservations/>,
+      protected: ['ADMIN', 'CHECKOUT']
     },
     {
       key: 'manageUser',
