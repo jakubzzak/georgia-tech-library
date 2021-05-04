@@ -94,8 +94,8 @@ const create = (baseURL) => {
 
   const searchInCatalog = (search) => api.post(`search`, search, getUnsecuredHeaders())
   // user
-  const login = (credentials) => api.post(`login`, credentials, getUnsecuredHeaders())
-  const logout = () => api.get(`logout`, null, getSecuredHeaders())
+  const login = (credentials) => api.post(`user/login`, credentials, getUnsecuredHeaders())
+  const logout = () => api.get(`user/logout`, null, getSecuredHeaders())
   const fetchHistory = (pageDetails) => api.post(`user/history/tableData`, createRequestFromPageDetails(pageDetails), getSecuredHeaders())
   const getMyWishlist = () => api.get(`user/wishlist`, null, getSecuredHeaders())
   const addToMyWishlist = ({ id }) => api.put(`user/wishlist/add/${id}`, null, getSecuredHeaders())
@@ -142,6 +142,8 @@ const create = (baseURL) => {
     // general
     searchInCatalog,
     // user
+    login,
+    logout,
     fetchHistory,
     getMyWishlist,
     addToMyWishlist,

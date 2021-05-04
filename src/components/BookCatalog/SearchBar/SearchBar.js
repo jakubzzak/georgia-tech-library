@@ -3,6 +3,7 @@ import { Button, Checkbox, Grid, Icon, Input, Select } from 'semantic-ui-react'
 import './SearchBar.css'
 import PropTypes from 'prop-types'
 import useSearch from '../useSearch'
+import _ from 'lodash'
 
 
 const inputStyle = {
@@ -76,7 +77,11 @@ const SearchBar = ({ setResults }) => {
                     checked={getSearch.columns.includes(item.value)}
                     onChange={() => {
                       if (getSearch.columns.includes(item.value)) {
-                        changeSearch({ columns: getSearch.columns.filter(column => column !== item.value) })
+                        if (getSearch.columns.length === 1) {
+                          changeSearch({ columns: searchInOptions.map(option => option.value) })
+                        } else {
+                          changeSearch({ columns: getSearch.columns.filter(column => column !== item.value) })
+                        }
                       } else {
                         changeSearch({ columns: [...getSearch.columns, item.value] })
                       }
