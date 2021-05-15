@@ -58,11 +58,12 @@ const create = (baseURL) => {
     },
   })
 
-  const createRequestFromPageDetails = ({ sort, pageSize, currentPage, search }) => ({
+  const createRequestFromPageDetails = ({ phrase, group, columns, pageSize, currentPage }) => ({
     offset: currentPage * pageSize,
     limit: pageSize,
-    sort: sort,
-    search: search,
+    phrase: phrase,
+    group: group,
+    columns: columns,
   })
   // ------
   // STEP 2
@@ -92,7 +93,7 @@ const create = (baseURL) => {
   })
 
 
-  const searchInCatalog = (search) => api.post(`search`, search, getUnsecuredHeaders())
+  const searchInCatalog = (search) => api.post(`search`, createRequestFromPageDetails(search), getUnsecuredHeaders())
   // user
   const login = (credentials) => api.post(`user/login`, credentials, getUnsecuredHeaders())
   const logout = () => api.get(`user/logout`, null, getSecuredHeaders())

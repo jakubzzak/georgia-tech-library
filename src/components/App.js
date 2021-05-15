@@ -23,7 +23,7 @@ const App = () => {
   useEffect(() => {
     if (token != null) {
       // TODO: fetch user here or merge it with token
-      setUser(u => ({ ...u, role: 'ADMIN' })) // for now, override user data here
+      setUser(u => ({ ...u, role: 'USER' })) // for now, override user data here
     } else {
       setUser(null)
     }

@@ -3,7 +3,6 @@ import { Button, Checkbox, Grid, Icon, Input, Select } from 'semantic-ui-react'
 import './SearchBar.css'
 import PropTypes from 'prop-types'
 import useSearch from '../useSearch'
-import _ from 'lodash'
 
 
 const inputStyle = {
@@ -14,22 +13,21 @@ const inputStyle = {
   borderRadius: 0,
 }
 
-const SearchBar = ({ setResults }) => {
-  const [inputCss, setInputCss] = useState(inputStyle)
+const options = [
+  { key: 'everything', text: 'Everything', value: 'EVERYTHING' },
+  { key: 'books', text: 'Books', value: 'BOOK' },
+  { key: 'articles', text: 'Articles', value: 'ARTICLE' },
+  { key: 'journals', text: 'Journals', value: 'JOURNAL' },
+  { key: 'maps', text: 'Maps', value: 'MAP' },
+]
 
-  const options = [
-    { key: 'everything', text: 'Everything', value: 'EVERYTHING' },
-    { key: 'books', text: 'Books', value: 'BOOK' },
-    { key: 'articles', text: 'Articles', value: 'ARTICLE' },
-    { key: 'journals', text: 'Journals', value: 'JOURNAL' },
-    { key: 'maps', text: 'Maps', value: 'MAP' },
-  ]
+const searchInOptions = [
+  { key: 'title', label: 'Title', value: 'TITLE' },
+  { key: 'author', label: 'Author', value: 'AUTHOR' },
+  { key: 'area', label: 'Subject area', value: 'AREA' },
+]
 
-  const searchInOptions = [
-    { key: 'title', label: 'Title', value: 'TITLE' },
-    { key: 'author', label: 'Author', value: 'AUTHOR' },
-    { key: 'area', label: 'Subject area', value: 'AREA' },
-  ]
+export const useSearchBarState = () => {
 
   const {
     loading,
@@ -39,11 +37,39 @@ const SearchBar = ({ setResults }) => {
     changeSearch,
     isValid,
     searchChanged,
-  } = useSearch({ initGroup: options[0].value, initColumns: [searchInOptions[0].value] })
+    currentPage,
+    isLastPage,
+    prevPage,
+    nextPage,
+  } = useSearch({
+    initCurrentPage: 0,
+    initPageSize: 15,
+    initGroup: options[0].value,
+    initColumns: [searchInOptions[0].value],
+  })
 
-  useEffect(() => {
-    setResults(results)
-  }, [results])
+  return {
+    loading,
+    getSearch,
+    results,
+    triggerSearch,
+    changeSearch,
+    isValid,
+    searchChanged,
+    currentPage,
+    isLastPage,
+    nextPage,
+    prevPage,
+  }
+}
+
+const SearchBar = ({ loading, isValid, searchChanged, changeSearch, triggerSearch, getSearch }) => {
+  const [inputCss, setInputCss] = useState(inputStyle)
+  // const { results, loading, isValid, searchChanged, changeSearch, triggerSearch, getSearch } = useSearchBarState()
+
+  // useEffect(() => {
+  //   setResults(results)
+  // }, [results])
 
   return (
     <Grid centered>
@@ -70,7 +96,7 @@ const SearchBar = ({ setResults }) => {
         </Input>
       </Grid.Row>
       <Grid.Row>
-        <Icon name={'filter'} style={{ marginRight: '2em' }} />
+        <Icon name={'filter'} style={{ marginRight: '2em' }}/>
         {searchInOptions.map((item, index) =>
           <Checkbox key={item.key}
                     label={item.label}
@@ -95,7 +121,7 @@ const SearchBar = ({ setResults }) => {
 }
 
 SearchBar.propTypes = {
-  setResults: PropTypes.func.isRequired,
+  // setResults: PropTypes.func.isRequired,
 }
 
 export default SearchBar

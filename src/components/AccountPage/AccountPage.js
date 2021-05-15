@@ -28,8 +28,8 @@ const AccountPage = ({ user, isOpenModal, setOpenModal }) => {
       key: 'search',
       name: 'Search',
       icon: 'search',
-      render: <BookCatalog addToWishlist={addWishlistItem}
-                           removeFromWishlist={removeWishlistItem}
+      render: <BookCatalog addToWishlist={user.role === 'USER' ? addWishlistItem:null}
+                           removeFromWishlist={user.role === 'USER' ? removeWishlistItem:null}
                            isInWishlist={isInWishlist}
       />,
     },

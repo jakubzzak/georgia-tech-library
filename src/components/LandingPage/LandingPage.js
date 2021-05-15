@@ -1,14 +1,26 @@
-import React, { useState } from 'react'
-import { Grid, Card, Divider, Label } from 'semantic-ui-react'
+import React, { useEffect, useState } from 'react'
+import { Grid, Card, Divider, Label, Button } from 'semantic-ui-react'
 import './LandingPage.css'
 import '../App.css'
 import PropTypes from 'prop-types'
-import SearchBar from '../BookCatalog/SearchBar/SearchBar'
+import SearchBar, { useSearchBarState } from '../BookCatalog/SearchBar/SearchBar'
 import BookCard from '../BookCatalog/BookCard/BookCard'
 
 
 const LandingPage = ({ setOpenModal }) => {
-  const [items, setItems] = useState(null)
+  const {
+    loading,
+    getSearch,
+    results,
+    triggerSearch,
+    changeSearch,
+    isValid,
+    searchChanged,
+    currentPage,
+    isLastPage,
+    prevPage,
+    nextPage,
+  } = useSearchBarState()
 
   return (
     <div>
@@ -17,15 +29,24 @@ const LandingPage = ({ setOpenModal }) => {
       </Grid.Row>
       <Grid className="content" style={{ padding: '50px' }} textAlign={'center'}>
         <Grid.Row>
-          <SearchBar setResults={setItems}/>
+          <SearchBar loading={loading}
+                     getSearch={getSearch}
+                     triggerSearch={triggerSearch}
+                     changeSearch={changeSearch}
+                     isValid={isValid}
+                     searchChanged={searchChanged}
+                     currentPage={currentPage}
+                     prevPage={prevPage}
+                     nextPage={nextPage}
+          />
         </Grid.Row>
-        {!Array.isArray(items) &&
+        {!Array.isArray(results) &&
         <Grid.Row>
           <span style={{ marginTop: '2em' }}>Search for whatever you wish from more than <strong>100 000</strong> titles</span>
         </Grid.Row>
         }
         <Divider/>
-        {!Array.isArray(items) ? (
+        {!Array.isArray(results) ? (
           <>
             <Grid.Row>
               <Grid.Column>
@@ -86,7 +107,7 @@ const LandingPage = ({ setOpenModal }) => {
               </Grid.Column>
             </Grid.Row>
           </>
-        ) : items.length === 0 ? (
+        ) : results?.length === 0 ? (
           <>
             <Grid.Row>
               <span className="note">No results found corresponding to your search</span>
@@ -94,10 +115,26 @@ const LandingPage = ({ setOpenModal }) => {
           </>
         ) : (
           <>
-            <span className="note">Showing {items.length} results</span>
-            {items.map((item, index) => (
+            <span className="note">Showing {results.length} results</span>
+            {results.map((item, index) => (
               <BookCard key={index} item={item}/>
             ))}
+            <Grid style={{ width: '100%' }} centered>
+              <Grid.Row>
+                <Grid.Column>
+                  <Divider />
+                </Grid.Column>
+              </Grid.Row>
+              <Grid.Row>
+                <Grid.Column textAlign={'center'}>
+                  <Button icon={'left arrow'} disabled={currentPage === 0} style={{ width: '100px', margin: 0 }} onClick={() => prevPage()} />
+                  <span style={{ margin: '0 3em' }}>
+                    {currentPage + 1}
+                  </span>
+                  <Button icon={'right arrow'} disabled={isLastPage()} style={{ width: '100px', margin: 0 }} onClick={() => nextPage()} />
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
           </>
         )}
       </Grid>
