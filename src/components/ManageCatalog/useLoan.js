@@ -5,8 +5,8 @@ import { useState } from 'react'
 const useLoan = () => {
   const [loan, setLoan] = useState()
 
-  const onFetchActiveRentals = ({ cardId }) => {
-    return securedAPI.fetchCustomersActiveRentals({ cardId })
+  const onFetchActiveRentals = ({ ssn }) => {
+    return securedAPI.fetchCustomersActiveRentals({ ssn })
       .then(response => {
         if (response.ok) {
           return response.data
@@ -29,8 +29,8 @@ const useLoan = () => {
         toast.error(`Something went wrong when fetching customer's rentals => ${error}`)
       })
   }
-  const onStart = ({ cardId, isbn }) => {
-    return securedAPI.startLoan({ cardId, isbn })
+  const onStart = ({ ssn, isbn }) => {
+    return securedAPI.startLoan({ ssn, isbn })
       .then(response => {
         if (response.ok) {
           toast.success(`New loan started successfully.`)

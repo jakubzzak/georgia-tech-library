@@ -9,7 +9,7 @@ import EditBookForm from './Partials/BookForm/EditBookForm'
 import ChangeStock from './Partials/ChangeStock'
 
 
-const FindBook = ({ book, setBook, findBook, updateBook, changeStock, removeBook }) => {
+const FindBook = ({ book, setBook, findBook, getBook, updateBook, changeStock, removeBook }) => {
   const [action, setAction] = useState(null)
 
   return (
@@ -17,12 +17,13 @@ const FindBook = ({ book, setBook, findBook, updateBook, changeStock, removeBook
       <Grid>
         <Grid.Row>
           <Grid.Column>
-            <RealtimeSearch setChosenValue={setBook}
+            <RealtimeSearch setChosenValue={getBook}
                             apiFetch={findBook}
                             customResultRenderer={({ isbn, title, author }) => (
                               <Label key={isbn}
                                      as="span"
-                                     content={`${isbn} (${title}, ${author})`}
+                                     style={{ width: '285px' }}
+                                     content={<span>{isbn} <br/> ({title}, {author})</span>}
                               />
                             )}
                             placeholder={'Enter book isbn'}
@@ -37,18 +38,24 @@ const FindBook = ({ book, setBook, findBook, updateBook, changeStock, removeBook
                 <BookCardMainContent isbn={book.isbn}
                                      title={book.title}
                                      author={book.author}
-                                     available={book.available}
+                                     subject_area={book.subject_area}
+                                     available_copies={book.available_copies}
                 />
                 <Card.Content className="find-action" textAlign={'center'}>
+                  <Button basic={action !== 'description'}
+                          color={'green'}
+                          content={action === 'description' ? 'Description' : 'Description'}
+                          onClick={() => setAction(action === 'description' ? null : 'description')}
+                  />
                   <Button basic={action !== 'edit'}
                           color={'orange'}
                           content={'Edit'}
-                          onClick={() => setAction('edit')}
+                          onClick={() => setAction(action === 'edit' ? null : 'edit')}
                   />
                   <Button basic={action !== 'stock'}
                           color={'purple'}
                           content={'Stock'}
-                          onClick={() => setAction('stock')}
+                          onClick={() => setAction(action === 'stock' ? null : 'stock')}
                   />
                   <ControlledPopup trigger={<Button basic color={'red'} content={'Delete'}/>}
                                    content={closePopup =>
@@ -69,7 +76,17 @@ const FindBook = ({ book, setBook, findBook, updateBook, changeStock, removeBook
           </Grid.Row>
           <Grid.Row>
             <Grid.Column>
-              {action === 'stock' ? (
+              {action === 'description' ? (
+                <Segment>
+                  <Grid textAlign={'left'}>
+                    <Grid.Row>
+                      <Grid.Column>
+                        Description: {book.description}
+                      </Grid.Column>
+                    </Grid.Row>
+                  </Grid>
+                </Segment>
+              ) : action === 'stock' ? (
                 <ChangeStock isbn={book.isbn}
                              changeStock={changeStock}
                              setBook={setBook}
@@ -94,6 +111,7 @@ FindBook.propTypes = {
   book: PropTypes.object,
   setBook: PropTypes.func.isRequired,
   findBook: PropTypes.func.isRequired,
+  getBook: PropTypes.func.isRequired,
   updateBook: PropTypes.func.isRequired,
   changeStock: PropTypes.func.isRequired,
   removeBook: PropTypes.func.isRequired,

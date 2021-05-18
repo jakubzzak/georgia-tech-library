@@ -89,8 +89,8 @@ const BookCatalog = ({ addToWishlist, removeFromWishlist, isInWishlist }) => {
 }
 
 BookCatalog.propTypes = {
-  addToWishlist: PropTypes.func.isRequired,
-  removeFromWishlist: PropTypes.func.isRequired,
+  addToWishlist: PropTypes.func,
+  removeFromWishlist: PropTypes.func,
   isInWishlist: PropTypes.func.isRequired,
 }
 

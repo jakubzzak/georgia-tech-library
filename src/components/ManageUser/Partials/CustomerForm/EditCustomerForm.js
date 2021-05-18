@@ -7,9 +7,9 @@ const EditCustomerForm = ({ editCustomer, setCustomer, defaultValues }) => {
 
   const onSubmit = (data) => {
     editCustomer(data)
-      .then(response => {
-        if (response.ok) {
-          setCustomer(response.data)
+      .then(updatedCustomer => {
+        if (updatedCustomer) {
+          setCustomer(updatedCustomer)
         }
       })
   }
@@ -17,7 +17,7 @@ const EditCustomerForm = ({ editCustomer, setCustomer, defaultValues }) => {
   return (
     <Segment>
       <CustomerForm onSubmit={onSubmit}
-                    defaultValues={defaultValues}
+                    defaultValues={{ ...defaultValues, campus_id: defaultValues?.campus.id }}
       />
     </Segment>
   )

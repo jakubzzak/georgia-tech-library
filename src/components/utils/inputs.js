@@ -14,7 +14,7 @@ import { messages } from './validations'
 import { Controller, useFormContext } from 'react-hook-form'
 import { get } from 'lodash'
 import { ErrorMessage } from '@hookform/error-message'
-import { FormGroup, Radio } from 'semantic-ui-react'
+import { Button, FormGroup, Radio } from 'semantic-ui-react'
 
 
 export const renderInput = ({ meta: { touched, error }, label, inline, width, ...custom }) => (
@@ -47,16 +47,15 @@ export const InputHooks = ({
       <Controller
         control={control}
         render={(props) => (
-          <Input
-            {...custom}
-            autoComplete="off"
-            value={props.value}
-            onChange={(event) => {
-              props.onChange(event)
-              onChange(event, event.target)
-              return event
-            }}
-            onBlur={() => props.onBlur()}
+          <Input value={props.value}
+                 autoComplete="off"
+                 onChange={(event) => {
+                   props.onChange(event)
+                   onChange(event, event.target)
+                   return event
+                 }}
+                 onBlur={() => props.onBlur()}
+                 {...custom}
           />)}
         rules={rules}
         name={name}
@@ -104,22 +103,20 @@ export const RadioHooks = ({
         render={(props) => (
           <FormGroup style={{ margin: '.5em' }}>
             {items.map((item, index) => {
-              return <Radio
-                {...custom}
-                key={index}
-                label={item.label}
-                name={item.name}
-                value={item.value}
-                checked={getValues(name) === item.value}
-                onChange={(event, { value }) => {
-                  props.onChange(value)
-                  onChange(event, value)
-                }}
-                style={radioStyle}
-                onBlur={() => props.onBlur()}
+              return <Radio key={index}
+                            label={item.label}
+                            name={item.name}
+                            value={item.value}
+                            checked={getValues(name) === item.value}
+                            onChange={(event, { value }) => {
+                              props.onChange(value)
+                              onChange(event, value)
+                            }}
+                            style={radioStyle}
+                            onBlur={() => props.onBlur()}
+                            {...custom}
               />
-            })
-            }
+            })}
           </FormGroup>
         )}
         rules={rules}
@@ -152,14 +149,17 @@ export const TextAreaHooks = ({ name, label, defaultValue, ...custom }) => {
       <label>{label}</label>
       }
 
-      <Controller
-        control={control}
-        render={(props) => <TextArea {...custom} autoComplete="off" value={props.value} onChange={(event) => {
-          props.onChange(event)
-          return event
-        }}/>}
-        defaultValue={defaultValue || ''}
-        name={name}
+      <Controller control={control}
+                  name={name}
+                  render={(props) => <TextArea autoComplete="off"
+                                               value={props.value}
+                                               onChange={(event) => {
+                                                 props.onChange(event)
+                                                 return event
+                                               }}
+                                               {...custom}
+                  />}
+                  defaultValue={defaultValue || ''}
       />
       <ErrorMessage errors={errors} name={name} render={() => <div
         className="ui basic red pointing prompt label transition visible">{messages[getError().type]}</div>}/>
@@ -170,11 +170,18 @@ export const TextAreaHooks = ({ name, label, defaultValue, ...custom }) => {
 export const renderCheckbox = ({ meta: { touched, error }, label, input, readOnlyAttr, width }) => (
   <Form.Field error={touched && error} width={width}>
     <label>{label}</label>
-    <Checkbox name={input.name} toggle readOnly={readOnlyAttr} checked={input.checked} onChange={() => input.onChange({
-      target: { type: 'checkbox', checked: !input.checked }, stopPropagation: () => {
-      }, preventDefault: () => {
-      },
-    })}/>
+    <Checkbox name={input.name}
+              toggle
+              readOnly={readOnlyAttr}
+              checked={input.checked}
+              onChange={() => input.onChange({
+                target: { type: 'checkbox', checked: !input.checked },
+                stopPropagation: () => {
+                },
+                preventDefault: () => {
+                },
+              })}
+    />
   </Form.Field>
 )
 
@@ -192,12 +199,16 @@ export const CheckboxHooks = ({
       <label>{label}</label>
       <Controller
         control={control}
-        render={(props) => <Checkbox toggle readOnly={readOnlyAttr} autoComplete="off" checked={props.value}
+        render={(props) => <Checkbox toggle
+                                     readOnly={readOnlyAttr}
+                                     autoComplete="off"
+                                     checked={props.value}
                                      onChange={(event, data) => {
                                        props.onChange(data.checked)
                                        onChange(event, data)
                                        return event
-                                     }}/>}
+                                     }}
+        />}
         defaultValue={defaultValue || false}
         name={name}
       />
@@ -243,12 +254,17 @@ export const renderDatePicker = ({
   return (
     <Form.Field error={error && touched} inline={inline}>
       <label>{label}</label>
-      <DatePicker className={styles.datePicker} name={input.name} selected={momentValue()} placeholderText={placeholder}
+      <DatePicker className={styles.datePicker}
+                  name={input.name}
+                  selected={momentValue()}
+                  placeholderText={placeholder}
                   minDate={minDate}
-                  onChange={handleOnChange} onFocus={input.onFocus}
-                  maxDate={maxDate} {...rest} autoComplete="off"
+                  onChange={handleOnChange}
+                  onFocus={input.onFocus}
+                  maxDate={maxDate}
+                  autoComplete="off"
+                  {...rest}
       />
-
       {touched && error && <div className="ui basic red pointing prompt label transition visible">{error}</div>}
     </Form.Field>
   )
@@ -280,7 +296,6 @@ export const DatePickerHooks = ({
       <Controller
         control={control}
         render={(props) => <DatePicker className={styles.datePicker}
-                                       {...rest}
                                        name={name}
                                        selected={momentValue(props.value)}
                                        placeholderText={placeholder}
@@ -292,10 +307,10 @@ export const DatePickerHooks = ({
                                            props.onChange(null)
                                          }
                                          return date
-                                       }
-                                       }
+                                       }}
                                        maxDate={maxDate}
                                        autoComplete="off"
+                                       {...rest}
         />}
         rules={rules}
         name={name}
@@ -323,8 +338,10 @@ renderDatePicker.propTypes = {
 export const renderDropdown = ({ meta: { touched, error }, label, input, options, multiple, width, ...rest }) => (
   <Form.Field error={error && touched} width={width}>
     <label>{label}</label>
-    <Select name={input.name} options={options} value={input.value} multiple={multiple}
-            {...rest}
+    <Select name={input.name}
+            options={options}
+            value={input.value}
+            multiple={multiple}
             onFocus={input.onFocus}
             onBlur={(e, data) => input.onBlur({
               target: { type: 'select', value: data.value },
@@ -339,7 +356,9 @@ export const renderDropdown = ({ meta: { touched, error }, label, input, options
               },
               preventDefault: () => {
               },
-            })}/>
+            })}
+            {...rest}
+    />
     {touched && error && <div className="ui basic red pointing prompt label transition visible">{error}</div>}
   </Form.Field>
 )
@@ -366,24 +385,23 @@ export const DropdownHooks = ({
       <label>{label}</label>
       <Controller
         control={control}
-        render={(props) => <Select
-          name={name}
-          options={options}
-          selection={clearable}
-          clearable={clearable}
-          multiple={multiple}
-          value={props.value}
-          onChange={async (e, data) => {
-            props.onChange(data.value)
-            onChange(e, data)
-            if (validateAll) {
-              await trigger()
-            } else {
-              await trigger(name)
-            }
-          }}
-          {...rest} />
-        }
+        render={(props) => <Select name={name}
+                                   options={options}
+                                   selection={clearable}
+                                   clearable={clearable}
+                                   multiple={multiple}
+                                   value={props.value}
+                                   onChange={async (e, data) => {
+                                     props.onChange(data.value)
+                                     onChange(e, data)
+                                     if (validateAll) {
+                                       await trigger()
+                                     } else {
+                                       await trigger(name)
+                                     }
+                                   }}
+                                   {...rest}
+        />}
         rules={rules}
         name={name}
         defaultValue={defaultValue || ''}
@@ -410,8 +428,13 @@ renderDropdown.propTypes = {
 export const renderTextArea = ({ meta: { touched, error }, label, input, ...custom }) => (
   <Form.Field error={error && touched}>
     <label>{label}</label>
-    <TextArea name={input.name} value={input.value} {...custom} onChange={input.onChange} onBlur={input.onBlur}
-              onFocus={input.onFocus}/>
+    <TextArea name={input.name}
+              value={input.value}
+              onChange={input.onChange}
+              onBlur={input.onBlur}
+              onFocus={input.onFocus}
+              {...custom}
+    />
     {touched && error && <div className="ui basic red pointing prompt label transition visible">{error}</div>}
   </Form.Field>
 )
@@ -427,14 +450,18 @@ const currencies = ['EUR', 'USD', 'CZK', 'HUF', 'PLN']
 export const renderCurrencySelector = ({ meta: { touched, error }, label, input, ...custom }) => (
   <Form.Field error={error && touched}>
     <label>{label}</label>
-    <Dropdown name={input.name} options={currencies.map(cr => ({ key: cr, value: cr, text: cr }))} value={input.value}
-              selection onChange={(e, data) => input.onChange({
-      target: { type: 'select', value: data.value },
-      stopPropagation: () => {
-      },
-      preventDefault: () => {
-      },
-    })}/>
+    <Dropdown name={input.name}
+              options={currencies.map(cr => ({ key: cr, value: cr, text: cr }))}
+              value={input.value}
+              selection
+              onChange={(e, data) => input.onChange({
+                target: { type: 'select', value: data.value },
+                stopPropagation: () => {
+                },
+                preventDefault: () => {
+                },
+              })}
+    />
     {touched && error && <div className="ui basic red pointing prompt label transition visible">{error}</div>}
   </Form.Field>
 )
@@ -446,12 +473,19 @@ renderCurrencySelector.propTypes = {
 
 export const renderInlineCheckbox = ({ meta: { touched, error }, label, input }) => (
   <Form.Field error={error && touched}>
-    <Checkbox name={input.name} className="input" toggle checked={input.checked} label={label}
+    <Checkbox name={input.name}
+              className="input"
+              toggle
+              checked={input.checked}
+              label={label}
               onChange={() => input.onChange({
-                target: { type: 'checkbox', checked: !input.checked }, stopPropagation: () => {
-                }, preventDefault: () => {
+                target: { type: 'checkbox', checked: !input.checked },
+                stopPropagation: () => {
                 },
-              })}/>
+                preventDefault: () => {
+                },
+              })}
+    />
     {touched && error && <div className="ui basic red pointing prompt label transition visible">{error}</div>}
   </Form.Field>
 )

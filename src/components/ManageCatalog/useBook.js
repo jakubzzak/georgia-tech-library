@@ -9,30 +9,28 @@ const useBook = () => {
   const onFindByIsbn = (isbn) => {
     return securedAPI.findBook({ isbn })
       .then(response => {
-        if (response.ok) {
-          // TODO
-          return response.data
+        if (response.ok && response.data.ok) {
+          return response.data.data?.map(book => ({ ...book, id: book.isbn }))
         } else {
           toast.error(`[${response.status}] Failed to fetch books`)
-          return [
-            {
-              isbn: 'd32d-l32-3jl-3p4i',
-              title: 'Hobbit', // necessary for realtime search
-              author: 'Barack Obama',
-              area: 'Sci-fi',
-              available: 5,
-            },
-            {
-              isbn: 'de23-2c3-d3d-d3d3',
-              title: 'The legend',
-              author: 'Unknown',
-              area: 'Western',
-              available: 3,
-            },
-          ]
+          return []
         }
       }).catch(error => {
         toast.error(`Something went wrong when fetching books => ${error}`)
+      })
+  }
+  const onGetBook = ({ id: isbn }) => {
+    return securedAPI.getBook({ isbn })
+      .then(response => {
+        if (response.ok && response.data.ok) {
+          setBook(response.data.data)
+          return response.data.data
+        } else {
+          toast.error(`[${response.status}] Failed to fetch book`)
+          return null
+        }
+      }).catch(error => {
+        toast.error(`Something went wrong when fetching the book => ${error}`)
       })
   }
   const onCreate = (data) => {
@@ -89,6 +87,7 @@ const useBook = () => {
     book,
     setBook,
     find: onFindByIsbn,
+    get: onGetBook,
     create: onCreate,
     update: onUpdate,
     stock: onChangeStock,

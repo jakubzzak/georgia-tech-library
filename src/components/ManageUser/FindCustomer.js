@@ -11,7 +11,7 @@ import useLoan from '../ManageCatalog/useLoan'
 import CustomerCardMainContent from './Partials/CustomerCardMainContent'
 
 
-const FindCustomer = ({ customer, setCustomer, findCustomer, updateCustomer, extendCardValidity, fetchActiveRentals }) => {
+const FindCustomer = ({ customer, setCustomer, findCustomer, getCustomer, updateCustomer, extendCardValidity, fetchActiveRentals }) => {
   const [action, setAction] = useState(null)
   const { close: closeLoan } = useLoan()
 
@@ -20,12 +20,13 @@ const FindCustomer = ({ customer, setCustomer, findCustomer, updateCustomer, ext
       <Grid>
         <Grid.Row>
           <Grid.Column>
-            <RealtimeSearch setChosenValue={setCustomer}
+            <RealtimeSearch setChosenValue={getCustomer}
                             apiFetch={findCustomer}
-                            customResultRenderer={({ cardid, firstname, lastname }) => (
-                              <Label key={cardid}
+                            customResultRenderer={({ card_id, full_name, city }) => (
+                              <Label key={card_id}
+                                     style={{ width: '285px' }}
                                      as="span"
-                                     content={`${cardid} (${firstname} ${lastname})`}
+                                     content={<span>{card_id} <br/> ({full_name}, {city})</span>}
                               />
                             )}
                             placeholder={'Enter card number'}
@@ -37,9 +38,10 @@ const FindCustomer = ({ customer, setCustomer, findCustomer, updateCustomer, ext
           <Grid.Row>
             <Grid.Column textAlign={'left'}>
               <Card style={{ margin: 'auto', width: '550px' }}>
-                <CustomerCardMainContent cardid={customer.cardid}
-                                         firstname={customer.firstname}
-                                         lastname={customer.lastname}
+                <CustomerCardMainContent card_id={customer.card.id}
+                                         email={customer.email}
+                                         firstname={customer.first_name}
+                                         lastname={customer.last_name}
                                          campus={customer.campus}
                 />
                 <Card.Content className="find-action" textAlign={'center'}>
@@ -61,7 +63,7 @@ const FindCustomer = ({ customer, setCustomer, findCustomer, updateCustomer, ext
                   <ControlledPopup trigger={<Button basic color={'red'} content={'Extend'}/>}
                                    content={closePopup =>
                                      <Button color="red" content="Confirm" size={'tiny'} onClick={() => {
-                                       extendCardValidity({ cardId: customer.cardid })
+                                       extendCardValidity({ card_id: customer.card.id })
                                          .finally(() => {
                                            closePopup()
                                          })
@@ -78,9 +80,9 @@ const FindCustomer = ({ customer, setCustomer, findCustomer, updateCustomer, ext
           <Grid.Row>
             <Grid.Column>
               {action === 'checkout' ? (
-                <Checkout cardId={customer.cardid} />
+                <Checkout cardId={customer.card.id} />
               ) : action === 'checkin' ? (
-                <CheckIn fetchActiveRentals={() => fetchActiveRentals({ cardId: customer.cardid })}
+                <CheckIn fetchActiveRentals={() => fetchActiveRentals({ ssn: customer.ssn })}
                          closeLoan={closeLoan}
                 />
               ) : action === 'edit' && (
@@ -102,6 +104,7 @@ FindCustomer.propTypes = {
   customer: PropTypes.object,
   setCustomer: PropTypes.func.isRequired,
   findCustomer: PropTypes.func.isRequired,
+  getCustomer: PropTypes.func.isRequired,
   updateCustomer: PropTypes.func.isRequired,
   extendCardValidity: PropTypes.func.isRequired,
   fetchActiveRentals: PropTypes.func.isRequired,

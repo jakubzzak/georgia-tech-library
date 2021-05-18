@@ -61,12 +61,13 @@ const RealtimeSearch = ({ setChosenValue, apiFetch, customResultRenderer, placeh
   return (
     <Grid centered style={{ padding: '2em' }}>
       <Search loading={loading}
+              style={{ width: '320px' }}
               fluid
               resultRenderer={customResultRenderer}
               placeholder={placeholder}
               onResultSelect={(e, data) => {
-                setChosenValue(data.result)
-                dispatch({ type: 'UPDATE_SELECTION', selection: data.result.cardId })
+                setChosenValue({ id: data.result.id })
+                dispatch({ type: 'UPDATE_SELECTION', selection: data.result.full_name })
               }}
               onSearchChange={handleSearchChange}
               results={results}

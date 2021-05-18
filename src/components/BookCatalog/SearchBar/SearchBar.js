@@ -13,12 +13,12 @@ const inputStyle = {
   borderRadius: 0,
 }
 
-const options = [
-  { key: 'everything', text: 'Everything', value: 'EVERYTHING' },
-  { key: 'books', text: 'Books', value: 'BOOK' },
-  { key: 'articles', text: 'Articles', value: 'ARTICLE' },
-  { key: 'journals', text: 'Journals', value: 'JOURNAL' },
-  { key: 'maps', text: 'Maps', value: 'MAP' },
+export const options = [
+  { key: 'everything', multiple: 'Everything', one: 'Everything', value: 'EVERYTHING', isType: false },
+  { key: 'books', multiple: 'Books', one: 'Book', value: 'BOOK', isType: true },
+  { key: 'articles', multiple: 'Articles', one: 'Article', value: 'ARTICLE', isType: true },
+  { key: 'journals', multiple: 'Journals', one: 'Journal', value: 'JOURNAL', isType: true },
+  { key: 'maps', multiple: 'Maps', one: 'Map', value: 'MAP', isType: true },
 ]
 
 const searchInOptions = [
@@ -75,8 +75,12 @@ const SearchBar = ({ loading, isValid, searchChanged, changeSearch, triggerSearc
     <Grid centered>
       <Grid.Row>
         <Input type="text" placeholder="Search...">
-          <Select options={options}
-                  defaultValue={options[0].value}
+          <Select defaultValue={options[0].value}
+                  options={options.map(option => ({
+                    key: option.key,
+                    value: option.value,
+                    text: option.multiple,
+                  }))}
                   onChange={(e, { value }) => changeSearch({ group: value })}
                   style={{ borderRadius: '25px 0 0 25px', width: '150px' }}
           />
@@ -121,7 +125,12 @@ const SearchBar = ({ loading, isValid, searchChanged, changeSearch, triggerSearc
 }
 
 SearchBar.propTypes = {
-  // setResults: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
+  isValid: PropTypes.func.isRequired,
+  searchChanged: PropTypes.func.isRequired,
+  changeSearch: PropTypes.func.isRequired,
+  triggerSearch: PropTypes.func.isRequired,
+  getSearch: PropTypes.object.isRequired,
 }
 
 export default SearchBar

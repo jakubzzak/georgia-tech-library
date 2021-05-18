@@ -7,7 +7,7 @@ import CreateBookForm from './Partials/BookForm/CreateBookForm'
 
 
 const ManageCatalog = () => {
-  const { book, setBook, find, create, update, stock, remove } = useBook()
+  const { book, setBook, find, get, create, update, stock, remove } = useBook()
   const [activeTab, setActiveTab] = useState('find')
 
   return (
@@ -35,6 +35,7 @@ const ManageCatalog = () => {
             <FindBook book={book}
                       setBook={setBook}
                       findBook={find}
+                      getBook={get}
                       updateBook={update}
                       changeStock={stock}
                       removeBook={remove}

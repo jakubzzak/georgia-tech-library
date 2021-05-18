@@ -4,7 +4,7 @@ import { Card, Grid, Image } from 'semantic-ui-react'
 import logo from '../../../assets/logo.png'
 
 
-const BookCardMainContent = ({ isbn, title, author, available }) => {
+const BookCardMainContent = ({ isbn, title, author, subject_area, available_copies }) => {
 
   return (
     <Card.Content style={{ padding: '2em' }}>
@@ -25,10 +25,8 @@ const BookCardMainContent = ({ isbn, title, author, available }) => {
           </Grid.Column>
           <Grid.Column width={12}>
             <Card.Header>{title}</Card.Header>
-            <Card.Meta>{author}</Card.Meta>
-            <Card.Description>
-              Available copies: {available}
-            </Card.Description>
+            <Card.Meta>Author: {author}</Card.Meta>
+            <Card.Description>Subject area: {subject_area}</Card.Description>
           </Grid.Column>
         </Grid.Row>
       </Grid>
@@ -37,6 +35,8 @@ const BookCardMainContent = ({ isbn, title, author, available }) => {
           <Grid.Row>
             <Grid.Column>
               Isbn: {isbn}
+              <br/>
+              Available copies: {available_copies}
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -49,7 +49,8 @@ BookCardMainContent.propTypes = {
   isbn: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   author: PropTypes.string.isRequired,
-  available: PropTypes.number.isRequired,
+  subject_area: PropTypes.string.isRequired,
+  available_copies: PropTypes.number.isRequired,
 }
 
 

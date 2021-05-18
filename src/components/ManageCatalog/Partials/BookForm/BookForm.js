@@ -1,8 +1,8 @@
 import { Button, Divider, Form, Grid, Header } from 'semantic-ui-react'
-import { InputHooks, TextAreaHooks } from '../../../utils/inputs'
+import { DropdownHooks, InputHooks, TextAreaHooks } from '../../../utils/inputs'
 import { useForm, FormProvider } from 'react-hook-form'
 import PropTypes from 'prop-types'
-import { email } from '../../../utils/validations'
+import { options as bookTypes } from './../../../BookCatalog/SearchBar/SearchBar'
 
 
 const BookForm = ({ onSubmit, defaultValues }) => {
@@ -51,7 +51,7 @@ const BookForm = ({ onSubmit, defaultValues }) => {
               />
             </Grid.Column>
             <Grid.Column>
-              <InputHooks name="area"
+              <InputHooks name="subject_area"
                           type="text"
                           label="Subject area"
                           icon={'university'}
@@ -61,12 +61,16 @@ const BookForm = ({ onSubmit, defaultValues }) => {
           </Grid.Row>
           <Grid.Row columns={2}>
             <Grid.Column>
-              {/* TODO: dropdown of book types */}
-              <InputHooks name="type"
-                          type="text"
-                          label="Type"
-                          icon={'gift'}
-                          rules={{ required: true }}
+              <DropdownHooks name="resource_type"
+                             label="Resource type"
+                             type="text"
+                             options={bookTypes?.filter(type => type.isType).map(type => ({
+                               key: type.key,
+                               value: type.value,
+                               text: type.one,
+                             }))}
+                             icon={'gift'}
+                             rules={{ required: true }}
               />
             </Grid.Column>
             <Grid.Column>
@@ -98,7 +102,7 @@ const BookForm = ({ onSubmit, defaultValues }) => {
           </Grid.Row>
           <Grid.Row columns={2}>
             <Grid.Column>
-              <InputHooks name="totalCopies"
+              <InputHooks name="total_copies"
                           type="number"
                           label="Total copies"
                           icon={'hashtag'}
@@ -106,7 +110,7 @@ const BookForm = ({ onSubmit, defaultValues }) => {
               />
             </Grid.Column>
             <Grid.Column>
-              <InputHooks name="availableCopies"
+              <InputHooks name="available_copies"
                           type="number"
                           label="Available copies"
                           icon={'hashtag'}

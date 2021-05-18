@@ -8,8 +8,8 @@ const EditBookForm = ({ editBook, setBook, defaultValues }) => {
   const onSubmit = (data) => {
     editBook(data)
       .then(response => {
-        if (response.ok) {
-          setBook(response.data)
+        if (response.ok && response.data.ok) {
+          setBook(response.data.data)
         }
       })
   }

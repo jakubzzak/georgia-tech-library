@@ -8,7 +8,7 @@ import useLoan from '../../ManageCatalog/useLoan'
 import BookCardMainContent from '../../ManageCatalog/Partials/BookCardMainContent'
 
 
-const Checkout = ({ cardId }) => {
+const Checkout = ({ ssn }) => {
   const [book, setBook] = useState(null)
   const { find: findBook } = useBook()
   const { start: startLoan } = useLoan()
@@ -22,8 +22,9 @@ const Checkout = ({ cardId }) => {
                             apiFetch={findBook}
                             customResultRenderer={({ isbn, title, author }) => (
                               <Label key={isbn}
+                                     style={{ width: '285px' }}
                                      as="span"
-                                     content={`${isbn} (${title}, ${author})`}
+                                     content={<span>{isbn} <br/> ({title}, {author})</span>}
                               />
                             )}
                             placeholder={'Enter book isbn'}
@@ -44,7 +45,7 @@ const Checkout = ({ cardId }) => {
                 <ControlledPopup trigger={<Button basic color={'blue'} content={'Checkout'}/>}
                                  content={closePopup =>
                                    <Button color="blue" content="Confirm" size={'tiny'} onClick={() => {
-                                     startLoan({ cardId, isbn: book.isbn })
+                                     startLoan({ ssn, isbn: book.isbn })
                                        .finally(() => {
                                          closePopup()
                                        })

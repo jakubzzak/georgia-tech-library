@@ -4,7 +4,7 @@ import { Card, Grid, Image } from 'semantic-ui-react'
 import logo from '../../../assets/logo.png'
 
 
-const CustomerCardMainContent = ({ cardid, firstname, lastname, campus }) => {
+const CustomerCardMainContent = ({ card_id, email, firstname, lastname, campus }) => {
 
   return (
     <Card.Content style={{ padding: '2em' }}>
@@ -25,9 +25,13 @@ const CustomerCardMainContent = ({ cardid, firstname, lastname, campus }) => {
           </Grid.Column>
           <Grid.Column width={12}>
             <Card.Header>{`${firstname} ${lastname}`}</Card.Header>
-            <Card.Meta>{campus}</Card.Meta>
-            <Card.Description>
-              address/ssn/email/phone here ? maybe not necessary
+            <Card.Meta>
+              {`${campus.address.street} ${campus.address.number ?? ''},`}
+              <br/>
+              {`${campus.address.post_code} ${campus.address.city} (${campus.address.country})`}
+            </Card.Meta>
+            <Card.Description style={{ marginTop: '1em' }}>
+              email: {email}
             </Card.Description>
           </Grid.Column>
         </Grid.Row>
@@ -36,7 +40,7 @@ const CustomerCardMainContent = ({ cardid, firstname, lastname, campus }) => {
         <Grid>
           <Grid.Row>
             <Grid.Column>
-              Card number: {cardid}
+              Card number: {card_id}
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -46,10 +50,11 @@ const CustomerCardMainContent = ({ cardid, firstname, lastname, campus }) => {
 }
 
 CustomerCardMainContent.propTypes = {
-  cardid: PropTypes.string.isRequired,
+  card_id: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
   firstname: PropTypes.string.isRequired,
   lastname: PropTypes.string.isRequired,
-  campus: PropTypes.string.isRequired,
+  campus: PropTypes.object.isRequired,
 }
 
 

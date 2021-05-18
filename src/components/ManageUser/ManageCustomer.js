@@ -8,7 +8,7 @@ import useLoan from '../ManageCatalog/useLoan'
 
 
 const ManageCustomer = () => {
-  const { customer, setCustomer, find, create, update, extendCard } = useCustomer()
+  const { customer, setCustomer, find, get, create, update, extendCard } = useCustomer()
   const { fetchActiveRentals } = useLoan()
   const [activeTab, setActiveTab] = useState('find')
 
@@ -37,6 +37,7 @@ const ManageCustomer = () => {
             <FindCustomer customer={customer}
                           setCustomer={setCustomer}
                           findCustomer={find}
+                          getCustomer={get}
                           updateCustomer={update}
                           extendCardValidity={extendCard}
                           fetchActiveRentals={fetchActiveRentals}
