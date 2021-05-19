@@ -11,6 +11,7 @@ import ChangeStock from './Partials/ChangeStock'
 
 const FindBook = ({ book, setBook, findBook, getBook, updateBook, changeStock, removeBook }) => {
   const [action, setAction] = useState(null)
+  const [cleanSearch, setCleanSearch] = useState(false)
 
   return (
     <Segment color={'blue'} style={{ width: '100%' }}>
@@ -18,6 +19,7 @@ const FindBook = ({ book, setBook, findBook, getBook, updateBook, changeStock, r
         <Grid.Row>
           <Grid.Column>
             <RealtimeSearch setChosenValue={getBook}
+                            clearSearchPromp={cleanSearch}
                             apiFetch={findBook}
                             customResultRenderer={({ isbn, title, author }) => (
                               <Label key={isbn}
@@ -31,7 +33,7 @@ const FindBook = ({ book, setBook, findBook, getBook, updateBook, changeStock, r
           </Grid.Column>
         </Grid.Row>
         {book &&
-        <>
+        <React.Fragment>
           <Grid.Row>
             <Grid.Column textAlign={'left'}>
               <Card style={{ margin: 'auto', width: '550px' }}>
@@ -61,8 +63,14 @@ const FindBook = ({ book, setBook, findBook, getBook, updateBook, changeStock, r
                                    content={closePopup =>
                                      <Button color="red" content="Confirm" size={'tiny'} onClick={() => {
                                        removeBook(book)
+                                         .then(response => {
+                                           if (response.ok && response.data.ok) {
+                                             setCleanSearch(true)
+                                           }
+                                         })
                                          .finally(() => {
                                            closePopup()
+                                           setCleanSearch(false)
                                          })
                                      }}/>
                                    }
@@ -91,6 +99,7 @@ const FindBook = ({ book, setBook, findBook, getBook, updateBook, changeStock, r
                              changeStock={changeStock}
                              setBook={setBook}
                              closeAction={() => setAction(null)}
+                             defaultValues={book}
                 />
               ) : action === 'edit' && (
                 <EditBookForm editBook={updateBook}
@@ -100,7 +109,7 @@ const FindBook = ({ book, setBook, findBook, getBook, updateBook, changeStock, r
               )}
             </Grid.Column>
           </Grid.Row>
-        </>
+        </React.Fragment>
         }
       </Grid>
     </Segment>

@@ -34,7 +34,7 @@ const FindCustomer = ({ customer, setCustomer, findCustomer, getCustomer, update
           </Grid.Column>
         </Grid.Row>
         {customer &&
-        <>
+        <React.Fragment>
           <Grid.Row>
             <Grid.Column textAlign={'left'}>
               <Card style={{ margin: 'auto', width: '550px' }}>
@@ -93,7 +93,7 @@ const FindCustomer = ({ customer, setCustomer, findCustomer, getCustomer, update
               )}
             </Grid.Column>
           </Grid.Row>
-        </>
+        </React.Fragment>
         }
       </Grid>
     </Segment>

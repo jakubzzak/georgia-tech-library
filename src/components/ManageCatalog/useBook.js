@@ -74,9 +74,12 @@ const useBook = () => {
     return securedAPI.deleteBook({ isbn })
       .then(response => {
         if (response.ok) {
+          setBook(null)
           toast.success('Book deleted successfully')
+          return response
         } else {
           toast.error(`[${response.status}] Failed to delete a book`)
+          return response
         }
       }).catch(error => {
         toast.error(`Something went wrong when deleting a book => ${error}`)

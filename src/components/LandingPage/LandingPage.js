@@ -47,7 +47,7 @@ const LandingPage = ({ setOpenModal }) => {
         }
         <Divider/>
         {!Array.isArray(results) ? (
-          <>
+          <React.Fragment>
             <Grid.Row>
               <Grid.Column>
                 <Card.Group centered>
@@ -106,15 +106,15 @@ const LandingPage = ({ setOpenModal }) => {
                 </Card.Group>
               </Grid.Column>
             </Grid.Row>
-          </>
+          </React.Fragment>
         ) : results?.length === 0 ? (
-          <>
+          <React.Fragment>
             <Grid.Row>
               <span className="note">No results found corresponding to your search</span>
             </Grid.Row>
-          </>
+          </React.Fragment>
         ) : (
-          <>
+          <React.Fragment>
             <span className="note">Showing {results.length} results</span>
             {results.map((item, index) => (
               <BookCard key={index} item={item}/>
@@ -135,7 +135,7 @@ const LandingPage = ({ setOpenModal }) => {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-          </>
+          </React.Fragment>
         )}
       </Grid>
     </div>

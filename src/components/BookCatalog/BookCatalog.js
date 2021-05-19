@@ -47,13 +47,13 @@ const BookCatalog = ({ addToWishlist, removeFromWishlist, isInWishlist }) => {
           <Divider/>
         )}
         {Array.isArray(items) &&
-        <>
+        <React.Fragment>
           {items.length === 0 ? (
             <Grid.Row>
               <span className="note">No results found corresponding to your search</span>
             </Grid.Row>
           ) : (
-            <>
+            <React.Fragment>
               <span className="note">Found {items.length} results</span>
               {items.map((item, index) => (
                 <BookCard key={index}
@@ -79,9 +79,9 @@ const BookCatalog = ({ addToWishlist, removeFromWishlist, isInWishlist }) => {
                   </Grid.Column>
                 </Grid.Row>
               </Grid>
-            </>
+            </React.Fragment>
           )}
-        </>
+        </React.Fragment>
         }
       </Grid>
     </Layout>

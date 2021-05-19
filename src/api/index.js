@@ -120,7 +120,10 @@ const create = (baseURL) => {
   const changeStock = ({ isbn, ...data }) => api.post(`book/${isbn}/stock`, data, getSecuredHeaders())
   const deleteBook = ({ isbn }) => api.delete(`book/${isbn}/disable`, null, getSecuredHeaders())
   // library
+  const getLibraryWishlist = () => api.get(`library/wishlist`, null, getSecuredHeaders())
   const addToLibraryWishlist = (data) => api.put(`library/wishlist/add`, data, getSecuredHeaders())
+  const removeFromLibraryWishlist = ({ id }) => api.delete(`library/wishlist/remove/${id}`, null, getSecuredHeaders())
+  const markItemAsAcquiredInLibraryWishlist = ({ id }) => api.get(`library/wishlist/acquired/${id}`, null, getSecuredHeaders())
   const fetchCampuses = () => api.get(`library/static/campuses`, null, getSecuredHeaders())
   // ------
   // STEP 3
@@ -170,7 +173,11 @@ const create = (baseURL) => {
     changeStock,
     deleteBook,
     // library
+    getLibraryWishlist,
     addToLibraryWishlist,
+    removeFromLibraryWishlist,
+    markItemAsAcquiredInLibraryWishlist,
+    // library - static
     fetchCampuses,
   }
 }

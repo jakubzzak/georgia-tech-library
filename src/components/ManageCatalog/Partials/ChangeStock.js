@@ -5,9 +5,9 @@ import React from 'react'
 import { InputHooks } from '../../utils/inputs'
 
 
-const ChangeStock = ({ isbn, changeStock, setBook, closeAction }) => {
+const ChangeStock = ({ isbn, changeStock, setBook, closeAction, defaultValues }) => {
 
-  const useFormMethods = useForm({ shouldFocusError: true, mode: 'onChange' })
+  const useFormMethods = useForm({ defaultValues, shouldFocusError: true, mode: 'onChange' })
   const { handleSubmit, formState, setValue, getValues } = useFormMethods
   const { isSubmitting, isValid } = formState
 
@@ -26,45 +26,45 @@ const ChangeStock = ({ isbn, changeStock, setBook, closeAction }) => {
       <Grid.Row>
         <Grid.Column>
           <FormProvider {...useFormMethods}>
-            <Form form={'bookForm'} onSubmit={handleSubmit(onSubmit)}>
+            <Form form={'bookStockForm'} onSubmit={handleSubmit(onSubmit)}>
               <Segment>
                 <Grid>
                   <Grid.Row columns={3}>
                     <Grid.Column>
-                      <InputHooks name="total"
+                      <InputHooks name="total_copies"
                                   type={'number'}
                                   rules={{ required: true }}
                                   label={'Total copies'}
                                   placeholder={'Total copies'}
                                   onChange={(e, { value }) => {
                                     if (value < 0) {
-                                      setValue('total', 0)
+                                      setValue('total_copies', 0)
                                     }
-                                    if (getValues('total') < getValues('available')) {
-                                      setValue('available', getValues('total'))
+                                    if (getValues('total_copies') < getValues('available_copies')) {
+                                      setValue('total_copies', getValues('available_copies'))
                                     }
                                   }}
                       />
                     </Grid.Column>
                     <Grid.Column>
-                      <InputHooks name="available"
+                      <InputHooks name="available_copies"
                                   type={'number'}
                                   rules={{ required: true }}
                                   label={'Currently available copies'}
                                   placeholder={'Currently available copies'}
                                   onChange={(e, { value }) => {
                                     if (value < 0) {
-                                      setValue('available', 0)
-                                    } else if (value > getValues('total')) {
-                                      setValue('available', getValues('total'))
+                                      setValue('available_copies', 0)
+                                    } else if (value > getValues('total_copies')) {
+                                      setValue('available_copies', getValues('total_copies'))
                                     }
                                   }}
                       />
                     </Grid.Column>
                     <Grid.Column>
-                      <Button color={'green'} fluid style={{ marginTop: '1.65em' }}
+                      <Button color={'green'} fluid style={{ marginTop: '1.7em' }}
                               disabled={isSubmitting || !isValid}
-                              content={'Add'}
+                              content={'Update stock'}
                       />
                     </Grid.Column>
                   </Grid.Row>
@@ -83,6 +83,7 @@ ChangeStock.propTypes = {
   changeStock: PropTypes.func.isRequired,
   setBook: PropTypes.func.isRequired,
   closeAction: PropTypes.func.isRequired,
+  defaultValues: PropTypes.func,
 }
 
 export default ChangeStock

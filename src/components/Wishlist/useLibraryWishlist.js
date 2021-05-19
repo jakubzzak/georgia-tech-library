@@ -1,90 +1,78 @@
 import { useEffect, useState } from 'react'
 import { securedAPI } from '../../api/index'
 import toast from 'react-hot-toast'
-import moment from 'moment'
 
 
-const useWishlist = () => {
+const useLibraryWishlist = () => {
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState([])
 
   useEffect(() => {
     setLoading(true)
-    securedAPI.getMyWishlist()
+    securedAPI.getLibraryWishlist()
       .then(response => {
-        if (response.ok) {
-          setData(response.data)
+        if (response.ok && response.data.ok) {
+          setData(response.data.data)
         } else {
-          toast.error(`[${response.status}] Failed to load wishlist`)
+          toast.error(`[${response.status}] Failed to load library wishlist`)
         }
       }).catch(error => {
-      toast.error(`Failed to load wishlist => ${error}`)
+      toast.error(`Failed to load library wishlist => ${error}`)
     }).finally(() => {
-      // setData([
-      //   {
-      //     id: '1',
-      //     title: 'sth',
-      //   },
-      //   {
-      //     id: '2',
-      //     title: 'sth else',
-      //   },
-      // ])
       setLoading(false)
     })
   }, [])
 
-  const isInWishlist = ({ id }) => {
-    return data.find(item => item.id === id) != null
+  const onAdd = (data) => {
+    setLoading(true)
+    return securedAPI.addToLibraryWishlist(data)
+      .then(response => {
+        if (response.ok && response.data.ok) {
+          setData(e => [ response.data.data, ...e ])
+          toast.success('Item added to library wishlist')
+          return true
+        } else {
+          toast.error(`[${response.status}] Failed to add item to library wishlist`)
+          return false
+        }
+      }).catch(error => {
+        toast.error(`Failed when adding item to library wishlist => ${error}`)
+        return false
+      }).finally(() => {
+        setLoading(false)
+      })
   }
 
   const onRemove = ({ id }) => {
-    return new Promise(() => {
-      setData(e => e.filter(item => item.id !== id))
-    })// TODO: remove this return and everything before
-    return securedAPI.removeFromMyWishlist({ id })
+    setLoading(true)
+    return securedAPI.removeFromLibraryWishlist({ id })
       .then(response => {
-        if (response.ok) {
-          setData(response.data)
-          toast.success('Item removed from wishlist')
+        if (response.ok && response.data.ok) {
+          setData(e => e.filter(item => item.id !== id))
+          toast.success('Item removed from library wishlist')
         } else {
-          toast.error(`[${response.status}] Failed to remove item from wishlist`)
+          toast.error(`[${response.status}] Failed to remove item from library wishlist`)
         }
       }).catch(error => {
-        toast.error(`Failed to remove item from wishlist => ${error}`)
+        toast.error(`Failed to remove item from library wishlist => ${error}`)
+      }).finally(() => {
+        setLoading(false)
       })
   }
 
-  const onAdd = ({ id, title }) => {
-    setData(e => ([ ...e, { id, title } ]))
-    return // TODO: remove this return and everything before
-    return securedAPI.addToMyWishlist({ id })
+  const onMarkAsAcquired = ({ id }) => {
+    setLoading(true)
+    return securedAPI.markItemAsAcquiredInLibraryWishlist({ id })
       .then(response => {
-        if (response.ok) {
-          setData(response.data)
-          toast.success('Item added to wishlist')
+        if (response.ok && response.data.ok) {
+          toast.success('Item marked as acquired')
         } else {
-          toast.error(`[${response.status}] Failed to add item to wishlist`)
+          toast.error(`[${response.status}] Failed to mark item as acquired`)
         }
       }).catch(error => {
-        toast.error(`Failed to add item to wishlist => ${error}`)
-      })
-  }
-
-  const onRequest = ({ id }) => {
-    return new Promise(()=> {
-      const item = data.find(item => item.id === id)
-      setData(e => ([ ...e.filter(item => item.id !== id), { ...item, requestedAt: moment().utc().format('YYYY-MM-DD') } ]))
-    }) // TODO: remove this return and everything before
-    return securedAPI.requestFromWishlist({ id })
-      .then(response => {
-        if (response.ok) {
-          toast.success('Item requested')
-        } else {
-          toast.error(`[${response.status}] Failed to request item`)
-        }
-      }).catch(error => {
-        toast.error(`Failed to request item => ${error}`)
+        toast.error(`Failed to mark item as acquired => ${error}`)
+      }).finally(() => {
+        setLoading(false)
       })
   }
 
@@ -93,9 +81,8 @@ const useWishlist = () => {
     data,
     remove: onRemove,
     add: onAdd,
-    request: onRequest,
-    isInWishlist,
+    markAsAcquired: onMarkAsAcquired,
   }
 }
 
-export default useWishlist
+export default useLibraryWishlist

@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Card, Grid, Image } from 'semantic-ui-react'
 import logo from '../../../assets/logo.png'
+import book_cover from '../../../assets/book_cover.png'
 
 
 const BookCardMainContent = ({ isbn, title, author, subject_area, available_copies }) => {
@@ -17,7 +18,7 @@ const BookCardMainContent = ({ isbn, title, author, subject_area, available_copi
       <Grid>
         <Grid.Row>
           <Grid.Column width={4}>
-            <Image src={'https://react.semantic-ui.com/images/avatar/large/steve.jpg'}
+            <Image src={book_cover}
                    alt={'Book cover'}
                    size={'tiny'}
                    style={{ margin: 0 }}

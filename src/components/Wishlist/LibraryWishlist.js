@@ -1,35 +1,28 @@
 import Layout from '../Layout/Layout'
-import PropTypes from 'prop-types'
-import { Button, Divider, Form, Grid, List, Segment } from 'semantic-ui-react'
-import Avatar from 'react-avatar'
+import { Button, Card, Divider, Form, Grid, Segment } from 'semantic-ui-react'
 import React, { useState } from 'react'
 import ControlledPopup from '../utils/ControlledPopup'
-import { getRandomColor } from '../utils/colors'
-import moment from 'moment'
-import securedAPI from '../../api'
-import toast from 'react-hot-toast'
 import { FormProvider, useForm } from 'react-hook-form'
-import { InputHooks } from '../utils/inputs'
+import { InputHooks, TextAreaHooks } from '../utils/inputs'
+import useLibraryWishlist from './useLibraryWishlist'
+import './LibraryWishlist.css'
 
 
-const LibraryWishlist = ({ loading, items, request, remove }) => {
+const LibraryWishlist = () => {
   const [showForm, setShowForm] = useState(false)
+  const { data: items, loading, add, remove } = useLibraryWishlist()
 
   const onSubmit = (data) => {
-    securedAPI.addToLibraryWishlist(data)
-      .then(response => {
-        if (response.ok) {
+    add(data)
+      .then(success => {
+        if (success) {
           setShowForm(false)
-        } else {
-          toast.error(`[${response.status}] Failed to add item to library wishlist`)
         }
-      }).catch(error => {
-      toast.error(`Failed when adding item to library wishlist => ${error}`)
-    })
+      })
   }
 
   const useFormMethods = useForm({ shouldFocusError: true, mode: 'onChange' })
-  const { handleSubmit, formState, setValue } = useFormMethods
+  const { handleSubmit, formState } = useFormMethods
   const { isSubmitting, isValid } = formState
 
   return (
@@ -45,7 +38,7 @@ const LibraryWishlist = ({ loading, items, request, remove }) => {
           </Grid.Column>
         </Grid.Row>
         {showForm &&
-        <>
+        <React.Fragment>
           <Grid.Row textAlign={'center'}>
             <Grid.Column>
               <FormProvider {...useFormMethods}>
@@ -55,6 +48,7 @@ const LibraryWishlist = ({ loading, items, request, remove }) => {
                       <Grid.Row>
                         <Grid.Column>
                           <InputHooks name="title"
+                                      defaultValue={'test'}
                                       type={'text'}
                                       rules={{ required: true }}
                                       label={'Title'}
@@ -64,17 +58,11 @@ const LibraryWishlist = ({ loading, items, request, remove }) => {
                       </Grid.Row>
                       <Grid.Row>
                         <Grid.Column>
-                          <InputHooks name="copies"
-                                      type={'number'}
-                                      label={'Copies'}
-                                      rules={{ required: true }}
-                                      onChange={(e, { value }) => {
-                                        if (value < 1) {
-                                          setValue('copies', 1)
-                                        }
-                                      }}
-                                      defaultValue={1}
-                                      style={{ maxWidth: '100px' }}
+                          <TextAreaHooks name="description"
+                                         defaultValue={''}
+                                         type={'text'}
+                                         label={'Description'}
+                                         placeholder={'Description'}
                           />
                         </Grid.Column>
                       </Grid.Row>
@@ -93,38 +81,25 @@ const LibraryWishlist = ({ loading, items, request, remove }) => {
             </Grid.Column>
           </Grid.Row>
           <Divider/>
-        </>
+        </React.Fragment>
         }
       </Grid>
       {(!Array.isArray(items) || items.length === 0) ? (
         <span className="note">Your wishlist is empty. Go ahead and add some items!</span>
       ) : (
-        <List divided verticalAlign={'middle'}>
-          {Array.isArray(items) && items.length > 0 && items.map((item, index) => (
-            <List.Item key={index}>
-              <List.Content style={{ margin: 0, padding: 0 }} floated="right">
-                {item.requestedAt ? (
-                  <span className="note">Requested: {moment(item.requestedAt).utc().format('YYYY-MM-DD')}</span>
-                ) : (
-                  <ControlledPopup
-                    trigger={
-                      <Button color={'blue'} content={'request'}/>
-                    }
-                    content={closePopup =>
-                      <Button color="blue" content="Confirm" size={'tiny'} onClick={() => {
-                        request(item)
-                          .finally(() => {
-                            closePopup()
-                          })
-                      }}/>
-                    }
-                    timeoutLength={2500}
-                    on="click"
-                    position="top center"
-                  />
-                )}
+        <Card.Group centered stackable>
+          {items?.map(item => (
+            <Card key={item.id} className={'library-wishlist-card'} raised color={item.acquired ? 'green':'red'}>
+              <Card.Content>
+                <Card.Header>{item.title}</Card.Header>
+                <Divider/>
+                <Card.Description className={'overlap'} style={{ maxHeight: '115px' }}>
+                  {item.description}
+                </Card.Description>
+              </Card.Content>
+              <Card.Content extra>
                 <ControlledPopup
-                  trigger={<Button color={'red'} icon={'remove'}/>}
+                  trigger={<Button color={'red'} icon={'remove'} basic/>}
                   content={closePopup =>
                     <Button color="red" content="Confirm" size={'tiny'} onClick={() => {
                       remove(item)
@@ -137,29 +112,13 @@ const LibraryWishlist = ({ loading, items, request, remove }) => {
                   on="click"
                   position="top center"
                 />
-              </List.Content>
-              <List.Content style={{ margin: 0, padding: 0 }}>
-                <Avatar round={'25px'}
-                        size={32}
-                        name={item.title}
-                        style={{ marginRight: '2em' }}
-                        color={getRandomColor()}
-                />
-                {item.title}
-              </List.Content>
-            </List.Item>
+              </Card.Content>
+            </Card>
           ))}
-        </List>
+        </Card.Group>
       )}
     </Layout>
   )
-}
-
-LibraryWishlist.propTypes = {
-  loading: PropTypes.bool.isRequired,
-  items: PropTypes.array,
-  request: PropTypes.func.isRequired,
-  remove: PropTypes.func.isRequired,
 }
 
 export default LibraryWishlist

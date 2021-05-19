@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { Icon, Menu } from 'semantic-ui-react'
 import BookCatalog from '../BookCatalog/BookCatalog'
@@ -61,11 +61,7 @@ const AccountPage = ({ user, isOpenModal, setOpenModal }) => {
       key: 'libraryWishlist',
       name: 'Library wishlist',
       icon: 'list alternate outline',
-      render: <LibraryWishlist loading={loadingWishlist}
-                               items={wishlistItems}
-                               remove={removeWishlistItem}
-                               request={requestWishlistItem}
-      />,
+      render: <LibraryWishlist/>,
       protected: ['ADMIN', 'CHECKOUT'],
     },
     {
@@ -99,7 +95,7 @@ const AccountPage = ({ user, isOpenModal, setOpenModal }) => {
   ]
 
   return (
-    <>
+    <React.Fragment>
       <Menu pointing secondary>
         {panes.filter(pane => !pane.protected || pane.protected.length === 0 || pane.protected.includes(user.role)).map(pane => (
           <Menu.Item key={pane.key}
@@ -123,7 +119,7 @@ const AccountPage = ({ user, isOpenModal, setOpenModal }) => {
         </Menu.Menu>
       </Menu>
       {panes.find(pane => pane.key === activeKey).render}
-    </>
+    </React.Fragment>
 
   )
 }

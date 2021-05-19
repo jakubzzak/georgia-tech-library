@@ -90,3 +90,7 @@ footer {
 .padme {
     padding: 1em;
 }
+
+.overlap {
+    overflow: auto;
+}

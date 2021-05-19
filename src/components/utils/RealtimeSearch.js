@@ -24,7 +24,7 @@ const exampleReducer = (state, action) => {
   }
 }
 
-const RealtimeSearch = ({ setChosenValue, apiFetch, customResultRenderer, placeholder }) => {
+const RealtimeSearch = ({ clearSearchPromp, setChosenValue, apiFetch, customResultRenderer, placeholder }) => {
   const [state, dispatch] = useReducer(exampleReducer, initialState)
   const { loading, results, value } = state
 
@@ -41,7 +41,6 @@ const RealtimeSearch = ({ setChosenValue, apiFetch, customResultRenderer, placeh
 
       apiFetch(data.value)
         .then(results => {
-          console.log('res', results)
           dispatch({
             type: 'FINISH_SEARCH',
             results: results,
@@ -50,6 +49,12 @@ const RealtimeSearch = ({ setChosenValue, apiFetch, customResultRenderer, placeh
 
     }, 800)
   }, [apiFetch])
+
+  useEffect(() => {
+    if (clearSearchPromp) {
+      dispatch({ type: 'CLEAN_QUERY' })
+    }
+  }, [clearSearchPromp])
 
   useEffect(() => {
     // clean up
@@ -78,6 +83,7 @@ const RealtimeSearch = ({ setChosenValue, apiFetch, customResultRenderer, placeh
 }
 
 RealtimeSearch.propTypes = {
+  clearSearchPromp: PropTypes.bool.isRequired,
   setChosenValue: PropTypes.func.isRequired,
   apiFetch: PropTypes.func.isRequired,
   customResultRenderer: PropTypes.func.isRequired,
