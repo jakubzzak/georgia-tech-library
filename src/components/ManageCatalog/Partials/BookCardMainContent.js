@@ -8,7 +8,7 @@ import book_cover from '../../../assets/book_cover.png'
 const BookCardMainContent = ({ isbn, title, author, subject_area, available_copies }) => {
 
   return (
-    <Card.Content style={{ padding: '2em' }}>
+    <Card.Content style={{ padding: '2em 2em 0 2em' }}>
       <Image src={logo}
              alt={'GTL logo'}
              size={'mini'}
@@ -36,6 +36,8 @@ const BookCardMainContent = ({ isbn, title, author, subject_area, available_copi
           <Grid.Row>
             <Grid.Column>
               Isbn: {isbn}
+              <br/>
+              Total copies: {available_copies}
               <br/>
               Available copies: {available_copies}
             </Grid.Column>

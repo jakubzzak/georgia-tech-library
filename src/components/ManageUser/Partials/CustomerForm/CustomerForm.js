@@ -16,16 +16,10 @@ const CustomerForm = ({ onSubmit, defaultValues }) => {
 
   const { fields, append, remove } = useFieldArray({ control, name: 'phone_numbers' })
 
-  // const phoneNumbers = useWatch({
-  //   control,
-  //   name: `phone_numbers`,
-  //   defaultValue: fields,
-  // })
-
   const phoneTypes = [
-    { key: 'PERSONAL', value: 'PERSONAL', text: 'Personal' },
+    { key: 'MOBILE', value: 'MOBILE', text: 'Mobile' },
     { key: 'HOME', value: 'HOME', text: 'Home' },
-    { key: 'WORK', value: 'WORK', text: 'Work' },
+    { key: 'OFFICE', value: 'OFFICE', text: 'Office' },
   ]
 
   useEffect(() => {
@@ -38,12 +32,6 @@ const CustomerForm = ({ onSubmit, defaultValues }) => {
         }
       })
   }, [])
-
-  // useEffect(() => {
-  //   if (defaultValues?.phone_numbers?.length === 0) {
-  //     append({ country_code: 45, number: '', type: phoneTypes[0] })
-  //   }
-  // }, [defaultValues])
 
   return (
     <FormProvider {...useFormMethods}>
@@ -95,7 +83,6 @@ const CustomerForm = ({ onSubmit, defaultValues }) => {
                              }))}
                              type="text"
                              label="Campus"
-                             icon={'building'}
                              rules={{ required: true }}
               />
             </Grid.Column>

@@ -106,9 +106,11 @@ const create = (baseURL) => {
   const findCustomer = ({ cardId }) => api.get(`customer/find/${cardId}`, null, getSecuredHeaders())
   const getCustomer = ({ ssn }) => api.get(`customer/${ssn}`, null, getSecuredHeaders())
   const createCustomer = (data) => api.put(`customer/create`, data, getSecuredHeaders())
-  const updateCustomer = ({ ssn, ...data }) => api.post(`customer/${ssn}/update`, { ssn, ...data }, getSecuredHeaders())
+  const updateCustomer = ({ ssn, ...data }) => api.post(`customer/${ssn}/update`, { ...data }, getSecuredHeaders())
+  const enableCustomer = ({ ssn }) => api.get(`customer/${ssn}/enable`, null, getSecuredHeaders())
+  const disableCustomer = ({ ssn }) => api.delete(`customer/${ssn}/disable`, null, getSecuredHeaders())
   const fetchCustomersActiveRentals = ({ ssn }) => api.get(`customer/${ssn}/rentals/active`, null, getSecuredHeaders())
-  const extendCardValidity = ({ ssn }) => api.get(`customer/${ssn}/card/extend`, null, getSecuredHeaders())
+  const extendCardValidity = ({ id }) => api.get(`customer/card/${id}/extend`, null, getSecuredHeaders())
   // loan
   const startLoan = (data) => api.post(`loan/start`, data, getSecuredHeaders())
   const closeLoan = ({ loanId }) => api.get(`loan/close/${loanId}`, null, getSecuredHeaders())
@@ -117,8 +119,9 @@ const create = (baseURL) => {
   const getBook = ({ isbn }) => api.get(`book/${isbn}`, null, getSecuredHeaders())
   const createBook = (data) => api.put(`book/create`, data, getSecuredHeaders())
   const updateBook = ({ isbn, ...data }) => api.post(`book/${isbn}/update`, data, getSecuredHeaders())
+  const disableBook = ({ isbn }) => api.delete(`book/${isbn}/disable`, null, getSecuredHeaders())
+  const enableBook = ({ isbn }) => api.delete(`book/${isbn}/enable`, null, getSecuredHeaders())
   const changeStock = ({ isbn, ...data }) => api.post(`book/${isbn}/stock`, data, getSecuredHeaders())
-  const deleteBook = ({ isbn }) => api.delete(`book/${isbn}/disable`, null, getSecuredHeaders())
   // library
   const getLibraryWishlist = () => api.get(`library/wishlist`, null, getSecuredHeaders())
   const addToLibraryWishlist = (data) => api.put(`library/wishlist/add`, data, getSecuredHeaders())
@@ -160,6 +163,8 @@ const create = (baseURL) => {
     getCustomer,
     createCustomer,
     updateCustomer,
+    enableCustomer,
+    disableCustomer,
     extendCardValidity,
     fetchCustomersActiveRentals,
     // loan
@@ -171,7 +176,8 @@ const create = (baseURL) => {
     createBook,
     updateBook,
     changeStock,
-    deleteBook,
+    disableBook,
+    enableBook,
     // library
     getLibraryWishlist,
     addToLibraryWishlist,

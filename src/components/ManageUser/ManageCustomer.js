@@ -8,7 +8,7 @@ import useLoan from '../ManageCatalog/useLoan'
 
 
 const ManageCustomer = () => {
-  const { customer, setCustomer, find, get, create, update, extendCard } = useCustomer()
+  const { customer, find, get, create, update, enable, disable, extendCard } = useCustomer()
   const { fetchActiveRentals } = useLoan()
   const [activeTab, setActiveTab] = useState('find')
 
@@ -35,16 +35,17 @@ const ManageCustomer = () => {
         <Grid.Row>
           {activeTab === 'find' ? (
             <FindCustomer customer={customer}
-                          setCustomer={setCustomer}
                           findCustomer={find}
                           getCustomer={get}
                           updateCustomer={update}
                           extendCardValidity={extendCard}
                           fetchActiveRentals={fetchActiveRentals}
+                          disableCustomer={disable}
+                          enableCustomer={enable}
             />
           ) : (
             <CreateCustomerForm createCustomer={create}
-                                setCustomer={setCustomer}
+                                switchCustomerView={() => setActiveTab('find')}
             />
           )}
         </Grid.Row>

@@ -9,8 +9,7 @@ import BookCardMainContent from '../../ManageCatalog/Partials/BookCardMainConten
 
 
 const Checkout = ({ ssn }) => {
-  const [book, setBook] = useState(null)
-  const { find: findBook } = useBook()
+  const { book, find: findBook, get: getBook } = useBook()
   const { start: startLoan } = useLoan()
 
   return (
@@ -18,7 +17,7 @@ const Checkout = ({ ssn }) => {
       <Grid>
         <Grid.Row>
           <Grid.Column>
-            <RealtimeSearch setChosenValue={setBook}
+            <RealtimeSearch setChosenValue={getBook}
                             apiFetch={findBook}
                             customResultRenderer={({ isbn, title, author }) => (
                               <Label key={isbn}
@@ -38,11 +37,11 @@ const Checkout = ({ ssn }) => {
               <BookCardMainContent isbn={book.isbn}
                                    title={book.title}
                                    author={book.author}
-                                   available={book.available}
+                                   subject_area={book.subject_area}
+                                   available_copies={book.available_copies}
               />
-              {book.available > 0 &&
               <Card.Content className="find-action" textAlign={'center'}>
-                <ControlledPopup trigger={<Button basic color={'blue'} content={'Checkout'}/>}
+                <ControlledPopup trigger={<Button basic color={'blue'} content={'Checkout'} disabled={book.available_copies === 0}/>}
                                  content={closePopup =>
                                    <Button color="blue" content="Confirm" size={'tiny'} onClick={() => {
                                      startLoan({ ssn, isbn: book.isbn })
@@ -56,7 +55,6 @@ const Checkout = ({ ssn }) => {
                                  position="top center"
                 />
               </Card.Content>
-              }
             </Card>
           </Grid.Column>
         </Grid.Row>

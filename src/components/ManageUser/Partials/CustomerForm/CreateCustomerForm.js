@@ -3,13 +3,13 @@ import PropTypes from 'prop-types'
 import CustomerForm from './CustomerForm'
 
 
-const CreateCustomerForm = ({ createCustomer, setCustomer }) => {
+const CreateCustomerForm = ({ createCustomer, switchCustomerView }) => {
 
   const onSubmit = (data) => {
     createCustomer(data)
-      .then(response => {
-        if (response.ok) {
-          setCustomer(response.data)
+      .then(success => {
+        if (success) {
+          switchCustomerView()
         }
       })
   }
@@ -23,7 +23,7 @@ const CreateCustomerForm = ({ createCustomer, setCustomer }) => {
 
 CreateCustomerForm.propTypes = {
   createCustomer: PropTypes.func.isRequired,
-  setCustomer: PropTypes.func.isRequired,
+  switchCustomerView: PropTypes.func.isRequired,
 }
 
 export default CreateCustomerForm

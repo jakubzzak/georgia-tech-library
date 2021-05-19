@@ -23,7 +23,7 @@ const BookForm = ({ onSubmit, defaultValues }) => {
               </Divider>
             </Grid.Column>
           </Grid.Row>
-          <Grid.Row columns={2}>
+          <Grid.Row columns={3}>
             <Grid.Column>
               <InputHooks name="isbn"
                           type="text"
@@ -40,8 +40,6 @@ const BookForm = ({ onSubmit, defaultValues }) => {
                           rules={{ required: true }}
               />
             </Grid.Column>
-          </Grid.Row>
-          <Grid.Row columns={2}>
             <Grid.Column>
               <InputHooks name="author"
                           type="text"
@@ -50,6 +48,8 @@ const BookForm = ({ onSubmit, defaultValues }) => {
                           rules={{ required: true }}
               />
             </Grid.Column>
+          </Grid.Row>
+          <Grid.Row columns={2}>
             <Grid.Column>
               <InputHooks name="subject_area"
                           type="text"
@@ -58,8 +58,6 @@ const BookForm = ({ onSubmit, defaultValues }) => {
                           rules={{ required: true }}
               />
             </Grid.Column>
-          </Grid.Row>
-          <Grid.Row columns={2}>
             <Grid.Column>
               <DropdownHooks name="resource_type"
                              label="Resource type"
@@ -69,16 +67,7 @@ const BookForm = ({ onSubmit, defaultValues }) => {
                                value: type.value,
                                text: type.one,
                              }))}
-                             icon={'gift'}
                              rules={{ required: true }}
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <InputHooks name="year"
-                          type="number"
-                          label="Year"
-                          icon={'calendar'}
-                          rules={{ required: true }}
               />
             </Grid.Column>
           </Grid.Row>

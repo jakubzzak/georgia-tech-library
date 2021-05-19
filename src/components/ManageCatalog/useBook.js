@@ -48,41 +48,59 @@ const useBook = () => {
   const onUpdate = (data) => {
     return securedAPI.updateBook(data)
       .then(response => {
-        if (response.ok) {
+        if (response.ok && response.data.ok) {
+          setBook(response.data.data)
           toast.success('Book updated successfully')
+          return true
         } else {
           toast.error(`[${response.status}] Failed to update a book`)
+          return false
         }
       }).catch(error => {
         toast.error(`Something went wrong when updating a book => ${error}`)
+        return false
       })
   }
   const onChangeStock = (data) => {
     return securedAPI.changeStock(data)
       .then(response => {
-        if (response.ok) {
+        if (response.ok && response.data.ok) {
+          setBook(response.data.data)
           toast.success('Book stock updated successfully')
         } else {
           toast.error(`[${response.status}] Failed to update a book's stock`)
         }
-        return response
+        return response.ok
       }).catch(error => {
         toast.error(`Something went wrong when updating a book's stock => ${error}`)
       })
   }
-  const onRemove = ({ isbn }) => {
-    return securedAPI.deleteBook({ isbn })
+  const onDisable = ({ isbn }) => {
+    return securedAPI.disableBook({ isbn })
       .then(response => {
-        if (response.ok) {
+        if (response.ok && response.data.ok) {
           setBook(null)
-          toast.success('Book deleted successfully')
-          return response
+          toast.success('Book disabled successfully')
         } else {
-          toast.error(`[${response.status}] Failed to delete a book`)
-          return response
+          toast.error(`[${response.status}] Failed to disable a book`)
         }
+        return response.ok && response.data.ok
       }).catch(error => {
-        toast.error(`Something went wrong when deleting a book => ${error}`)
+        toast.error(`Something went wrong when disabling a book => ${error}`)
+      })
+  }
+  const onEnable = ({ isbn }) => {
+    return securedAPI.enableBook({ isbn })
+      .then(response => {
+        if (response.ok && response.data.ok) {
+          setBook(response.data.data)
+          toast.success('Book enabled successfully')
+        } else {
+          toast.error(`[${response.status}] Failed to enable a book`)
+        }
+        return response.ok && response.data.ok
+      }).catch(error => {
+        toast.error(`Something went wrong when enabling a book => ${error}`)
       })
   }
 
@@ -94,7 +112,8 @@ const useBook = () => {
     create: onCreate,
     update: onUpdate,
     stock: onChangeStock,
-    remove: onRemove,
+    disable: onDisable,
+    enable: onEnable,
   }
 }
 

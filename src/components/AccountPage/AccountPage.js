@@ -5,8 +5,6 @@ import BookCatalog from '../BookCatalog/BookCatalog'
 import Dashboard from '../Dashboard/Dashboard'
 import Wishlist from '../Wishlist/Wishlist'
 import History from '../History/History'
-// import Preferences from '../Preferences/Preferences'
-import useWishlist from '../Wishlist/useWishlist'
 import LibraryWishlist from '../Wishlist/LibraryWishlist'
 import ManageCustomer from '../ManageUser/ManageCustomer'
 import ManageCatalog from '../ManageCatalog/ManageCatalog'
@@ -14,14 +12,6 @@ import Reservations from '../Reservations/Reservations'
 
 const AccountPage = ({ user, isOpenModal, setOpenModal }) => {
   const [activeKey, setActiveKey] = useState('search')
-  const {
-    loading: loadingWishlist,
-    data: wishlistItems,
-    request: requestWishlistItem,
-    remove: removeWishlistItem,
-    add: addWishlistItem,
-    isInWishlist,
-  } = useWishlist()
 
   const panes = [
     {
@@ -43,11 +33,7 @@ const AccountPage = ({ user, isOpenModal, setOpenModal }) => {
       key: 'wishlist',
       name: 'Wishlist',
       icon: 'list',
-      render: <Wishlist loading={loadingWishlist}
-                        items={wishlistItems}
-                        remove={removeWishlistItem}
-                        request={requestWishlistItem}
-      />,
+      render: <Wishlist/>,
       protected: ['USER'],
     },
     {

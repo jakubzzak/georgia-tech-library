@@ -9,9 +9,19 @@ import CheckIn from './Partials/CheckIn'
 import Checkout from './Partials/Checkout'
 import useLoan from '../ManageCatalog/useLoan'
 import CustomerCardMainContent from './Partials/CustomerCardMainContent'
+import moment from 'moment'
 
 
-const FindCustomer = ({ customer, setCustomer, findCustomer, getCustomer, updateCustomer, extendCardValidity, fetchActiveRentals }) => {
+const FindCustomer = ({
+                        customer,
+                        findCustomer,
+                        getCustomer,
+                        updateCustomer,
+                        enableCustomer,
+                        disableCustomer,
+                        extendCardValidity,
+                        fetchActiveRentals,
+                      }) => {
   const [action, setAction] = useState(null)
   const { close: closeLoan } = useLoan()
 
@@ -39,40 +49,65 @@ const FindCustomer = ({ customer, setCustomer, findCustomer, getCustomer, update
             <Grid.Column textAlign={'left'}>
               <Card style={{ margin: 'auto', width: '550px' }}>
                 <CustomerCardMainContent card_id={customer.card.id}
+                                         expiration_date={customer.card.expiration_date}
                                          email={customer.email}
                                          firstname={customer.first_name}
                                          lastname={customer.last_name}
                                          campus={customer.campus}
                 />
-                <Card.Content className="find-action" textAlign={'center'}>
-                  <Button basic={action !== 'edit'}
-                          color={'orange'}
-                          content={'Edit'}
-                          onClick={() => setAction('edit')}
-                  />
-                  <Button basic={action !== 'checkout'}
-                          color={'yellow'}
-                          content={'Check out'}
-                          onClick={() => setAction('checkout')}
-                  />
-                  <Button basic={action !== 'checkin'}
-                          color={'purple'}
-                          content={'Check in'}
-                          onClick={() => setAction('checkin')}
-                  />
-                  <ControlledPopup trigger={<Button basic color={'red'} content={'Extend'}/>}
-                                   content={closePopup =>
-                                     <Button color="red" content="Confirm" size={'tiny'} onClick={() => {
-                                       extendCardValidity({ card_id: customer.card.id })
-                                         .finally(() => {
-                                           closePopup()
-                                         })
-                                     }}/>
-                                   }
-                                   timeoutLength={2500}
-                                   on="click"
-                                   position="top center"
-                  />
+                <Card.Content className="find-action" textAlign={'center'} extra>
+                  {customer.is_active ? (
+                    <>
+                      <Button basic={action !== 'edit'}
+                              className={'card-button'}
+                              color={'orange'}
+                              content={'Edit'}
+                              onClick={() => setAction(action === 'edit' ? null : 'edit')}
+                      />
+                      <Button basic={action !== 'checkout'}
+                              className={'card-button'}
+                              color={'yellow'}
+                              content={'Lend'}
+                              onClick={() => setAction(action === 'checkout' ? null : 'checkout')}
+                      />
+                      <Button basic={action !== 'checkin'}
+                              className={'card-button'}
+                              color={'purple'}
+                              content={'Return'}
+                              onClick={() => setAction(action === 'checkin' ? null : 'checkin')}
+                      />
+                      <ControlledPopup trigger={<Button basic
+                                                        color={'blue'}
+                                                        className={'card-button'}
+                                                        content={'Extend'}
+                                                        disabled={moment(customer.card.expiration_date).isAfter(moment().add(-30, 'day'))}/>}
+                                       content={closePopup =>
+                                         <Button color="red" content="Confirm" size={'tiny'} onClick={() => {
+                                           extendCardValidity({ id: customer.card.id })
+                                             .finally(() => {
+                                               closePopup()
+                                             })
+                                         }}/>
+                                       }
+                                       timeoutLength={2500}
+                                       on="click"
+                                       position="top center"
+                      />
+                      <Button basic
+                              className={'card-button'}
+                              color={'red'}
+                              content={'Disable'}
+                              onClick={() => disableCustomer({ ssn: customer.ssn })}
+                      />
+                    </>
+                  ) : (
+                    <Button basic
+                            className={'card-button'}
+                            color={'green'}
+                            content={'Enable'}
+                            onClick={() => enableCustomer({ ssn: customer.ssn })}
+                    />
+                  )}
                 </Card.Content>
               </Card>
             </Grid.Column>
@@ -80,14 +115,13 @@ const FindCustomer = ({ customer, setCustomer, findCustomer, getCustomer, update
           <Grid.Row>
             <Grid.Column>
               {action === 'checkout' ? (
-                <Checkout cardId={customer.card.id} />
+                <Checkout cardId={customer.card.id}/>
               ) : action === 'checkin' ? (
                 <CheckIn fetchActiveRentals={() => fetchActiveRentals({ ssn: customer.ssn })}
                          closeLoan={closeLoan}
                 />
               ) : action === 'edit' && (
                 <EditCustomerForm editCustomer={updateCustomer}
-                                  setCustomer={setCustomer}
                                   defaultValues={customer}
                 />
               )}
@@ -102,10 +136,11 @@ const FindCustomer = ({ customer, setCustomer, findCustomer, getCustomer, update
 
 FindCustomer.propTypes = {
   customer: PropTypes.object,
-  setCustomer: PropTypes.func.isRequired,
   findCustomer: PropTypes.func.isRequired,
   getCustomer: PropTypes.func.isRequired,
   updateCustomer: PropTypes.func.isRequired,
+  enableCustomer: PropTypes.func.isRequired,
+  disableCustomer: PropTypes.func.isRequired,
   extendCardValidity: PropTypes.func.isRequired,
   fetchActiveRentals: PropTypes.func.isRequired,
 }

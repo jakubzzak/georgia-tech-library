@@ -13,12 +13,6 @@ const ChangeStock = ({ isbn, changeStock, setBook, closeAction, defaultValues })
 
   const onSubmit = (data) => {
     changeStock({ isbn, ...data })
-      .then(response => {
-        if (response.ok) {
-          setBook(response.data)
-          closeAction()
-        }
-      })
   }
 
   return (

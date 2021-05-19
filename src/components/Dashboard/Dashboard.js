@@ -20,7 +20,7 @@ const Dashboard = ({ user }) => {
   }
 
   return (
-    <Layout loading={user === null}>
+    <Layout loading={!user}>
       <Grid className="content" style={{ padding: '50px' }} textAlign={'center'}>
         <Grid.Row>
           <Grid.Column>

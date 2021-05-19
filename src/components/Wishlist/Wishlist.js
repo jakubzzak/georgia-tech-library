@@ -6,9 +6,18 @@ import React from 'react'
 import ControlledPopup from '../utils/ControlledPopup'
 import { getRandomColor } from '../utils/colors'
 import moment from 'moment'
+import useWishlist from './useWishlist'
 
 
 const Wishlist = ({ loading, items, request, remove }) => {
+  const {
+    loading: loadingWishlist,
+    data: wishlistItems,
+    request: requestWishlistItem,
+    remove: removeWishlistItem,
+    add: addWishlistItem,
+    isInWishlist,
+  } = useWishlist()
 
   return (
     <Layout loading={loading} useWrapper={items.length === 0}>

@@ -3,15 +3,14 @@ import CustomerForm from './CustomerForm'
 import { Segment } from 'semantic-ui-react'
 
 
-const EditCustomerForm = ({ editCustomer, setCustomer, defaultValues }) => {
+const EditCustomerForm = ({ editCustomer, defaultValues }) => {
 
   const onSubmit = (data) => {
-    editCustomer(data)
-      .then(updatedCustomer => {
-        if (updatedCustomer) {
-          setCustomer(updatedCustomer)
-        }
-      })
+    if (data.ssn === defaultValues.ssn) {
+      editCustomer(data)
+    } else {
+      editCustomer({ ...data, ssn: defaultValues.ssn, newSsn: data.ssn })
+    }
   }
 
   return (
@@ -25,7 +24,6 @@ const EditCustomerForm = ({ editCustomer, setCustomer, defaultValues }) => {
 
 EditCustomerForm.propTypes = {
   editCustomer: PropTypes.func.isRequired,
-  setCustomer: PropTypes.func.isRequired,
   defaultValues: PropTypes.object,
 }
 

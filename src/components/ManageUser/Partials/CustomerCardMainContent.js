@@ -2,12 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Card, Grid, Image } from 'semantic-ui-react'
 import logo from '../../../assets/logo.png'
+import moment from 'moment'
 
 
-const CustomerCardMainContent = ({ card_id, email, firstname, lastname, campus }) => {
+const CustomerCardMainContent = ({ card_id, expiration_date, email, firstname, lastname, campus }) => {
 
   return (
-    <Card.Content style={{ padding: '2em' }}>
+    <Card.Content style={{ padding: '2em 2em 0 2em' }}>
       <Image src={logo}
              alt={'GTL logo'}
              size={'mini'}
@@ -36,11 +37,12 @@ const CustomerCardMainContent = ({ card_id, email, firstname, lastname, campus }
           </Grid.Column>
         </Grid.Row>
       </Grid>
-      <Card.Description>
+      <Card.Description style={{ marginBottom: 0, paddingBottom: 0 }}>
         <Grid>
           <Grid.Row>
             <Grid.Column>
-              Card number: {card_id}
+              Card number: {card_id}<br/>
+              Expiration date: {moment(expiration_date).utc().format("DD MMM YYYY")}
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -51,6 +53,7 @@ const CustomerCardMainContent = ({ card_id, email, firstname, lastname, campus }
 
 CustomerCardMainContent.propTypes = {
   card_id: PropTypes.string.isRequired,
+  expiration_date: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   firstname: PropTypes.string.isRequired,
   lastname: PropTypes.string.isRequired,

@@ -3,13 +3,12 @@ import PropTypes from 'prop-types'
 import { Button, Card, Grid, Label, Segment } from 'semantic-ui-react'
 import '../ManageUser/FindCustomer.css'
 import RealtimeSearch from '../utils/RealtimeSearch'
-import ControlledPopup from '../utils/ControlledPopup'
 import BookCardMainContent from './Partials/BookCardMainContent'
 import EditBookForm from './Partials/BookForm/EditBookForm'
 import ChangeStock from './Partials/ChangeStock'
 
 
-const FindBook = ({ book, setBook, findBook, getBook, updateBook, changeStock, removeBook }) => {
+const FindBook = ({ book, setBook, findBook, getBook, updateBook, changeStock, disableBook, enableBook }) => {
   const [action, setAction] = useState(null)
   const [cleanSearch, setCleanSearch] = useState(false)
 
@@ -43,41 +42,37 @@ const FindBook = ({ book, setBook, findBook, getBook, updateBook, changeStock, r
                                      subject_area={book.subject_area}
                                      available_copies={book.available_copies}
                 />
-                <Card.Content className="find-action" textAlign={'center'}>
-                  <Button basic={action !== 'description'}
-                          color={'green'}
-                          content={action === 'description' ? 'Description' : 'Description'}
-                          onClick={() => setAction(action === 'description' ? null : 'description')}
-                  />
-                  <Button basic={action !== 'edit'}
-                          color={'orange'}
-                          content={'Edit'}
-                          onClick={() => setAction(action === 'edit' ? null : 'edit')}
-                  />
-                  <Button basic={action !== 'stock'}
-                          color={'purple'}
-                          content={'Stock'}
-                          onClick={() => setAction(action === 'stock' ? null : 'stock')}
-                  />
-                  <ControlledPopup trigger={<Button basic color={'red'} content={'Delete'}/>}
-                                   content={closePopup =>
-                                     <Button color="red" content="Confirm" size={'tiny'} onClick={() => {
-                                       removeBook(book)
-                                         .then(response => {
-                                           if (response.ok && response.data.ok) {
-                                             setCleanSearch(true)
-                                           }
-                                         })
-                                         .finally(() => {
-                                           closePopup()
-                                           setCleanSearch(false)
-                                         })
-                                     }}/>
-                                   }
-                                   timeoutLength={2500}
-                                   on="click"
-                                   position="top center"
-                  />
+                <Card.Content className="find-action" textAlign={'center'} extra>
+                  {book.deleted ? (
+                    <Button basic
+                            color={'green'}
+                            content={'Enable'}
+                            onClick={() => enableBook({ isbn: book.isbn })}
+                    />
+                  ) : (
+                    <>
+                      <Button basic={action !== 'description'}
+                              color={'brown'}
+                              content={'About'}
+                              onClick={() => setAction(action === 'description' ? null : 'description')}
+                      />
+                      <Button basic={action !== 'edit'}
+                              color={'orange'}
+                              content={'Edit'}
+                              onClick={() => setAction(action === 'edit' ? null : 'edit')}
+                      />
+                      <Button basic={action !== 'stock'}
+                              color={'purple'}
+                              content={'Stock'}
+                              onClick={() => setAction(action === 'stock' ? null : 'stock')}
+                      />
+                      <Button basic
+                              color={'red'}
+                              content={'Disable'}
+                              onClick={() => disableBook({ isbn: book.isbn })}
+                      />
+                    </>
+                  )}
                 </Card.Content>
               </Card>
             </Grid.Column>
@@ -89,7 +84,7 @@ const FindBook = ({ book, setBook, findBook, getBook, updateBook, changeStock, r
                   <Grid textAlign={'left'}>
                     <Grid.Row>
                       <Grid.Column>
-                        Description: {book.description}
+                        {book.description}
                       </Grid.Column>
                     </Grid.Row>
                   </Grid>
@@ -123,7 +118,8 @@ FindBook.propTypes = {
   getBook: PropTypes.func.isRequired,
   updateBook: PropTypes.func.isRequired,
   changeStock: PropTypes.func.isRequired,
-  removeBook: PropTypes.func.isRequired,
+  disableBook: PropTypes.func.isRequired,
+  enableBook: PropTypes.func.isRequired,
 }
 
 export default FindBook
