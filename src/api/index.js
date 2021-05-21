@@ -125,6 +125,7 @@ const create = (baseURL) => {
   const markItemAsAcquiredInLibraryWishlist = ({ id }) => api.get(`library/wishlist/acquired/${id}`, null, getUnsecuredHeaders())
   const getLibraryReservations = () => api.get(`library/reservations`, null, getUnsecuredHeaders())
   const markItemAsAcceptedInLibraryReservations = ({ id }) => api.get(`library/reservations/accepted/${id}`, null, getUnsecuredHeaders())
+  const fetchOverDueLoans = ({ page }) => api.get(`library/loans/overdue/${page}`, null, getUnsecuredHeaders())
   // static
   const fetchCampuses = () => api.get(`library/static/campuses`, null, getUnsecuredHeaders())
   // ------
@@ -182,6 +183,7 @@ const create = (baseURL) => {
     markItemAsAcquiredInLibraryWishlist,
     getLibraryReservations,
     markItemAsAcceptedInLibraryReservations,
+    fetchOverDueLoans,
     // library - static
     fetchCampuses,
   }

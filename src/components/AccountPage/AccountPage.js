@@ -11,6 +11,7 @@ import ManageCatalog from '../ManageCatalog/ManageCatalog'
 import Reservations from '../Reservations/Reservations'
 import useCustomerWishlist from '../Wishlist/useCustomerWishlist'
 import { customerRole, librarianRole } from '../utils/roles'
+import GracePeriod from '../GracePeriod/GracePeriod'
 
 
 const AccountPage = ({ user, isOpenModal, setOpenModal }) => {
@@ -83,6 +84,13 @@ const AccountPage = ({ user, isOpenModal, setOpenModal }) => {
       name: 'Catalog',
       icon: 'book',
       render: <ManageCatalog/>,
+      protected: Object.keys(librarianRole),
+    },
+    {
+      key: 'gracePeriod',
+      name: 'Grace period',
+      icon: 'exclamation',
+      render: <GracePeriod/>,
       protected: Object.keys(librarianRole),
     },
   ]
