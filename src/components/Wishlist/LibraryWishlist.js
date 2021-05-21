@@ -48,7 +48,6 @@ const LibraryWishlist = () => {
                       <Grid.Row>
                         <Grid.Column>
                           <InputHooks name="title"
-                                      defaultValue={'test'}
                                       type={'text'}
                                       rules={{ required: true }}
                                       label={'Title'}

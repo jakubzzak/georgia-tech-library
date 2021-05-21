@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import { options as bookTypes } from './../../../BookCatalog/SearchBar/SearchBar'
 
 
-const BookForm = ({ onSubmit, defaultValues }) => {
+const BookForm = ({ onSubmit, defaultValues, isEdit }) => {
   const useFormMethods = useForm({ defaultValues, shouldFocusError: true, mode: 'onChange' })
   const { handleSubmit, formState } = useFormMethods
   const { isSubmitting, isValid } = formState
@@ -26,6 +26,8 @@ const BookForm = ({ onSubmit, defaultValues }) => {
           <Grid.Row columns={3}>
             <Grid.Column>
               <InputHooks name="isbn"
+                          placeholder={'Isbn'}
+                          readOnly={isEdit}
                           type="text"
                           label="Isbn"
                           icon={'barcode'}
@@ -34,6 +36,7 @@ const BookForm = ({ onSubmit, defaultValues }) => {
             </Grid.Column>
             <Grid.Column>
               <InputHooks name="title"
+                          placeholder={'Title'}
                           type="text"
                           label="Title"
                           icon={'header'}
@@ -42,6 +45,7 @@ const BookForm = ({ onSubmit, defaultValues }) => {
             </Grid.Column>
             <Grid.Column>
               <InputHooks name="author"
+                          placeholder={'Author'}
                           type="text"
                           label="Author"
                           icon={'user'}
@@ -52,6 +56,7 @@ const BookForm = ({ onSubmit, defaultValues }) => {
           <Grid.Row columns={2}>
             <Grid.Column>
               <InputHooks name="subject_area"
+                          placeholder={'Subject area'}
                           type="text"
                           label="Subject area"
                           icon={'university'}
@@ -61,6 +66,7 @@ const BookForm = ({ onSubmit, defaultValues }) => {
             <Grid.Column>
               <DropdownHooks name="resource_type"
                              label="Resource type"
+                             defaultValue={bookTypes[0].value}
                              type="text"
                              options={bookTypes?.filter(type => type.isType).map(type => ({
                                key: type.key,
@@ -74,36 +80,9 @@ const BookForm = ({ onSubmit, defaultValues }) => {
           <Grid.Row>
             <Grid.Column>
               <TextAreaHooks name="description"
+                             placeholder={'Description'}
                              type="text"
                              label="Description"
-                             rules={{ required: true }}
-              />
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column>
-              <Divider horizontal>
-                <Header as="h3">
-                  Copies
-                </Header>
-              </Divider>
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row columns={2}>
-            <Grid.Column>
-              <InputHooks name="total_copies"
-                          type="number"
-                          label="Total copies"
-                          icon={'hashtag'}
-                          rules={{ required: true }}
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <InputHooks name="available_copies"
-                          type="number"
-                          label="Available copies"
-                          icon={'hashtag'}
-                          rules={{ required: true }}
               />
             </Grid.Column>
           </Grid.Row>
@@ -121,6 +100,7 @@ const BookForm = ({ onSubmit, defaultValues }) => {
 BookForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   defaultValues: PropTypes.object,
+  isEdit: PropTypes.bool,
 }
 
 export default BookForm

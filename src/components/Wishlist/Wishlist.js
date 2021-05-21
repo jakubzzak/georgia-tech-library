@@ -6,18 +6,9 @@ import React from 'react'
 import ControlledPopup from '../utils/ControlledPopup'
 import { getRandomColor } from '../utils/colors'
 import moment from 'moment'
-import useWishlist from './useWishlist'
 
 
 const Wishlist = ({ loading, items, request, remove }) => {
-  const {
-    loading: loadingWishlist,
-    data: wishlistItems,
-    request: requestWishlistItem,
-    remove: removeWishlistItem,
-    add: addWishlistItem,
-    isInWishlist,
-  } = useWishlist()
 
   return (
     <Layout loading={loading} useWrapper={items.length === 0}>
@@ -28,8 +19,8 @@ const Wishlist = ({ loading, items, request, remove }) => {
           {Array.isArray(items) && items.length > 0 && items.map((item, index) => (
             <List.Item key={index}>
               <List.Content style={{ margin: 0, padding: 0 }} floated="right">
-                {item.requestedAt ? (
-                  <span className="note">Requested: {moment(item.requestedAt).utc().format('YYYY-MM-DD')}</span>
+                {item.requested_at ? (
+                  <span className="note">Requested at: {moment(item.requested_at).utc().format('DD MMM YYYY')}</span>
                 ) : (
                   <ControlledPopup
                     trigger={
@@ -52,7 +43,7 @@ const Wishlist = ({ loading, items, request, remove }) => {
                   trigger={<Button color={'red'} icon={'remove'}/>}
                   content={closePopup =>
                     <Button color="red" content="Confirm" size={'tiny'} onClick={() => {
-                      remove(item)
+                      remove(item.book)
                         .finally(() => {
                           closePopup()
                         })
@@ -66,11 +57,11 @@ const Wishlist = ({ loading, items, request, remove }) => {
               <List.Content style={{ margin: 0, padding: 0 }}>
                 <Avatar round={'25px'}
                         size={32}
-                        name={item.title}
+                        name={item.book?.title}
                         style={{ marginRight: '2em' }}
                         color={getRandomColor()}
                 />
-                {item.title}
+                {item.book?.title}
               </List.Content>
             </List.Item>
           ))}

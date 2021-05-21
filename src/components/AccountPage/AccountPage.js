@@ -9,17 +9,28 @@ import LibraryWishlist from '../Wishlist/LibraryWishlist'
 import ManageCustomer from '../ManageUser/ManageCustomer'
 import ManageCatalog from '../ManageCatalog/ManageCatalog'
 import Reservations from '../Reservations/Reservations'
+import useCustomerWishlist from '../Wishlist/useCustomerWishlist'
+import { customerRole, librarianRole } from '../utils/roles'
+
 
 const AccountPage = ({ user, isOpenModal, setOpenModal }) => {
   const [activeKey, setActiveKey] = useState('search')
+  const {
+    loading: loadingWishlist,
+    data: wishlistItems,
+    request: requestWishlistItem,
+    remove: removeWishlistItem,
+    add: addWishlistItem,
+    isInWishlist,
+  } = useCustomerWishlist(user)
 
   const panes = [
     {
       key: 'search',
       name: 'Search',
       icon: 'search',
-      render: <BookCatalog addToWishlist={user.role === 'USER' ? addWishlistItem:null}
-                           removeFromWishlist={user.role === 'USER' ? removeWishlistItem:null}
+      render: <BookCatalog addToWishlist={Object.keys(customerRole).includes(user.type) ? addWishlistItem:null}
+                           removeFromWishlist={Object.keys(customerRole).includes(user.type) ? removeWishlistItem:null}
                            isInWishlist={isInWishlist}
       />,
     },
@@ -33,57 +44,53 @@ const AccountPage = ({ user, isOpenModal, setOpenModal }) => {
       key: 'wishlist',
       name: 'Wishlist',
       icon: 'list',
-      render: <Wishlist/>,
-      protected: ['USER'],
+      render: <Wishlist loading={loadingWishlist}
+                        request={requestWishlistItem}
+                        remove={removeWishlistItem}
+                        items={wishlistItems}/>,
+      protected: Object.keys(customerRole),
     },
     {
       key: 'history',
       name: 'History',
       icon: 'history',
-      render: <History initPageSize={5}/>,
-      protected: ['USER'],
+      render: <History/>,
+      protected: Object.keys(customerRole),
     },
     {
       key: 'libraryWishlist',
       name: 'Library wishlist',
       icon: 'list alternate outline',
       render: <LibraryWishlist/>,
-      protected: ['ADMIN', 'CHECKOUT'],
+      protected: Object.keys(librarianRole),
     },
     {
       key: 'reservations',
       name: 'Reservations',
       icon: 'numbered list',
       render: <Reservations/>,
-      protected: ['ADMIN', 'CHECKOUT']
+      protected: Object.keys(librarianRole),
     },
     {
       key: 'manageUser',
       name: 'Users',
       icon: 'users',
       render: <ManageCustomer/>,
-      protected: ['ADMIN', 'CHECKOUT'],
+      protected: Object.keys(librarianRole),
     },
     {
       key: 'manageCatalog',
       name: 'Catalog',
       icon: 'book',
       render: <ManageCatalog/>,
-      protected: ['ADMIN', 'CHECKOUT'],
+      protected: Object.keys(librarianRole),
     },
-    // {
-    //   key: 'preferences',
-    //   name: 'Preferences',
-    //   icon: 'settings',
-    //   render: <Preferences user={user}/>,
-    //   protected: [],
-    // },
   ]
 
   return (
     <React.Fragment>
       <Menu pointing secondary>
-        {panes.filter(pane => !pane.protected || pane.protected.length === 0 || pane.protected.includes(user.role)).map(pane => (
+        {panes.filter(pane => !pane.protected || pane.protected.length === 0 || pane.protected.includes(user.type)).map(pane => (
           <Menu.Item key={pane.key}
                      active={!isOpenModal && activeKey === pane.key}
                      onClick={() => setActiveKey(pane.key)}

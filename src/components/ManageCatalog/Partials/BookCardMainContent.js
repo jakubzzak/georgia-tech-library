@@ -5,7 +5,7 @@ import logo from '../../../assets/logo.png'
 import book_cover from '../../../assets/book_cover.png'
 
 
-const BookCardMainContent = ({ isbn, title, author, subject_area, available_copies }) => {
+const BookCardMainContent = ({ isbn, title, author, subject_area, available_copies, total_copies }) => {
 
   return (
     <Card.Content style={{ padding: '2em 2em 0 2em' }}>
@@ -37,7 +37,7 @@ const BookCardMainContent = ({ isbn, title, author, subject_area, available_copi
             <Grid.Column>
               Isbn: {isbn}
               <br/>
-              Total copies: {available_copies}
+              Total copies: {total_copies}
               <br/>
               Available copies: {available_copies}
             </Grid.Column>
@@ -54,6 +54,7 @@ BookCardMainContent.propTypes = {
   author: PropTypes.string.isRequired,
   subject_area: PropTypes.string.isRequired,
   available_copies: PropTypes.number.isRequired,
+  total_copies: PropTypes.number.isRequired,
 }
 
 

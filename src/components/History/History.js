@@ -1,67 +1,52 @@
-import React from 'react'
-import ReactTable from 'react-table-v6'
+import React, { useEffect } from 'react'
 import 'react-table-v6/react-table.css'
-import PropTypes from 'prop-types'
-import usePagination from '../usePagination'
-import moment from 'moment'
 import Layout from '../Layout/Layout'
+import useLoan from '../ManageCatalog/useLoan'
+import { Label, List } from 'semantic-ui-react'
+import Avatar from 'react-avatar'
+import { getRandomColor } from '../utils/colors'
+import moment from 'moment'
 
 
-const History = ({ initPageSize = 10 }) => {
+const History = () => {
+  const { loans: items, loading, fetchHistory } = useLoan()
 
-  const { page, pageSize, onPageChange, onPageSizeChange, onSortChange, onSearchChange, loading } = usePagination({
-    initPageSize,
-    initSort: [{ id: 'createdAt', desc: false }],
-  })
-
-  const columns = [
-    {
-      Header: 'Title',
-      accessor: 'title',
-      Cell: props => <span>{props.value}</span>,
-    }, {
-      id: 'dateOut',
-      Header: 'Date out',
-      width: 130,
-      accessor: (d) => moment(d.dateOut).format('YYYY-MM-DD'),
-      style: { 'textAlign': 'center' },
-    }, {
-      id: 'dateIn',
-      Header: 'Date in',
-      width: 130,
-      accessor: (d) => moment(d.dateIn).format('YYYY-MM-DD'),
-      style: { 'textAlign': 'center' },
-    }, {
-      Header: props => <span>Fine DKK</span>, // Custom header components!
-      accessor: 'fine',
-      width: 80,
-      style: { 'textAlign': 'center' },
-      Cell: props => <span>{props.value}</span>,
+  useEffect(() => {
+    if (!items || items.length === 0) {
+      fetchHistory()
     }
-  ]
+  }, [])
 
   return (
-    <Layout loading={false}>
-      <ReactTable className="-striped -highlight" noDataText="Noting to show" loading={loading}
-                  defaultPageSize={initPageSize} page={page.currentPage} pages={page.totalPages}
-                  data={page.data} sorting={page.sort} manual
-                  onPageChange={(pageIndex) => onPageChange(pageIndex)}
-                  onPageSizeChange={(pageSize, pageIndex) => onPageSizeChange(pageSize, pageIndex)}
-                  onSortedChange={(newSorted, column, shiftKey) => onSortChange(column, shiftKey)}
-                  columns={columns}
-                  getTheadThProps={() => ({
-                    style: {
-                      outline: '0',
-                    },
-                  })}
-      />
+    <Layout loading={loading} useWrapper={!items || items?.length === 0}>
+      {(!Array.isArray(items) || items.length === 0) ? (
+        <span className="note">Your history is empty.</span>
+      ) : (
+        <List divided verticalAlign={'middle'}>
+          {items?.map((item, index) => (
+            <List.Item key={index}>
+              <List.Content style={{ margin: 0, padding: 0 }} floated={'right'}>
+                Loaned at: <Label color={'grey'} style={{ width: '100px',marginRight: '5em' }}>{moment(item.loaned_at).utc().format('DD MMM YYYY')}</Label>
+                Returned at: <Label color={item.returned_at ? 'grey':'red'} style={{ width: '100px', textAlign: 'center' }}>{item.returned_at ? moment(item.returned_at).utc().format('DD MMM YYYY') : 'NEVER'}</Label>
+              </List.Content>
+              <List.Content style={{ margin: 0, padding: 0 }}>
+                <Avatar round={'25px'}
+                        size={32}
+                        name={item.book?.title}
+                        style={{ marginRight: '2em' }}
+                        color={getRandomColor()}
+                />
+                {item.book?.title}
+              </List.Content>
+            </List.Item>
+          ))}
+        </List>
+      )}
     </Layout>
   )
 }
 
-History.propTypes = {
-  initPageSize: PropTypes.number,
-}
+History.propTypes = {}
 
 
 export default History

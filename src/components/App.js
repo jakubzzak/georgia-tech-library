@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import './App.css'
 import { Toaster } from 'react-hot-toast'
 import { Image } from 'semantic-ui-react'
-import useToken from './useToken'
 import useUser from './useUser'
 import Login from './Login/Login'
 import LandingPage from './LandingPage/LandingPage'
@@ -15,19 +14,7 @@ import logo from '../assets/logo.png'
 const App = () => {
   const [isOpenModal, setOpenModal] = useState(false)
 
-  // const { token, setToken } = useToken()
-  // const { user, setUser } = useUser()
-  const [token, setToken] = useState(null)
-  const [user, setUser] = useState(null)
-
-  useEffect(() => {
-    if (token != null) {
-      // TODO: fetch user here or merge it with token
-      setUser(u => ({ ...u, role: 'ADMIN' })) // for now, override user data here
-    } else {
-      setUser(null)
-    }
-  }, [token])
+  const { user, loading: loadingUser, setLoginType, getLoginType, login, logout } = useUser()
 
   return (
     <div className="wrapper">
@@ -52,15 +39,23 @@ const App = () => {
         }}
       />
       <ModalWindow isOpen={isOpenModal} setOpen={setOpenModal}>
-        {token && user ? (
-          <Logout closeModal={() => setOpenModal(false)} setToken={() => setToken(null)}/>
+        {user ? (
+          <Logout logout={logout}
+                  loading={loadingUser}
+                  closeModal={() => setOpenModal(false)}
+          />
         ) : (
-          <Login closeModal={() => setOpenModal(false)} setToken={setToken} setUser={setUser}/>
+          <Login login={login}
+                 getLoginType={getLoginType}
+                 setLoginType={setLoginType}
+                 loading={loadingUser}
+                 closeModal={() => setOpenModal(false)}
+          />
         )}
       </ModalWindow>
       <Image src={logo} size={'small'} alt={'Georgia Tech Library'}/>
       <div className="paper-shadow">
-        {token && user ? (
+        {user ? (
           <AccountPage user={user} isOpenModal={isOpenModal} setOpenModal={setOpenModal}/>
         ) : (
           <LandingPage setOpenModal={setOpenModal}/>

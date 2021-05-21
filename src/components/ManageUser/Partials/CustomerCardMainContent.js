@@ -32,7 +32,7 @@ const CustomerCardMainContent = ({ card_id, expiration_date, email, firstname, l
               {`${campus.address.post_code} ${campus.address.city} (${campus.address.country})`}
             </Card.Meta>
             <Card.Description style={{ marginTop: '1em' }}>
-              email: {email}
+              {email}
             </Card.Description>
           </Grid.Column>
         </Grid.Row>

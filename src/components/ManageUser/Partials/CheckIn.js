@@ -13,9 +13,7 @@ const CheckIn = ({ fetchActiveRentals, closeLoan }) => {
   useEffect(() => {
     fetchActiveRentals()
       .then(results => setItems(results))
-  }, [fetchActiveRentals])
-
-  console.log('valjues', items)
+  }, [])
 
   return (
     <Segment>
@@ -25,7 +23,7 @@ const CheckIn = ({ fetchActiveRentals, closeLoan }) => {
             {items.map((item, index) => (
               <List.Item key={index}>
                 <List.Content style={{ margin: 0, padding: 0 }} floated="right">
-                  {`Checked out at: ${item.dateStart} `}
+                  {`Loaned at: ${item.loaned_at} `}
                   <ControlledPopup
                     trigger={<Button color={'blue'} content={'Close'}/>}
                     content={closePopup =>

@@ -10,11 +10,11 @@ import { getRandomColor } from '../utils/colors'
 
 
 const Dashboard = ({ user }) => {
-  const [cardExpirationDaysLeft] = useState(moment(user.card.dueDate).diff(moment(), 'days'))
+  const [cardExpirationDaysLeft] = useState(moment(user.card?.expiration_date).diff(moment(), 'days'))
 
   const getFullName = () => {
     if (user) {
-      return user.firstName + ' ' + user.lastName
+      return user.first_name + ' ' + user.last_name
     }
     return ''
   }
@@ -43,23 +43,30 @@ const Dashboard = ({ user }) => {
                   <Divider/>
                   <Card.Description style={{ margin: '1em' }} textAlign={'left'}>
                     email: {user.email}
+                    <br/>
+                    {user.phone_numbers?.map((item, index) => (
+                      <div key={index}>
+                        <span>{`${item.type.toLowerCase()}: +${item.country_code} ${item.number}`}</span>
+                        <br/>
+                      </div>
+                    ))}
                   </Card.Description>
                 </Card.Content>
               </Card>
+              {user.card &&
               <Card className="card">
                 <Card.Content>
                   <Card.Header>Card</Card.Header>
                   <Card.Meta>MEMBERSHIP</Card.Meta>
                   <Divider/>
                   <Card.Description style={{ margin: '1em' }} textAlign={'left'}>
-                    <div>Issue date: {user.card.issueDate}</div>
-                    <div>Due date: {user.card.dueDate}</div>
+                    <div>Due date: {moment(user.card.expiration_date).utc().format('DD MMM YYYY')}</div>
                     <br/>
                     {cardExpirationDaysLeft > 0 && cardExpirationDaysLeft <= 30 ? (
                       <div>
-                      Your card will expire in
-                      <span style={{ color: 'red' }}> {cardExpirationDaysLeft} </span>
-                      {cardExpirationDaysLeft === 1 ? 'day':'days'}
+                        Your card will expire in
+                        <span style={{ color: 'red' }}> {cardExpirationDaysLeft} </span>
+                        {cardExpirationDaysLeft === 1 ? 'day' : 'days'}
                       </div>
                     ) : cardExpirationDaysLeft <= 0 && (
                       <span style={{ color: 'red' }}>Your card has expired. Please, renew it immediately!</span>
@@ -67,6 +74,7 @@ const Dashboard = ({ user }) => {
                   </Card.Description>
                 </Card.Content>
               </Card>
+              }
             </Card.Group>
           </Grid.Column>
         </Grid.Row>
@@ -75,24 +83,34 @@ const Dashboard = ({ user }) => {
             <Card.Group centered>
               <Card>
                 <Card.Content>
-                  <Card.Header>Company</Card.Header>
-                  <Card.Meta>MY COMPANY</Card.Meta>
+                  <Card.Header>Campus</Card.Header>
+                  <Card.Meta>INSTITUTION</Card.Meta>
                   <Divider/>
                   <Card.Description style={{ margin: '1em' }} textAlign={'left'}>
-                    desc of company
+                    <span>{`${user.campus?.address?.street || ''} ${user.campus?.address?.number || ''}`}</span>
+                    <br/>
+                    <span>{`${user.campus?.address?.post_code || ''}, ${user.campus?.address?.city || ''}`}</span>
+                    <br/>
+                    <span>{user.campus?.address?.country || ''}</span>
                   </Card.Description>
                 </Card.Content>
               </Card>
+              {user.address &&
               <Card>
                 <Card.Content>
-                  <Card.Header>More</Card.Header>
-                  <Card.Meta>STH</Card.Meta>
+                  <Card.Header>Address</Card.Header>
+                  <Card.Meta>HOME ADDRESS</Card.Meta>
                   <Divider/>
                   <Card.Description style={{ margin: '1em' }} textAlign={'left'}>
-                    desc
+                    <span>{`${user.address.street || ''} ${user.address.number || ''}`}</span>
+                    <br/>
+                    <span>{`${user.address.post_code || ''}, ${user.address.city || ''}`}</span>
+                    <br/>
+                    <span>{user.address.country || ''}</span>
                   </Card.Description>
                 </Card.Content>
               </Card>
+              }
             </Card.Group>
           </Grid.Column>
         </Grid.Row>

@@ -8,7 +8,7 @@ import BookCard from './BookCard/BookCard'
 
 
 const BookCatalog = ({ addToWishlist, removeFromWishlist, isInWishlist }) => {
-  // const [items, setItems] = useState(null)
+
   const {
     loading,
     getSearch,

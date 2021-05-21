@@ -6,16 +6,15 @@ import BookForm from './BookForm'
 const EditBookForm = ({ editBook, defaultValues }) => {
 
   const onSubmit = (data) => {
-    if (data.isbn === defaultValues.isbn ) {
-      editBook(data)
-    } else {
-      editBook({ ...data, isbn: defaultValues.isbn, newIsbn: data.isbn })
-    }
+    editBook(data)
   }
 
   return (
     <Segment>
-      <BookForm onSubmit={onSubmit} defaultValues={defaultValues}/>
+      <BookForm onSubmit={onSubmit}
+                isEdit={true}
+                defaultValues={defaultValues}
+      />
     </Segment>
   )
 }

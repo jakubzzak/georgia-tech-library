@@ -8,9 +8,8 @@ import EditBookForm from './Partials/BookForm/EditBookForm'
 import ChangeStock from './Partials/ChangeStock'
 
 
-const FindBook = ({ book, setBook, findBook, getBook, updateBook, changeStock, disableBook, enableBook }) => {
+const FindBook = ({ book, findBook, getBook, updateBook, changeStock, disableBook, enableBook }) => {
   const [action, setAction] = useState(null)
-  const [cleanSearch, setCleanSearch] = useState(false)
 
   return (
     <Segment color={'blue'} style={{ width: '100%' }}>
@@ -18,7 +17,6 @@ const FindBook = ({ book, setBook, findBook, getBook, updateBook, changeStock, d
         <Grid.Row>
           <Grid.Column>
             <RealtimeSearch setChosenValue={getBook}
-                            clearSearchPromp={cleanSearch}
                             apiFetch={findBook}
                             customResultRenderer={({ isbn, title, author }) => (
                               <Label key={isbn}
@@ -40,16 +38,11 @@ const FindBook = ({ book, setBook, findBook, getBook, updateBook, changeStock, d
                                      title={book.title}
                                      author={book.author}
                                      subject_area={book.subject_area}
+                                     total_copies={book.total_copies}
                                      available_copies={book.available_copies}
                 />
                 <Card.Content className="find-action" textAlign={'center'} extra>
-                  {book.deleted ? (
-                    <Button basic
-                            color={'green'}
-                            content={'Enable'}
-                            onClick={() => enableBook({ isbn: book.isbn })}
-                    />
-                  ) : (
+                  {book.is_active ? (
                     <>
                       <Button basic={action !== 'description'}
                               color={'brown'}
@@ -69,9 +62,22 @@ const FindBook = ({ book, setBook, findBook, getBook, updateBook, changeStock, d
                       <Button basic
                               color={'red'}
                               content={'Disable'}
-                              onClick={() => disableBook({ isbn: book.isbn })}
+                              onClick={() => {
+                                disableBook(book)
+                                  .then(success => {
+                                    if (success) {
+                                      setAction(null)
+                                    }
+                                  })
+                              }}
                       />
                     </>
+                  ) : (
+                    <Button basic
+                            color={'green'}
+                            content={'Enable'}
+                            onClick={() => enableBook(book)}
+                    />
                   )}
                 </Card.Content>
               </Card>
@@ -92,13 +98,10 @@ const FindBook = ({ book, setBook, findBook, getBook, updateBook, changeStock, d
               ) : action === 'stock' ? (
                 <ChangeStock isbn={book.isbn}
                              changeStock={changeStock}
-                             setBook={setBook}
-                             closeAction={() => setAction(null)}
                              defaultValues={book}
                 />
               ) : action === 'edit' && (
                 <EditBookForm editBook={updateBook}
-                              setBook={setBook}
                               defaultValues={book}
                 />
               )}
@@ -113,7 +116,6 @@ const FindBook = ({ book, setBook, findBook, getBook, updateBook, changeStock, d
 
 FindBook.propTypes = {
   book: PropTypes.object,
-  setBook: PropTypes.func.isRequired,
   findBook: PropTypes.func.isRequired,
   getBook: PropTypes.func.isRequired,
   updateBook: PropTypes.func.isRequired,

@@ -6,16 +6,13 @@ import { Segment } from 'semantic-ui-react'
 const EditCustomerForm = ({ editCustomer, defaultValues }) => {
 
   const onSubmit = (data) => {
-    if (data.ssn === defaultValues.ssn) {
-      editCustomer(data)
-    } else {
-      editCustomer({ ...data, ssn: defaultValues.ssn, newSsn: data.ssn })
-    }
+    editCustomer(data)
   }
 
   return (
     <Segment>
       <CustomerForm onSubmit={onSubmit}
+                    isEdit={true}
                     defaultValues={{ ...defaultValues, campus_id: defaultValues?.campus.id }}
       />
     </Segment>

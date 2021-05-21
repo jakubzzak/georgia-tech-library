@@ -4,11 +4,11 @@ import { useForm, FormProvider, useFieldArray, useWatch } from 'react-hook-form'
 import PropTypes from 'prop-types'
 import { email } from '../../../utils/validations'
 import { useEffect, useState } from 'react'
-import securedAPI from '../../../../api'
+import { unsecuredAPI } from '../../../../api'
 import toast from 'react-hot-toast'
 
 
-const CustomerForm = ({ onSubmit, defaultValues }) => {
+const CustomerForm = ({ onSubmit, defaultValues, isEdit }) => {
   const useFormMethods = useForm({ defaultValues: { ...defaultValues }, shouldFocusError: true, mode: 'onChange' })
   const { handleSubmit, formState, control } = useFormMethods
   const { isSubmitting, isValid } = formState
@@ -23,7 +23,7 @@ const CustomerForm = ({ onSubmit, defaultValues }) => {
   ]
 
   useEffect(() => {
-    securedAPI.fetchCampuses()
+    unsecuredAPI.fetchCampuses()
       .then(response => {
         if (response.ok && response.data.ok) {
           setCampuses(response.data.data)
@@ -67,6 +67,7 @@ const CustomerForm = ({ onSubmit, defaultValues }) => {
           <Grid.Row columns={2}>
             <Grid.Column>
               <InputHooks name="ssn"
+                          readOnly={isEdit}
                           type="text"
                           label="Ssn"
                           icon={'user'}
@@ -232,6 +233,7 @@ const CustomerForm = ({ onSubmit, defaultValues }) => {
 CustomerForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   defaultValues: PropTypes.object,
+  isEdit: PropTypes.bool,
 }
 
 export default CustomerForm

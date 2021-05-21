@@ -20,10 +20,9 @@ const FindCustomer = ({
                         enableCustomer,
                         disableCustomer,
                         extendCardValidity,
-                        fetchActiveRentals,
                       }) => {
   const [action, setAction] = useState(null)
-  const { close: closeLoan } = useLoan()
+  const { loans, fetchActiveRentals, close: closeLoan, start: startLoan } = useLoan()
 
   return (
     <Segment color={'blue'} style={{ width: '100%' }}>
@@ -48,8 +47,8 @@ const FindCustomer = ({
           <Grid.Row>
             <Grid.Column textAlign={'left'}>
               <Card style={{ margin: 'auto', width: '550px' }}>
-                <CustomerCardMainContent card_id={customer.card.id}
-                                         expiration_date={customer.card.expiration_date}
+                <CustomerCardMainContent card_id={customer.card?.id}
+                                         expiration_date={customer.card?.expiration_date}
                                          email={customer.email}
                                          firstname={customer.first_name}
                                          lastname={customer.last_name}
@@ -65,6 +64,7 @@ const FindCustomer = ({
                               onClick={() => setAction(action === 'edit' ? null : 'edit')}
                       />
                       <Button basic={action !== 'checkout'}
+                              disabled={moment(customer.card?.expiration_date).isBefore(moment())}
                               className={'card-button'}
                               color={'yellow'}
                               content={'Lend'}
@@ -97,7 +97,14 @@ const FindCustomer = ({
                               className={'card-button'}
                               color={'red'}
                               content={'Disable'}
-                              onClick={() => disableCustomer({ ssn: customer.ssn })}
+                              onClick={() => {
+                                disableCustomer(customer)
+                                  .then(success => {
+                                    if (success) {
+                                      setAction(null)
+                                    }
+                                  })
+                              }}
                       />
                     </>
                   ) : (
@@ -105,7 +112,7 @@ const FindCustomer = ({
                             className={'card-button'}
                             color={'green'}
                             content={'Enable'}
-                            onClick={() => enableCustomer({ ssn: customer.ssn })}
+                            onClick={() => enableCustomer(customer)}
                     />
                   )}
                 </Card.Content>
@@ -115,9 +122,11 @@ const FindCustomer = ({
           <Grid.Row>
             <Grid.Column>
               {action === 'checkout' ? (
-                <Checkout cardId={customer.card.id}/>
+                <Checkout ssn={customer.ssn}
+                          startLoan={startLoan}
+                />
               ) : action === 'checkin' ? (
-                <CheckIn fetchActiveRentals={() => fetchActiveRentals({ ssn: customer.ssn })}
+                <CheckIn fetchActiveRentals={() => fetchActiveRentals(customer)}
                          closeLoan={closeLoan}
                 />
               ) : action === 'edit' && (
@@ -142,7 +151,6 @@ FindCustomer.propTypes = {
   enableCustomer: PropTypes.func.isRequired,
   disableCustomer: PropTypes.func.isRequired,
   extendCardValidity: PropTypes.func.isRequired,
-  fetchActiveRentals: PropTypes.func.isRequired,
 }
 
 export default FindCustomer

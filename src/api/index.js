@@ -80,54 +80,53 @@ const create = (baseURL) => {
   // way at this level.
   //
 
-  const meFromToken = (tokenToValidate) => api.post('sessions/me', { token: tokenToValidate }, getUnsecuredHeaders())
-
-  const createSession = (request) => api.post('sessions/create', request, getUnsecuredHeaders())
-  const register = (request) => api.post('sessions/register', request, getUnsecuredHeaders())
-  const checkLogin = (request) => api.post('sessions/checkLogin', request, getUnsecuredHeaders())
-
-  const uploadFile = (request) => api.post('file/attache', request, getSecuredHeaders())
+  const uploadFile = (request) => api.post('file/attache', request, getUnsecuredHeaders())
   const downloadFile = (id) => api.get(`file/download/${id}`, null, {
-    ...getSecuredHeaders(),
+    ...getUnsecuredHeaders(),
     responseType: 'blob',
   })
 
-
   const searchInCatalog = (search) => api.post(`search`, createRequestFromPageDetails(search), getUnsecuredHeaders())
-  // user
-  const login = (credentials) => api.post(`user/login`, credentials, getUnsecuredHeaders())
-  const logout = () => api.get(`user/logout`, null, getSecuredHeaders())
-  const fetchHistory = (pageDetails) => api.post(`user/history`, createRequestFromPageDetails(pageDetails), getSecuredHeaders())
-  const getMyWishlist = () => api.get(`user/wishlist`, null, getSecuredHeaders())
-  const addToMyWishlist = ({ id }) => api.put(`user/wishlist/add/${id}`, null, getSecuredHeaders())
-  const removeFromMyWishlist = ({ id }) => api.delete(`user/wishlist/remove/${id}`, null, getSecuredHeaders())
-  const requestFromWishlist = ({ id }) => api.get(`user/wishlist/request/${id}`, null, getSecuredHeaders())
-  // customer - user from librarian point of view
-  const findCustomer = ({ cardId }) => api.get(`customer/find/${cardId}`, null, getSecuredHeaders())
-  const getCustomer = ({ ssn }) => api.get(`customer/${ssn}`, null, getSecuredHeaders())
-  const createCustomer = (data) => api.put(`customer/create`, data, getSecuredHeaders())
-  const updateCustomer = ({ ssn, ...data }) => api.post(`customer/${ssn}/update`, { ...data }, getSecuredHeaders())
-  const enableCustomer = ({ ssn }) => api.get(`customer/${ssn}/enable`, null, getSecuredHeaders())
-  const disableCustomer = ({ ssn }) => api.delete(`customer/${ssn}/disable`, null, getSecuredHeaders())
-  const fetchCustomersActiveRentals = ({ ssn }) => api.get(`customer/${ssn}/rentals/active`, null, getSecuredHeaders())
-  const extendCardValidity = ({ id }) => api.get(`customer/card/${id}/extend`, null, getSecuredHeaders())
+  // customer
+  const loginCustomer = (credentials) => api.post(`user/login`, credentials, getUnsecuredHeaders())
+  const logoutCustomer = () => api.get(`user/logout`, null, getUnsecuredHeaders())
+  const fetchHistory = () => api.get(`user/history`, null, getUnsecuredHeaders())
+  // customer - wishlist
+  const getMyWishlist = () => api.get(`user/wishlist`, null, getUnsecuredHeaders())
+  const addToMyWishlist = ({ isbn }) => api.put(`user/wishlist/add/${isbn}`, null, getUnsecuredHeaders())
+  const removeFromMyWishlist = ({ isbn }) => api.delete(`user/wishlist/remove/${isbn}`, null, getUnsecuredHeaders())
+  const requestFromWishlist = ({ id }) => api.get(`user/wishlist/request/${id}`, null, getUnsecuredHeaders())
+  // customer - from librarian view
+  const findCustomer = ({ cardId }) => api.get(`customer/find/${cardId}`, null, getUnsecuredHeaders())
+  const getCustomer = ({ ssn }) => api.get(`customer/${ssn}`, null, getUnsecuredHeaders())
+  const createCustomer = (data) => api.put(`customer/create`, data, getUnsecuredHeaders())
+  const updateCustomer = ({ ssn, ...data }) => api.post(`customer/${ssn}/update`, data, getUnsecuredHeaders())
+  const enableCustomer = ({ ssn }) => api.put(`customer/${ssn}/enable`, null, getUnsecuredHeaders())
+  const disableCustomer = ({ ssn }) => api.delete(`customer/${ssn}/disable`, null, getUnsecuredHeaders())
+  const fetchCustomersActiveRentals = ({ ssn }) => api.get(`customer/${ssn}/rentals/active`, null, getUnsecuredHeaders())
+  const extendCardValidity = ({ id }) => api.get(`customer/card/${id}/extend`, null, getUnsecuredHeaders())
   // loan
-  const startLoan = (data) => api.post(`loan/start`, data, getSecuredHeaders())
-  const closeLoan = ({ loanId }) => api.get(`loan/close/${loanId}`, null, getSecuredHeaders())
+  const startLoan = (data) => api.post(`loan/start`, data, getUnsecuredHeaders())
+  const closeLoan = ({ loanId }) => api.get(`loan/close/${loanId}`, null, getUnsecuredHeaders())
   // book
-  const findBook = ({ isbn }) => api.get(`book/find/${isbn}`, null, getSecuredHeaders())
-  const getBook = ({ isbn }) => api.get(`book/${isbn}`, null, getSecuredHeaders())
-  const createBook = (data) => api.put(`book/create`, data, getSecuredHeaders())
-  const updateBook = ({ isbn, ...data }) => api.post(`book/${isbn}/update`, data, getSecuredHeaders())
-  const disableBook = ({ isbn }) => api.delete(`book/${isbn}/disable`, null, getSecuredHeaders())
-  const enableBook = ({ isbn }) => api.delete(`book/${isbn}/enable`, null, getSecuredHeaders())
-  const changeStock = ({ isbn, ...data }) => api.post(`book/${isbn}/stock`, data, getSecuredHeaders())
-  // library
-  const getLibraryWishlist = () => api.get(`library/wishlist`, null, getSecuredHeaders())
-  const addToLibraryWishlist = (data) => api.put(`library/wishlist/add`, data, getSecuredHeaders())
-  const removeFromLibraryWishlist = ({ id }) => api.delete(`library/wishlist/remove/${id}`, null, getSecuredHeaders())
-  const markItemAsAcquiredInLibraryWishlist = ({ id }) => api.get(`library/wishlist/acquired/${id}`, null, getSecuredHeaders())
-  const fetchCampuses = () => api.get(`library/static/campuses`, null, getSecuredHeaders())
+  const findBook = ({ isbn }) => api.get(`book/find/${isbn}`, null, getUnsecuredHeaders())
+  const getBook = ({ isbn }) => api.get(`book/${isbn}`, null, getUnsecuredHeaders())
+  const createBook = (data) => api.put(`book/create`, data, getUnsecuredHeaders())
+  const updateBook = ({ isbn, ...data }) => api.post(`book/${isbn}/update`, data, getUnsecuredHeaders())
+  const disableBook = ({ isbn }) => api.delete(`book/${isbn}/disable`, null, getUnsecuredHeaders())
+  const enableBook = ({ isbn }) => api.put(`book/${isbn}/enable`, null, getUnsecuredHeaders())
+  const changeStock = ({ isbn, ...data }) => api.post(`book/${isbn}/stock`, data, getUnsecuredHeaders())
+  // library - librarian
+  const loginLibrarian = (credentials) => api.post(`library/login`, credentials, getUnsecuredHeaders())
+  const logoutLibrarian = () => api.get(`library/logout`, null, getUnsecuredHeaders())
+  const getLibraryWishlist = () => api.get(`library/wishlist`, null, getUnsecuredHeaders())
+  const addToLibraryWishlist = (data) => api.put(`library/wishlist/add`, data, getUnsecuredHeaders())
+  const removeFromLibraryWishlist = ({ id }) => api.delete(`library/wishlist/remove/${id}`, null, getUnsecuredHeaders())
+  const markItemAsAcquiredInLibraryWishlist = ({ id }) => api.get(`library/wishlist/acquired/${id}`, null, getUnsecuredHeaders())
+  const getLibraryReservations = () => api.get(`library/reservations`, null, getUnsecuredHeaders())
+  const markItemAsAcceptedInLibraryReservations = ({ id }) => api.get(`library/reservations/accepted/${id}`, null, getUnsecuredHeaders())
+  // static
+  const fetchCampuses = () => api.get(`library/static/campuses`, null, getUnsecuredHeaders())
   // ------
   // STEP 3
   // ------
@@ -142,17 +141,13 @@ const create = (baseURL) => {
   //
   return {
     // a list of the API functions from step 2
-    meFromToken,
-    createSession,
-    register,
-    checkLogin,
+    uploadFile,
     downloadFile,
 
-    // general
     searchInCatalog,
     // user
-    login,
-    logout,
+    loginCustomer,
+    logoutCustomer,
     fetchHistory,
     getMyWishlist,
     addToMyWishlist,
@@ -179,10 +174,14 @@ const create = (baseURL) => {
     disableBook,
     enableBook,
     // library
+    loginLibrarian,
+    logoutLibrarian,
     getLibraryWishlist,
     addToLibraryWishlist,
     removeFromLibraryWishlist,
     markItemAsAcquiredInLibraryWishlist,
+    getLibraryReservations,
+    markItemAsAcceptedInLibraryReservations,
     // library - static
     fetchCampuses,
   }

@@ -27,7 +27,7 @@ const BookCard = ({ item, isInWishlist, removeFromWishlist, addToWishlist }) => 
 
 BookCard.propTypes = {
   item: PropTypes.object.isRequired,
-  isInWishlist: PropTypes.func,
+  isInWishlist: PropTypes.bool,
   addToWishlist: PropTypes.func,
   removeFromWishlist: PropTypes.func,
 }

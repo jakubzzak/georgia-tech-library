@@ -3,66 +3,81 @@ import toast from 'react-hot-toast'
 import { useState } from 'react'
 
 const useLoan = () => {
-  const [loan, setLoan] = useState()
+  const [loading, setLoading] = useState(false)
+  const [loans, setLoans] = useState([])
 
+  const onFetchHistory = () => {
+    setLoading(true)
+    return securedAPI.fetchHistory()
+      .then(response => {
+        if (response.ok && response.data.ok) {
+          setLoans(response.data.data)
+        } else {
+          toast.error(`[${response.status}] Failed to fetch history`)
+        }
+        return response.ok && response.data.ok
+      }).catch(error => {
+        toast.error(`Something went wrong when fetching history => ${error}`)
+      }).finally(() => {
+        setLoading(false)
+      })
+  }
   const onFetchActiveRentals = ({ ssn }) => {
+    setLoading(true)
     return securedAPI.fetchCustomersActiveRentals({ ssn })
       .then(response => {
-        if (response.ok) {
-          return response.data
+        if (response.ok && response.data.ok) {
+          setLoans(response.data.data)
         } else {
           toast.error(`[${response.status}] Failed to fetch customer's active rentals`)
-          return [
-            {
-              loanId: '123-2321-2312-321',
-              title: 'Hobbit',
-              dateStart: '2021-01-01',
-            },
-            {
-              loanId: 'zcs-2d21-23d2-d2x',
-              title: 'The legend',
-              dateStart: '2021-03-01',
-            },
-          ]
         }
+        return response.ok && response.data.ok
       }).catch(error => {
         toast.error(`Something went wrong when fetching customer's rentals => ${error}`)
+      }).finally(() => {
+        setLoading(false)
       })
   }
   const onStart = ({ ssn, isbn }) => {
+    setLoading(true)
     return securedAPI.startLoan({ ssn, isbn })
       .then(response => {
-        if (response.ok) {
+        if (response.ok && response.data.ok) {
           toast.success(`New loan started successfully.`)
-          return response.data
         } else {
           toast.error(`[${response.status}] Failed to start a loan.`)
-          return []
         }
+        return response.ok && response.data.ok
       }).catch(error => {
         toast.error(`Something went wrong when starting a loan => ${error}`)
+      }).finally(() => {
+        setLoading(false)
       })
   }
 
   const onClose = ({ loanId }) => {
+    setLoading(true)
     return securedAPI.closeLoan({ loanId })
       .then(response => {
-        if (response.ok) {
-          return response.data
+        if (response.ok && response.data.ok) {
+          toast.success(`New loan started successfully.`)
         } else {
           toast.error(`[${response.status}] Failed to close a loan.`)
-          return []
         }
+        return response.ok && response.data.ok
       }).catch(error => {
         toast.error(`Something went wrong when closing a loan => ${error}`)
+      }).finally(() => {
+        setLoading(false)
       })
   }
 
   return {
-    loan,
-    setLoan,
+    loans,
+    loading,
     start: onStart,
     close: onClose,
+    fetchHistory: onFetchHistory,
     fetchActiveRentals: onFetchActiveRentals,
   }
 }

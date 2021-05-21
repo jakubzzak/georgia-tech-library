@@ -1,46 +1,55 @@
-import React, { useEffect } from 'react'
-import './Logout.css'
+import React from 'react'
 import PropTypes from 'prop-types'
-import { Button, Grid, Image } from 'semantic-ui-react'
+import { Button, Dimmer, Grid, Image, Loader } from 'semantic-ui-react'
+import './Logout.css'
 import logo from '../../assets/logo.png'
-import securedAPI from '../../api'
 
-const Logout = ({ setToken, closeModal }) => {
 
-  const onSubmit = () => {
-    securedAPI.logout()
-      .then(response => {
-        closeModal()
-      })
-  }
+const Logout = ({ logout, loading, closeModal }) => {
 
   return (
     <div className="wrapper" style={{ padding: '0 3em' }}>
-      <Image src={logo} size={'small'} alt={'Georgia Tech Library'} style={{ marginBottom: '2em' }}/>
-      <Grid>
-        <Grid.Row>
-          <Grid.Column textAlign={'center'}>
-            See you soon!
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row textAlign={'center'}>
-          <Grid.Column>
-            <Button content={'Log out'}
-                    color={'orange'}
-                    onClick={() => {
-                      // setToken()
-                      onSubmit()
-                    }}
-            />
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
+      <Dimmer.Dimmable dimmed={loading}>
+        <Dimmer active={loading} inverted>
+          <Loader>Loading</Loader>
+        </Dimmer>
+        <div className={'wrapper'} style={{ paddingBottom: '2em' }}>
+          <Image src={logo}
+                 size={'small'}
+                 alt={'Georgia Tech Library'}
+                 tyle={{ marginBottom: '2em' }}
+          />
+        </div>
+        <Grid>
+          <Grid.Row>
+            <Grid.Column textAlign={'center'}>
+              See you soon!
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row textAlign={'center'}>
+            <Grid.Column>
+              <Button content={'Log out'}
+                      color={'orange'}
+                      onClick={() => {
+                        logout()
+                          .then(success => {
+                            if (success) {
+                              closeModal()
+                            }
+                          })
+                      }}
+              />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Dimmer.Dimmable>
     </div>
   )
 }
 
 Logout.propTypes = {
-  setToken: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
 }
 

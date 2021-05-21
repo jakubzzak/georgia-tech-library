@@ -5,7 +5,7 @@ import React from 'react'
 import { InputHooks } from '../../utils/inputs'
 
 
-const ChangeStock = ({ isbn, changeStock, setBook, closeAction, defaultValues }) => {
+const ChangeStock = ({ isbn, changeStock, defaultValues }) => {
 
   const useFormMethods = useForm({ defaultValues, shouldFocusError: true, mode: 'onChange' })
   const { handleSubmit, formState, setValue, getValues } = useFormMethods
@@ -31,10 +31,10 @@ const ChangeStock = ({ isbn, changeStock, setBook, closeAction, defaultValues })
                                   label={'Total copies'}
                                   placeholder={'Total copies'}
                                   onChange={(e, { value }) => {
-                                    if (value < 0) {
+                                    if (parseInt(value) < 0) {
                                       setValue('total_copies', 0)
                                     }
-                                    if (getValues('total_copies') < getValues('available_copies')) {
+                                    if (parseInt(getValues('total_copies')) < parseInt(getValues('available_copies'))) {
                                       setValue('total_copies', getValues('available_copies'))
                                     }
                                   }}
@@ -47,9 +47,9 @@ const ChangeStock = ({ isbn, changeStock, setBook, closeAction, defaultValues })
                                   label={'Currently available copies'}
                                   placeholder={'Currently available copies'}
                                   onChange={(e, { value }) => {
-                                    if (value < 0) {
+                                    if (parseInt(value) < 0) {
                                       setValue('available_copies', 0)
-                                    } else if (value > getValues('total_copies')) {
+                                    } else if (parseInt(value) > parseInt(getValues('total_copies'))) {
                                       setValue('available_copies', getValues('total_copies'))
                                     }
                                   }}
@@ -75,9 +75,7 @@ const ChangeStock = ({ isbn, changeStock, setBook, closeAction, defaultValues })
 ChangeStock.propTypes = {
   isbn: PropTypes.string.isRequired,
   changeStock: PropTypes.func.isRequired,
-  setBook: PropTypes.func.isRequired,
-  closeAction: PropTypes.func.isRequired,
-  defaultValues: PropTypes.func,
+  defaultValues: PropTypes.object,
 }
 
 export default ChangeStock

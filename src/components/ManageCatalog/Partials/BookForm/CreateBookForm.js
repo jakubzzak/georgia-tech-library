@@ -3,13 +3,13 @@ import PropTypes from 'prop-types'
 import BookForm from './BookForm'
 
 
-const CreateBookForm = ({ createBook, setBook }) => {
+const CreateBookForm = ({ createBook, switchTab }) => {
 
   const onSubmit = (data) => {
     createBook(data)
-      .then(response => {
-        if (response.ok) {
-          setBook(response.data)
+      .then(success => {
+        if (success) {
+          switchTab()
         }
       })
   }
@@ -23,7 +23,7 @@ const CreateBookForm = ({ createBook, setBook }) => {
 
 CreateBookForm.propTypes = {
   createBook: PropTypes.func.isRequired,
-  setBook: PropTypes.func.isRequired,
+  switchTab: PropTypes.func.isRequired,
 }
 
 export default CreateBookForm
