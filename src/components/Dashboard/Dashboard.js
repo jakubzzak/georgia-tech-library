@@ -36,7 +36,7 @@ const Dashboard = ({ user }) => {
         <Grid.Row>
           <Grid.Column>
             <Card.Group centered>
-              <Card>
+              <Card className="card">
                 <Card.Content>
                   <Card.Header>Personal</Card.Header>
                   <Card.Meta>INFO</Card.Meta>
@@ -81,7 +81,7 @@ const Dashboard = ({ user }) => {
         <Grid.Row>
           <Grid.Column>
             <Card.Group centered>
-              <Card>
+              <Card className="card">
                 <Card.Content>
                   <Card.Header>Campus</Card.Header>
                   <Card.Meta>INSTITUTION</Card.Meta>
@@ -96,7 +96,7 @@ const Dashboard = ({ user }) => {
                 </Card.Content>
               </Card>
               {user.address &&
-              <Card>
+              <Card className="card">
                 <Card.Content>
                   <Card.Header>Address</Card.Header>
                   <Card.Meta>HOME ADDRESS</Card.Meta>

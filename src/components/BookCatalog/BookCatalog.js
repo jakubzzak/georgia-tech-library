@@ -71,11 +71,11 @@ const BookCatalog = ({ addToWishlist, removeFromWishlist, isInWishlist }) => {
                 </Grid.Row>
                 <Grid.Row>
                   <Grid.Column textAlign={'center'}>
-                    <Button icon={'left arrow'} disabled={currentPage === 0} style={{ width: '100px', margin: 0 }} onClick={() => prevPage()} />
+                    <Button className={'prev-page'} icon={'left arrow'} disabled={currentPage === 0} style={{ width: '100px', margin: 0 }} onClick={() => prevPage()} />
                     <span style={{ margin: '0 3em' }}>
                       {currentPage + 1}
                     </span>
-                    <Button icon={'right arrow'} disabled={isLastPage()} style={{ width: '100px', margin: 0 }} onClick={() => nextPage()} />
+                    <Button className={'next-page'} icon={'right arrow'} disabled={isLastPage()} style={{ width: '100px', margin: 0 }} onClick={() => nextPage()} />
                   </Grid.Column>
                 </Grid.Row>
               </Grid>

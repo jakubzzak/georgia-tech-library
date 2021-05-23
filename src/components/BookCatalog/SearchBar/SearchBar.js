@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Button, Checkbox, Grid, Icon, Input, Select } from 'semantic-ui-react'
 import './SearchBar.css'
 import PropTypes from 'prop-types'
@@ -65,11 +65,6 @@ export const useSearchBarState = () => {
 
 const SearchBar = ({ loading, isValid, searchChanged, changeSearch, triggerSearch, getSearch }) => {
   const [inputCss, setInputCss] = useState(inputStyle)
-  // const { results, loading, isValid, searchChanged, changeSearch, triggerSearch, getSearch } = useSearchBarState()
-
-  // useEffect(() => {
-  //   setResults(results)
-  // }, [results])
 
   return (
     <Grid centered>

@@ -11,7 +11,7 @@ import moment from 'moment'
 const Wishlist = ({ loading, items, request, remove }) => {
 
   return (
-    <Layout loading={loading} useWrapper={items.length === 0}>
+    <Layout loading={loading} useWrapper={!items || items.length === 0}>
       {(!Array.isArray(items) || items.length === 0) ? (
         <span className="note">Your wishlist is empty. Go ahead and add some items!</span>
       ) : (

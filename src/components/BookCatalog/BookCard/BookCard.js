@@ -1,6 +1,7 @@
+import React from 'react'
+import PropTypes from 'prop-types'
 import { getRandomColor } from '../../utils/colors'
 import { Card, Icon } from 'semantic-ui-react'
-import PropTypes from 'prop-types'
 
 
 const BookCard = ({ item, isInWishlist, removeFromWishlist, addToWishlist }) => {
@@ -19,7 +20,12 @@ const BookCard = ({ item, isInWishlist, removeFromWishlist, addToWishlist }) => 
           }
         </Card.Header>
         <Card.Meta>{item.author}</Card.Meta>
-        <Card.Description>{item.description}</Card.Description>
+        <Card.Description>Isbn: {item.isbn}</Card.Description>
+        <Card.Description>Subject area: {item.subject_area}</Card.Description>
+        <Card.Description>Currently available copies: {item.available_copies}</Card.Description>
+      </Card.Content>
+      <Card.Content extra>
+        <Card.Description>About: {item.description}</Card.Description>
       </Card.Content>
     </Card>
   )

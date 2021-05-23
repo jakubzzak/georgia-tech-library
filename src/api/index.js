@@ -58,13 +58,16 @@ const create = (baseURL) => {
     },
   })
 
-  const createRequestFromPageDetails = ({ phrase, group, columns, pageSize, currentPage }) => ({
-    offset: currentPage * pageSize,
-    limit: pageSize,
-    phrase: phrase,
-    group: group,
-    columns: columns,
-  })
+  const createRequestFromPageDetails = ({ phrase, group, columns, pageSize, currentPage }) => {
+
+    return {
+      offset: currentPage * pageSize,
+      limit: pageSize,
+      phrase: phrase,
+      group: group,
+      columns: columns,
+    }
+  }
   // ------
   // STEP 2
   // ------
