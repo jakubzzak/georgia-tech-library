@@ -19,7 +19,7 @@
   },
   "scripts": {
     "start": "craco start",
-    "build": "craco build && rm -r ../src/main/resources/static && mv build ../src/main/resources/static",
+    "build": "craco build",
     "test": "craco test",
     "eject": "craco eject"
   },

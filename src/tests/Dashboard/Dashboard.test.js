@@ -3,7 +3,6 @@ import { shallow } from 'enzyme'
 import Dashboard from '../../components/Dashboard/Dashboard'
 
 
-
 describe('Dashboard', () => {
   const librarian = {
     email: 'test@test.dk',
