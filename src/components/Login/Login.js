@@ -10,7 +10,6 @@ import logo from '../../assets/logo.png'
 
 const Login = ({ login, loading, getLoginType, setLoginType, closeModal }) => {
 
-  const [isLibrarian, setIsLibrarian] = useState(false)
   const [errorMessage, setErrorMessage] = useState(null)
   const [passwordShown, setPasswordShown] = useState(false)
 
@@ -79,7 +78,7 @@ const Login = ({ login, loading, getLoginType, setLoginType, closeModal }) => {
                     Sign in as a librarian
                   </Label>
                   <Checkbox toggle
-                            defaultChecked={getLoginType()}
+                            defaultChecked={getLoginType() === 'LIBRARIAN'}
                             onChange={(e, { checked }) => {
                               setLoginType(checked ? 'LIBRARIAN':'STUDENT')
                            }}
