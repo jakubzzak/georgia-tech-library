@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { securedAPI } from '../../api/index'
 import toast from 'react-hot-toast'
+import { Icon } from 'semantic-ui-react'
 
 
 const useLibraryReservations = () => {
@@ -24,6 +25,19 @@ const useLibraryReservations = () => {
   }, [])
 
   const onMarkAsAccepted = ({ id }) => {
+    toast.error('Sorry, this feature is not implemented yet. We are working on it!', {
+      style: {
+        border: '1px solid #713200',
+        padding: '16px',
+        color: '#713200',
+      },
+      icon: <Icon name={'time'} />,
+      iconTheme: {
+        primary: '#713200',
+        secondary: '#FFFAEE',
+      },
+    })
+    return new Promise(() => {})
     setLoading(true)
     return securedAPI.markItemAsAcceptedInLibraryReservations({ id })
       .then(response => {

@@ -26,7 +26,7 @@ const Reservations = () => {
                     trigger={<Button color={'blue'} content={'Accept'} style={{ marginRight: '2em' }}/>}
                     content={closePopup =>
                       <Button color="blue" content="Confirm" size={'tiny'} onClick={() => {
-                        accept(item.book)
+                        accept(item)
                           .finally(() => {
                             closePopup()
                           })
