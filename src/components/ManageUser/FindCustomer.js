@@ -127,6 +127,7 @@ const FindCustomer = ({
                 />
               ) : action === 'checkin' ? (
                 <CheckIn fetchActiveRentals={() => fetchActiveRentals(customer)}
+                         loans={loans}
                          closeLoan={closeLoan}
                 />
               ) : action === 'edit' && (

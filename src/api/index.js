@@ -109,7 +109,7 @@ const create = (baseURL) => {
   const fetchCustomersActiveRentals = ({ ssn }) => api.get(`customer/${ssn}/rentals/active`, null, getUnsecuredHeaders())
   const extendCardValidity = ({ id }) => api.get(`customer/card/${id}/extend`, null, getUnsecuredHeaders())
   // loan
-  const startLoan = (data) => api.post(`loan/start`, data, getUnsecuredHeaders())
+  const startLoan = (data) => api.put(`loan/start`, data, getUnsecuredHeaders())
   const closeLoan = ({ loanId }) => api.get(`loan/close/${loanId}`, null, getUnsecuredHeaders())
   // book
   const findBook = ({ isbn }) => api.get(`book/find/${isbn}`, null, getUnsecuredHeaders())

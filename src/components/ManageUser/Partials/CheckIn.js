@@ -5,14 +5,14 @@ import ControlledPopup from '../../utils/ControlledPopup'
 import Avatar from 'react-avatar'
 import { getRandomColor } from '../../utils/colors'
 import Layout from '../../Layout/Layout'
+import moment from 'moment'
 
 
-const CheckIn = ({ fetchActiveRentals, closeLoan }) => {
-  const [items, setItems] = useState(null)
+const CheckIn = ({ loans: items, fetchActiveRentals, closeLoan }) => {
+  // const [items, setItems] = useState(null)
 
   useEffect(() => {
     fetchActiveRentals()
-      .then(results => setItems(results))
   }, [])
 
   return (
@@ -23,7 +23,7 @@ const CheckIn = ({ fetchActiveRentals, closeLoan }) => {
             {items.map((item, index) => (
               <List.Item key={index}>
                 <List.Content style={{ margin: 0, padding: 0 }} floated="right">
-                  {`Loaned at: ${item.loaned_at} `}
+                  {`Loaned at: ${moment(item.loaned_at).format('DD MMM YYYY')} `}
                   <ControlledPopup
                     trigger={<Button color={'blue'} content={'Close'}/>}
                     content={closePopup =>
@@ -46,7 +46,7 @@ const CheckIn = ({ fetchActiveRentals, closeLoan }) => {
                           style={{ marginRight: '2em' }}
                           color={getRandomColor()}
                   />
-                  {item.title}
+                  {`${item.book?.title} (${item.book?.isbn})`}
                 </List.Content>
               </List.Item>
             ))}
@@ -61,6 +61,7 @@ const CheckIn = ({ fetchActiveRentals, closeLoan }) => {
 
 CheckIn.propTypes = {
   fetchActiveRentals: PropTypes.func.isRequired,
+  loans: PropTypes.array,
   closeLoan: PropTypes.func.isRequired,
 }
 

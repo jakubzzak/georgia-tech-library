@@ -49,7 +49,11 @@ const Checkout = ({ ssn, startLoan }) => {
                     content={closePopup =>
                       <Button color="blue" content="Confirm" size={'tiny'} onClick={() => {
                         startLoan({ ssn, isbn: book.isbn })
-                          .finally(() => {
+                          .then(success => {
+                            if (success) {
+                              getBook({ id: book.isbn })
+                            }
+                          }).finally(() => {
                             closePopup()
                           })
                       }}/>

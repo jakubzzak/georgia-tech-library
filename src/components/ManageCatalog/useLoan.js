@@ -55,12 +55,13 @@ const useLoan = () => {
       })
   }
 
-  const onClose = ({ loanId }) => {
+  const onClose = ({ id }) => {
     setLoading(true)
-    return securedAPI.closeLoan({ loanId })
+    return securedAPI.closeLoan({ loanId: id })
       .then(response => {
         if (response.ok && response.data.ok) {
-          toast.success(`New loan started successfully.`)
+          setLoans(e => e.filter(loan => loan.id !== id))
+          toast.success(`Loan was closed successfully.`)
         } else {
           toast.error(`[${response.status}] Failed to close a loan.`)
         }
